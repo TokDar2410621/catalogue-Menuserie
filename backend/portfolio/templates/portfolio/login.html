@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - DKbois Admin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #3E2723 0%, #8B4513 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            color: #3E2723;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .logo p {
+            color: #8B4513;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #3E2723;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-login:hover {
+            background: #D4AF37;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-login:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: #fee;
+            border: 1px solid #fcc;
+            color: #c33;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .footer-text a {
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-text a:hover {
+            color: #D4AF37;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>DKbois</h1>
+            <p>Administration</p>
+        </div>
+
+        {% if form.errors %}
+        <div class="error-message">
+            <strong>Erreur :</strong> Nom d'utilisateur ou mot de passe incorrect.
+        </div>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+            <div class="error-message">
+                Votre compte n'a pas accès à cette page.
+            </div>
+            {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="username">Nom d'utilisateur</label>
+                <input type="text" name="username" id="username" required autofocus>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" name="password" id="password" required>
+            </div>
+
+            <button type="submit" class="btn-login">Se connecter</button>
+
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+
+        <div class="footer-text">
+            <a href="/admin/">Aller à l'admin Django</a>
+        </div>
+    </div>
+</body>
+</html>

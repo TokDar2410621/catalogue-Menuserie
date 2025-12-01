@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DKbois - L'Art du Bois sur Mesure</title>
+    <meta name="description" content="DKBOIS, votre menuisier-ébéniste à Yaoundé depuis 20 ans. Meubles sur mesure, construction et rénovation bois. Satisfait ou meuble offert !">
+    <link rel="icon" type="image/png" href="image/logoFK.png">
+    <link rel="alternate" hreflang="fr" href="index.html?lang=fr" />
+    <link rel="alternate" hreflang="en" href="index.html?lang=en" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513',
+                        walnut: '#3E2723',
+                        maple: '#F5DEB3',
+                        offwhite: '#FAF9F6',
+                        forest: '#2F5233',
+                        gold: '#D4AF37',
+                        'gold-hover': '#bfa030',
+                        'gold-contrast': '#C19F2E'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Lato"', 'sans-serif']
+                    },
+                    backgroundImage: {
+                        'wood-pattern': "url('data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238B4513' fill-opacity='0.05' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E')"
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-offwhite text-walnut font-sans antialiased overflow-x-hidden selection:bg-gold selection:text-white">
+
+    <!-- Navbar Component Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main>
+        <!-- Hero Section - Dynamic Diagonal Cut -->
+        <section id="home" class="relative min-h-screen flex items-center overflow-hidden bg-walnut">
+            <!-- Diagonal Split Container -->
+            <div class="absolute inset-0 w-full h-full">
+                <!-- Image Side with Diagonal Cut -->
+                <div class="absolute inset-0 overflow-hidden hero-clip-diagonal">
+                    <img src="https://r2.flowith.net/files/jpeg/FE8CF-hero_section_woodworking_placeholder_index_2@1024x1024.jpeg" alt="Atelier Menuiserie DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-100 transition-transform duration-[3000ms]">
+                    <!-- Overlay sombre pour meilleur contraste -->
+                    <div class="absolute inset-0 bg-gradient-to-br from-walnut/70 via-walnut/50 to-walnut/80"></div>
+                </div>
+
+                <!-- Content Side Background with Opposite Diagonal -->
+                <div class="absolute inset-0 bg-walnut" style="clip-path: polygon(50% 0, 100% 0, 100% 100%, 40% 100%);"></div>
+
+                <!-- Overlay additionnel pour zone de texte -->
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-walnut/30 to-transparent"></div>
+
+                <!-- Geometric Accent Shapes -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-gold opacity-10 blur-3xl rounded-full animate-pulse"></div>
+                <div class="absolute bottom-0 left-1/4 w-64 h-64 bg-oak opacity-5 blur-2xl rounded-full" style="animation: float 6s ease-in-out infinite;"></div>
+
+                <!-- Dynamic SVG Overlays -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Animated Diagonal Lines -->
+                    <line class="animate-draw" x1="45%" y1="0" x2="65%" y2="0" stroke="#D4AF37" stroke-width="4" opacity="0.8"/>
+                    <line class="animate-draw" x1="40%" y1="100%" x2="50%" y2="100%" stroke="#D4AF37" stroke-width="4" opacity="0.8" style="animation-delay: 0.5s;"/>
+
+                    <!-- Geometric Patterns -->
+                    <polygon points="60%,20% 65%,25% 60%,30% 55%,25%" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.4"/>
+                    <circle cx="70%" cy="70%" r="80" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3" stroke-dasharray="5,5">
+                        <animateTransform attributeName="transform" type="rotate" from="0 70 70" to="360 70 70" dur="20s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-20 container mx-auto px-8 lg:px-16 h-screen flex items-center justify-center">
+                <div class="w-full max-w-5xl text-center space-y-5">
+                    <!-- Animated Accent Line -->
+                    <div class="w-20 h-1 bg-gold mb-3 mx-auto animate-up" style="box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);"></div>
+
+                    <!-- Tagline with Glass Effect -->
+                    <div class="inline-block backdrop-blur-sm bg-walnut/40 px-6 py-2 border border-gold/50 animate-up">
+                        <span class="text-gold font-serif text-xs uppercase tracking-[0.3em]" style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">Yaoundé, Cameroun</span>
+                    </div>
+
+                    <!-- Main Title with Text Shadow -->
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-offwhite leading-[1.1] animate-up" style="animation-delay: 0.2s; text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 4px 20px rgba(0,0,0,0.6);" data-i18n="hero.title"></h1>
+
+                    <!-- Subtitle -->
+                    <p class="font-sans text-lg md:text-xl text-offwhite leading-relaxed max-w-3xl mx-auto animate-up" style="animation-delay: 0.4s; text-shadow: 0 2px 8px rgba(0,0,0,0.7);" data-i18n="hero.subtitle"></p>
+
+                    <!-- CTA Buttons with Hover Effects -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-3 justify-center animate-up" style="animation-delay: 0.6s;">
+                        <a href="portfolio.html" class="group relative px-8 py-4 overflow-hidden border-2 border-gold text-offwhite font-serif text-base hover:text-walnut transition-all duration-300 flex items-center justify-center gap-3">
+                            <span class="absolute inset-0 bg-gold transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+                            <span class="relative z-10" data-i18n="hero.cta1"></span>
+                            <i data-lucide="arrow-right" class="w-5 h-5 relative z-10 group-hover:translate-x-2 transition-transform" aria-hidden="true"></i>
+                        </a>
+                        <a href="contact.html" class="relative px-8 py-4 bg-gold text-walnut font-serif text-base hover:shadow-2xl transition-all duration-300 flex items-center justify-center gap-3 group" style="box-shadow: 0 10px 40px rgba(212, 175, 55, 0.3);">
+                            <span data-i18n="hero.cta2"></span>
+                            <i data-lucide="sparkles" class="w-5 h-5 group-hover:rotate-12 transition-transform" aria-hidden="true"></i>
+                        </a>
+                    </div>
+
+                    <!-- Stats with Animated Counters -->
+                    <div class="grid grid-cols-2 gap-10 pt-6 max-w-2xl mx-auto animate-up" style="animation-delay: 0.8s;">
+                        <div class="relative">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 border-2 border-gold/30 transform rotate-45"></div>
+                            <div class="text-4xl lg:text-5xl font-serif font-bold text-gold mb-2" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.5);">20+</div>
+                            <div class="text-sm text-offwhite uppercase tracking-wider" style="text-shadow: 0 2px 4px rgba(0,0,0,0.6);" data-i18n="hero.stats.years"></div>
+                        </div>
+                        <div class="relative">
+                            <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-16 border-2 border-gold/30 rounded-full"></div>
+                            <div class="text-4xl lg:text-5xl font-serif font-bold text-gold mb-2" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8), 0 0 30px rgba(212, 175, 55, 0.5);">100%</div>
+                            <div class="text-sm text-offwhite uppercase tracking-wider" style="text-shadow: 0 2px 4px rgba(0,0,0,0.6);" data-i18n="hero.stats.custom"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Animated Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30">
+                <a href="#services" aria-label="Scroll down" class="flex flex-col items-center gap-2 text-gold hover:text-offwhite transition-colors group" style="filter: drop-shadow(0 2px 4px rgba(0,0,0,0.8));">
+                    <span class="text-xs uppercase tracking-widest font-serif opacity-0 group-hover:opacity-100 transition-opacity" data-i18n="hero.scroll"></span>
+                    <i data-lucide="chevron-down" class="w-8 h-8 animate-bounce" aria-hidden="true"></i>
+                </a>
+            </div>
+        </section>
+
+        <style>
+            @keyframes float {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-30px); }
+            }
+            @keyframes draw {
+                from { stroke-dashoffset: 1000; }
+                to { stroke-dashoffset: 0; }
+            }
+            .animate-draw {
+                stroke-dasharray: 1000;
+                animation: draw 2s ease-out forwards;
+            }
+        </style>
+
+        <!-- Services Section - More Whitespace -->
+        <section id="services" class="py-32 bg-white relative scroll-mt-24">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div class="text-center mb-20 reveal-section">
+                    <span class="text-oak font-serif text-sm uppercase tracking-widest mb-3 block" data-i18n="services.label"></span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-walnut mb-6" data-i18n="services.title"></h2>
+                    <div class="w-20 h-1 bg-gold mx-auto"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="services-grid"></div>
+            </div>
+        </section>
+
+        <!-- USP Section - Garantie Unique -->
+        <section class="py-20 bg-gradient-to-br from-oak via-walnut to-oak text-white relative overflow-hidden">
+            <!-- Geometric background -->
+            <div class="absolute inset-0 opacity-10">
+                <svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                    <pattern id="usps" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                        <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="1"/>
+                    </pattern>
+                    <rect width="100%" height="100%" fill="url(#usps)"/>
+                </svg>
+            </div>
+
+            <div class="container mx-auto px-6 max-w-6xl relative z-10">
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <!-- USP 1 : Garantie unique -->
+                    <div class="space-y-4 p-6 backdrop-blur-sm bg-white/5 rounded-sm border border-gold/20 hover:border-gold/50 transition-colors">
+                        <i data-lucide="gift" class="w-12 h-12 text-gold-contrast mx-auto" aria-hidden="true"></i>
+                        <h3 class="font-serif text-2xl font-bold" data-i18n="usps.guarantee_title"></h3>
+                        <p class="text-white/80 text-sm leading-relaxed" data-i18n="usps.guarantee_desc"></p>
+                    </div>
+
+                    <!-- USP 2 : 20 ans expertise -->
+                    <div class="space-y-4 p-6 backdrop-blur-sm bg-white/5 rounded-sm border border-gold/20 hover:border-gold/50 transition-colors">
+                        <i data-lucide="award" class="w-12 h-12 text-gold-contrast mx-auto" aria-hidden="true"></i>
+                        <h3 class="font-serif text-2xl font-bold" data-i18n="usps.expertise_title"></h3>
+                        <p class="text-white/80 text-sm leading-relaxed" data-i18n="usps.expertise_desc"></p>
+                    </div>
+
+                    <!-- USP 3 : 100% sur mesure -->
+                    <div class="space-y-4 p-6 backdrop-blur-sm bg-white/5 rounded-sm border border-gold/20 hover:border-gold/50 transition-colors">
+                        <i data-lucide="ruler" class="w-12 h-12 text-gold-contrast mx-auto" aria-hidden="true"></i>
+                        <h3 class="font-serif text-2xl font-bold" data-i18n="usps.custom_title"></h3>
+                        <p class="text-white/80 text-sm leading-relaxed" data-i18n="usps.custom_desc"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Portfolio - Clean Grid -->
+        <section id="portfolio" class="py-32 bg-offwhite scroll-mt-24">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal-section">
+                    <div class="max-w-xl mb-6 md:mb-0">
+                        <span class="text-oak font-serif text-sm uppercase tracking-widest mb-3 block" data-i18n="portfolio.label"></span>
+                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-walnut" data-i18n="portfolio.title"></h2>
+                    </div>
+                    <a href="portfolio.html" class="hidden md:inline-flex items-center gap-2 text-oak hover:text-gold transition-colors font-serif text-lg group">
+                        <span data-i18n="portfolio.viewAll"></span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid"></div>
+                <div class="mt-16 text-center md:hidden">
+                     <a href="portfolio.html" class="inline-flex items-center gap-2 text-oak hover:text-gold transition-colors font-serif text-lg group">
+                        <span data-i18n="portfolio.viewAll"></span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials - Simplified -->
+        <section class="py-32 bg-walnut text-offwhite relative">
+            <div class="container mx-auto px-6 max-w-5xl relative z-10">
+                <div class="text-center mb-20 reveal-section">
+                    <i data-lucide="quote" class="w-16 h-16 text-gold mx-auto mb-6 opacity-70" aria-hidden="true"></i>
+                    <h2 class="text-4xl md:text-5xl font-serif font-bold" data-i18n="testimonials.title"></h2>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div id="testimonial-slider" class="overflow-hidden">
+                        <div id="testimonial-track" class="flex transition-transform duration-500 ease-out"></div>
+                    </div>
+                    <div class="flex justify-center gap-3 mt-12" id="testimonial-dots"></div>
+                </div>
+
+                <!-- CTA après testimonials -->
+                <div class="text-center mt-16 space-y-4">
+                    <p class="text-white/90 text-lg font-serif" data-i18n="testimonials.cta_text"></p>
+                    <a href="contact.html"
+                       class="inline-flex items-center gap-3 bg-gold text-walnut px-10 py-4 rounded-sm font-serif text-lg hover:shadow-2xl transition-all duration-300 group">
+                        <span data-i18n="testimonials.cta_button"></span>
+                        <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-2 transition-transform" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer Component Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- App Logic -->
+    <script type="module" src="main.js"></script>
+</body>
+</html>

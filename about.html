@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>À Propos - DKbois</title>
+    <meta name="description" content="Découvrez DKBOIS, entreprise de menuiserie fondée par Mathurin FOBHA à Yaoundé. 20 ans d'expertise, qualité garantie. Quartier Mendong.">
+    <link rel="icon" type="image/png" href="image/logoFK.png">
+    <link rel="alternate" hreflang="fr" href="about.html?lang=fr" />
+    <link rel="alternate" hreflang="en" href="about.html?lang=en" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513', walnut: '#3E2723', maple: '#F5DEB3', offwhite: '#FAF9F6',
+                        forest: '#2F5233', gold: '#D4AF37', 'gold-hover': '#bfa030'
+                    },
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-offwhite text-walnut font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar Component Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main>
+        <!-- Hero Section - Z-Cut Dynamic -->
+        <section class="relative min-h-[80vh] flex items-center overflow-hidden bg-forest">
+            <!-- Z-Shape Cut Container -->
+            <div class="absolute inset-0 w-full h-full">
+                <!-- Top Image Section (Z top bar) -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(0 0, 100% 0, 70% 40%, 30% 40%);">
+                    <img src="https://r2.flowith.net/files/jpeg/FE8CF-hero_section_woodworking_placeholder_index_2@1024x1024.jpeg" alt="Atelier DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
+                    <div class="absolute inset-0 bg-forest/50"></div>
+                </div>
+
+                <!-- Bottom Image Section (Z bottom bar) -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(30% 60%, 70% 60%, 100% 100%, 0 100%);">
+                    <img src="https://r2.flowith.net/files/jpeg/FE8CF-hero_section_woodworking_placeholder_index_2@1024x1024.jpeg" alt="Atelier DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]" style="object-position: bottom;">
+                    <div class="absolute inset-0 bg-forest/50"></div>
+                </div>
+
+                <!-- Content Background (Z diagonal middle) -->
+                <div class="absolute inset-0 bg-forest" style="clip-path: polygon(30% 40%, 70% 40%, 70% 60%, 30% 60%);"></div>
+
+                <!-- Animated Light Beams -->
+                <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-gold/10 via-transparent to-transparent opacity-50 blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-tr from-oak/10 via-transparent to-transparent opacity-50 blur-3xl"></div>
+
+                <!-- Dynamic Geometric Overlays -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Z Shape Outline -->
+                    <polyline points="20%,40% 80%,40%" stroke="#D4AF37" stroke-width="3" fill="none" opacity="0.6" stroke-dasharray="10,5"/>
+                    <line x1="70%" y1="40%" x2="30%" y2="60%" stroke="#D4AF37" stroke-width="3" opacity="0.6"/>
+                    <polyline points="30%,60% 80%,60%" stroke="#D4AF37" stroke-width="3" fill="none" opacity="0.6" stroke-dasharray="10,5"/>
+
+                    <!-- Animated Circles -->
+                    <circle cx="15%" cy="50%" r="60" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
+                        <animate attributeName="r" from="40" to="70" dur="3s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.4" to="0.1" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="85%" cy="50%" r="50" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3" stroke-dasharray="3,3">
+                        <animateTransform attributeName="transform" type="rotate" from="0 85 50" to="360 85 50" dur="15s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-20 container mx-auto px-8 h-[80vh] flex items-center">
+                <div class="w-full max-w-4xl mx-auto text-center space-y-8">
+                    <!-- Glowing Badge -->
+                    <div class="inline-flex items-center gap-3 backdrop-blur-md bg-gold/15 px-8 py-3 border-2 border-gold/40 rounded-full animate-up">
+                        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
+                        <span class="text-gold font-serif text-sm uppercase tracking-[0.3em]">Notre Histoire</span>
+                        <div class="w-2 h-2 bg-gold rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+                    </div>
+
+                    <!-- Title with Split Color -->
+                    <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] animate-up" style="animation-delay: 0.2s;">
+                        <span class="text-offwhite block" data-i18n="about_page.hero_title"></span>
+                    </h1>
+
+                    <!-- Subtitle with Glass Effect -->
+                    <p class="font-sans text-xl md:text-2xl text-offwhite/90 leading-relaxed max-w-3xl mx-auto backdrop-blur-sm bg-forest/20 p-6 rounded-lg border border-gold/20 animate-up" style="animation-delay: 0.4s;" data-i18n="about_page.hero_subtitle"></p>
+
+                    <!-- CTA with 3D Effect -->
+                    <div class="pt-6 animate-up" style="animation-delay: 0.6s;">
+                        <a href="#history" class="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-gold to-gold-hover text-forest font-serif text-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+                            <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></span>
+                            <span class="relative z-10">Découvrir notre parcours</span>
+                            <i data-lucide="chevrons-down" class="w-6 h-6 relative z-10 group-hover:translate-y-1 transition-transform"></i>
+                            <span class="absolute bottom-0 left-0 w-full h-1 bg-offwhite transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                        </a>
+                    </div>
+
+                    <!-- Timeline Preview -->
+                    <div class="grid grid-cols-4 gap-4 pt-12 max-w-3xl mx-auto animate-up" style="animation-delay: 0.8s;">
+                        <div class="text-center group hover:scale-110 transition-transform">
+                            <div class="text-3xl font-serif font-bold text-gold mb-1">1999</div>
+                            <div class="text-xs text-offwhite/60 uppercase">Débuts</div>
+                        </div>
+                        <div class="text-center group hover:scale-110 transition-transform">
+                            <div class="text-3xl font-serif font-bold text-gold mb-1">2004</div>
+                            <div class="text-xs text-offwhite/60 uppercase">Fondation</div>
+                        </div>
+                        <div class="text-center group hover:scale-110 transition-transform">
+                            <div class="text-3xl font-serif font-bold text-gold mb-1">2015</div>
+                            <div class="text-xs text-offwhite/60 uppercase">Expansion</div>
+                        </div>
+                        <div class="text-center group hover:scale-110 transition-transform">
+                            <div class="text-3xl font-serif font-bold text-gold mb-1">2024</div>
+                            <div class="text-xs text-offwhite/60 uppercase">Excellence</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="py-32 bg-white">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="text-center mb-20 reveal-section">
+                    <span class="text-oak font-serif text-sm uppercase tracking-widest mb-3 block">Notre Histoire</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-walnut mb-6" data-i18n="about_page.history_title"></h2>
+                    <p class="mt-6 text-walnut/70 text-lg max-w-3xl mx-auto leading-relaxed" data-i18n="about_page.history_subtitle"></p>
+                </div>
+                <div class="relative max-w-4xl mx-auto mt-16" id="timeline-container">
+                    <div class="absolute top-0 bottom-0 left-4 md:left-1/2 w-px bg-oak/20"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="founder" class="py-32 bg-offwhite">
+            <div class="container mx-auto px-6 max-w-6xl">
+                <div class="text-center mb-16 reveal-section">
+                    <span class="text-oak font-serif text-sm uppercase tracking-widest mb-3 block">Notre Fondateur</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-walnut mb-6" data-i18n="about_page.founder_title"></h2>
+                    <div class="w-20 h-1 bg-gold mx-auto"></div>
+                </div>
+                <div id="founder-content" class="max-w-5xl mx-auto"></div>
+            </div>
+        </section>
+
+        <section id="team" class="py-32 bg-white">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div class="text-center mb-20 reveal-section">
+                    <span class="text-oak font-serif text-sm uppercase tracking-widest mb-3 block">L'Équipe</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-walnut mb-6" data-i18n="about_page.team_title"></h2>
+                    <p class="text-walnut/70 text-lg max-w-2xl mx-auto leading-relaxed" data-i18n="about_page.team_subtitle"></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="team-grid"></div>
+            </div>
+        </section>
+
+        <section id="values" class="py-32 bg-walnut text-offwhite">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div class="text-center mb-24 reveal-section">
+                    <span class="text-gold font-serif text-sm uppercase tracking-widest mb-3 block">Nos Valeurs</span>
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-6" data-i18n="about_page.values_title"></h2>
+                    <div class="w-20 h-1 bg-gold mx-auto"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-20" id="values-grid"></div>
+            </div>
+        </section>
+
+        <section class="py-24 bg-white">
+            <div class="container mx-auto px-6 text-center max-w-5xl">
+                <h3 class="font-serif text-sm font-bold text-oak uppercase tracking-widest mb-12" data-i18n="about_page.certs_title"></h3>
+                <div class="flex flex-wrap justify-center items-center gap-x-16 gap-y-8 md:gap-x-24 opacity-60">
+                    <span class="font-serif text-xl md:text-2xl text-walnut">Artisan d'Art</span>
+                    <span class="font-serif text-xl md:text-2xl text-walnut">Bois de France</span>
+                    <span class="font-serif text-xl md:text-2xl text-walnut">PEFC</span>
+                    <span class="font-serif text-xl md:text-2xl text-walnut">FSC</span>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script type="module" src="about.js"></script>
+</body>
+</html>

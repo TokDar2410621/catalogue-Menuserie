@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python manage.py startapp:*)",
+      "Bash(\"C:\\Users\\Darius\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" manage.py startapp portfolio)",
+      "Bash(\"C:\\Users\\Darius\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" manage.py makemigrations)",
+      "Bash(\"C:\\Users\\Darius\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" manage.py migrate)",
+      "Bash(ping:*)",
+      "Bash(nul)",
+      "Bash(python manage.py runserver:*)",
+      "Bash(timeout /t 3:*)",
+      "Bash(py -3.13 manage.py shell:*)",
+      "Bash(py:*)",
+      "Bash(chcp:*)",
+      "Bash(python update_data_simple.py:*)",
+      "Bash(\"C:\\Users\\Darius\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" \"c:\\Users\\Darius\\Desktop\\catalogue Menuserie\\backend\\update_data_simple.py\")",
+      "Bash(dir:*)",
+      "Bash(\"C:\\Users\\Darius\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" populate_data.py)",
+      "Bash(ren:*)",
+      "Bash(liste-images-actuelles.txt)",
+      "Bash(python renommer_images.py:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

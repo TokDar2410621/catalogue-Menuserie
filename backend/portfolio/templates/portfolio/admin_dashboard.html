@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DKbois Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            background-color: #3E2723;
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+        .logout-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            background-color: #8B4513;
+            color: white;
+            padding: 0.5rem 1.25rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+        .logout-btn:hover {
+            background-color: #723a0f;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-card .number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #8B4513;
+        }
+        .admin-links {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .admin-links h2 {
+            margin-bottom: 1.5rem;
+            color: #3E2723;
+            font-size: 1.5rem;
+        }
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+        .admin-link {
+            display: block;
+            padding: 1rem;
+            background: #FAF9F6;
+            border-left: 4px solid #8B4513;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.2s;
+        }
+        .admin-link:hover {
+            background: #f0efe8;
+            transform: translateX(4px);
+        }
+        .admin-link h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+            color: #3E2723;
+        }
+        .admin-link p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>DKbois Admin Dashboard</h1>
+        <p>Bienvenue, {{ user.username }}</p>
+        <a href="{% url 'logout' %}" class="logout-btn">Déconnexion</a>
+    </div>
+
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Projects</h3>
+                <div class="number">{{ projects_count }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Services</h3>
+                <div class="number">{{ services_count }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Testimonials</h3>
+                <div class="number">{{ testimonials_count }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Contact Submissions</h3>
+                <div class="number">{{ contact_submissions_count }}</div>
+            </div>
+            <div class="stat-card">
+                <h3>Unread Contacts</h3>
+                <div class="number" style="color: #d9534f;">{{ unread_contacts }}</div>
+            </div>
+        </div>
+
+        <div class="admin-links">
+            <h2>Manage Content</h2>
+            <div class="links-grid">
+                <a href="{% url 'admin:portfolio_project_changelist' %}" class="admin-link">
+                    <h3>Portfolio Projects</h3>
+                    <p>Manage portfolio projects, add new work, edit existing projects</p>
+                </a>
+                <a href="{% url 'admin:portfolio_service_changelist' %}" class="admin-link">
+                    <h3>Services</h3>
+                    <p>Edit service offerings and descriptions</p>
+                </a>
+                <a href="{% url 'admin:portfolio_testimonial_changelist' %}" class="admin-link">
+                    <h3>Testimonials</h3>
+                    <p>Manage client testimonials and reviews</p>
+                </a>
+                <a href="{% url 'admin:portfolio_contactsubmission_changelist' %}" class="admin-link">
+                    <h3>Contact Submissions</h3>
+                    <p>View and respond to client inquiries</p>
+                </a>
+                <a href="{% url 'admin:portfolio_teammember_changelist' %}" class="admin-link">
+                    <h3>Team Members</h3>
+                    <p>Manage team member profiles</p>
+                </a>
+                <a href="{% url 'admin:portfolio_timelineevent_changelist' %}" class="admin-link">
+                    <h3>Company Timeline</h3>
+                    <p>Edit company history and milestones</p>
+                </a>
+                <a href="{% url 'admin:portfolio_companyvalue_changelist' %}" class="admin-link">
+                    <h3>Company Values</h3>
+                    <p>Manage core company values</p>
+                </a>
+                <a href="{% url 'admin:portfolio_faq_changelist' %}" class="admin-link">
+                    <h3>FAQs</h3>
+                    <p>Edit frequently asked questions</p>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

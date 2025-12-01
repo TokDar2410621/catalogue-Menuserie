@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet - DKbois</title>
+    <link rel="icon" type="image/png" href="image/logoFK.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513', walnut: '#3E2723', maple: '#F5DEB3', offwhite: '#FAF9F6', gold: '#D4AF37'
+                    },
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-offwhite text-walnut font-sans antialiased">
+
+    <header id="navbar" class="fixed w-full top-0 z-50 bg-offwhite/95 backdrop-blur-sm border-b border-oak/10">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3"><img src="https://r2.flowith.net/files/jpeg/ASYZG-dkbois_logo_design_index_0@1024x1024.jpeg" alt="DKbois Logo" class="h-10"></a>
+            <a href="portfolio.html" id="back-to-portfolio" class="flex items-center gap-2 text-oak hover:text-gold transition-colors font-serif text-sm tracking-widest uppercase">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i><span data-i18n="project_page.back"></span>
+            </a>
+        </div>
+    </header>
+
+    <main class="pt-20">
+        <div class="h-[60vh] w-full relative overflow-hidden mb-16">
+            <img id="project-hero" src="" alt="Project Hero" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-walnut/70 to-transparent flex items-end p-6 md:p-12">
+                <div class="container mx-auto text-white">
+                    <div class="flex flex-wrap gap-3 mb-4" id="project-tags"></div>
+                    <h1 id="project-title" class="text-4xl md:text-6xl font-serif font-bold mb-2"></h1>
+                    <p id="project-subtitle" class="text-xl font-light max-w-2xl"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-6 pb-24">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+                <div class="lg:w-2/3 space-y-12">
+                    <div class="prose max-w-none">
+                        <h2 class="font-serif text-3xl text-walnut mb-4" data-i18n="project_page.details"></h2>
+                        <p id="project-desc" class="text-walnut/80 text-lg leading-relaxed"></p>
+                    </div>
+                    <div class="bg-white p-8 border border-oak/10 rounded-sm">
+                        <div class="flex items-center gap-3 mb-4 text-oak"><i data-lucide="target" class="w-6 h-6"></i><h3 class="font-serif font-bold text-xl" data-i18n="project_page.challenge"></h3></div>
+                        <p id="project-challenge" class="text-walnut/70"></p>
+                    </div>
+                    <div>
+                        <h2 class="font-serif text-3xl text-walnut mb-6" data-i18n="project_page.gallery"></h2>
+                        <div class="grid grid-cols-2 gap-4" id="project-gallery"></div>
+                    </div>
+                </div>
+                <aside class="lg:w-1/3">
+                    <div class="bg-white p-8 border border-oak/10 rounded-sm sticky top-28">
+                        <h3 class="font-serif font-bold text-xl text-walnut mb-6 border-b border-oak/10 pb-4">Fiche Technique</h3>
+                        <div class="space-y-6">
+                            <div><span class="block text-xs text-oak uppercase tracking-widest mb-1" data-i18n="project_page.materials"></span><span id="spec-material" class="text-walnut font-serif text-lg"></span></div>
+                            <div><span class="block text-xs text-oak uppercase tracking-widest mb-1" data-i18n="project_page.duration"></span><span id="spec-duration" class="text-walnut font-serif text-lg"></span></div>
+                            <div><span class="block text-xs text-oak uppercase tracking-widest mb-1" data-i18n="project_page.location"></span><span id="spec-location" class="text-walnut font-serif text-lg"></span></div>
+                            <div><span class="block text-xs text-oak uppercase tracking-widest mb-1">Finition</span><span id="spec-finish" class="text-walnut font-serif text-lg"></span></div>
+                        </div>
+                        <div class="mt-10 pt-8 border-t border-oak/10">
+                            <a href="contact.html" id="contact-link" class="block w-full bg-oak text-white text-center py-3 font-serif hover:bg-gold transition-colors" data-i18n="cta.similar"></a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+
+        <div id="lightbox" class="fixed inset-0 z-[60] bg-walnut/95 hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+            <button id="lightbox-close" class="absolute top-4 right-4 text-white hover:text-gold"><i data-lucide="x" size="32"></i></button>
+            <img id="lightbox-img" src="" class="max-h-full max-w-full object-contain shadow-2xl">
+        </div>
+    </main>
+    <script type="module" src="project.js"></script>
+</body>
+</html>

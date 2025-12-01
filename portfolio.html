@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réalisations - DKbois</title>
+    <meta name="description" content="Découvrez le portfolio des réalisations de DKbois : cuisines, bibliothèques, escaliers et restaurations.">
+    <link rel="icon" type="image/png" href="image/logoFK.png">
+    <link rel="alternate" hreflang="fr" href="portfolio.html?lang=fr" />
+    <link rel="alternate" hreflang="en" href="portfolio.html?lang=en" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513', walnut: '#3E2723', maple: '#F5DEB3', offwhite: '#FAF9F6',
+                        forest: '#2F5233', gold: '#D4AF37', 'gold-hover': '#bfa030'
+                    },
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-offwhite text-walnut font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar Component Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main>
+        <!-- Hero Section - S-Curve Cut Design -->
+        <section class="relative min-h-[65vh] lg:min-h-[75vh] flex items-center overflow-hidden bg-walnut">
+            <!-- S-Curve Cut Container -->
+            <div class="absolute inset-0 w-full h-full">
+                <!-- Top S-Curve Image Section -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: path('M 0,0 L 1920,0 Q 1600,200 1400,400 T 1000,800 L 1920,800 L 1920,1080 L 0,1080 L 0,0');">
+                    <img src="https://r2.flowith.net/files/jpeg/32GEY-realistic_featured_achievements_placeholders_index_3@1024x1024.jpeg" alt="Réalisations DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
+                    <div class="absolute inset-0 bg-walnut/40"></div>
+                </div>
+
+                <!-- Bottom S-Curve Content Background -->
+                <div class="absolute inset-0 bg-walnut" style="clip-path: path('M 0,0 L 0,1080 L 1920,1080 L 1920,800 Q 1700,600 1400,400 T 920,0 Z');"></div>
+
+                <!-- Flowing Curve Overlay -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                    <!-- S-Curve Path -->
+                    <path d="M 1920,0 Q 1600,200 1400,400 T 1000,800" stroke="#D4AF37" stroke-width="4" fill="none" opacity="0.6"/>
+                    <path d="M 1920,0 Q 1600,200 1400,400 T 1000,800" stroke="#D4AF37" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="10,10">
+                        <animate attributeName="stroke-dashoffset" from="0" to="20" dur="2s" repeatCount="indefinite"/>
+                    </path>
+
+                    <!-- Decorative Circles along the curve -->
+                    <circle cx="1600" cy="200" r="30" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3">
+                        <animate attributeName="r" from="25" to="40" dur="2.5s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="1400" cy="400" r="25" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.25">
+                        <animate attributeName="r" from="20" to="35" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="1000" cy="800" r="20" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
+                        <animate attributeName="r" from="15" to="30" dur="3.5s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-20 container mx-auto px-8 py-16 lg:py-0 min-h-[65vh] lg:min-h-[75vh] flex items-center">
+                <div class="max-w-2xl space-y-6">
+                    <div class="inline-block">
+                        <span class="text-gold font-serif text-xs uppercase tracking-[0.3em] border-b-2 border-gold pb-1 animate-up">Portfolio</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-offwhite leading-tight animate-up" style="animation-delay: 0.2s;" data-i18n="portfolio_page.hero_title"></h1>
+
+                    <p class="font-sans text-lg text-offwhite/90 leading-relaxed animate-up" style="animation-delay: 0.4s;" data-i18n="portfolio_page.hero_subtitle"></p>
+
+                    <!-- Stats Pills -->
+                    <div class="flex flex-wrap gap-3 pt-4 animate-up" style="animation-delay: 0.6s;">
+                        <div class="px-5 py-2 bg-gold/20 border border-gold/40 rounded-full backdrop-blur-sm">
+                            <span class="text-offwhite text-sm font-serif">Menuiserie</span>
+                        </div>
+                        <div class="px-5 py-2 bg-gold/20 border border-gold/40 rounded-full backdrop-blur-sm">
+                            <span class="text-offwhite text-sm font-serif">Ébénisterie</span>
+                        </div>
+                        <div class="px-5 py-2 bg-gold/20 border border-gold/40 rounded-full backdrop-blur-sm">
+                            <span class="text-offwhite text-sm font-serif">Agencement</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 animate-up" style="animation-delay: 0.8s;">
+                        <a href="#projects-grid" class="group inline-flex items-center gap-2 text-gold hover:text-offwhite transition-colors">
+                            <span class="font-serif">Explorer nos réalisations</span>
+                            <i data-lucide="arrow-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-20 bg-white min-h-screen">
+            <div class="container mx-auto px-6 max-w-7xl">
+                <div class="mb-16 flex flex-col lg:flex-row gap-6 items-center justify-between bg-offwhite p-6 rounded-sm border border-oak/10 sticky top-28 z-30">
+                    <div class="flex flex-wrap gap-4 w-full lg:w-auto justify-center">
+                        <div class="relative"><select id="filter-category" class="filter-select" aria-label="Filter by category"></select><i data-lucide="chevron-down" class="select-arrow"></i></div>
+                        <div class="relative"><select id="filter-type" class="filter-select" aria-label="Filter by type"></select><i data-lucide="chevron-down" class="select-arrow"></i></div>
+                        <div class="relative"><select id="filter-material" class="filter-select" aria-label="Filter by material"></select><i data-lucide="chevron-down" class="select-arrow"></i></div>
+                    </div>
+                    <button id="reset-filters" class="text-sm text-oak hover:text-gold underline font-serif transition-colors" data-i18n="portfolio_page.filters.reset"></button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="projects-grid"></div>
+                <div id="empty-state" class="hidden text-center py-24"><i data-lucide="search-x" class="w-20 h-20 text-oak/20 mx-auto mb-6"></i><p class="text-2xl font-serif text-walnut/50" data-i18n="portfolio_page.empty"></p></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component Placeholder -->
+    <div id="footer-placeholder"></div>
+    
+    <style>.filter-select { appearance: none; background: transparent; border: 1px solid #8B451333; padding: 0.5rem 2.5rem 0.5rem 1rem; border-radius: 0.125rem; cursor: pointer; min-width: 150px; font-family: 'Playfair Display', serif; font-size: 0.875rem; } .select-arrow { position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); width: 1rem; height: 1rem; color: #8B4513; pointer-events: none; }</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="portfolio.js"></script>
+</body>
+</html>

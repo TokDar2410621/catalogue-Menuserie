@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - DKbois</title>
+    <meta name="description" content="Contactez DKbois pour un devis gratuit. Menuiserie, ébénisterie, restauration.">
+    <link rel="icon" type="image/png" href="image/logoFK.png">
+    <link rel="alternate" hreflang="fr" href="contact.html?lang=fr" />
+    <link rel="alternate" hreflang="en" href="contact.html?lang=en" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513', walnut: '#3E2723', maple: '#F5DEB3', offwhite: '#FAF9F6',
+                        forest: '#2F5233', gold: '#D4AF37', 'gold-hover': '#bfa030'
+                    },
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-offwhite text-walnut font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar Component Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main>
+        <!-- Hero Section - Wave Cut Design -->
+        <section class="relative min-h-[60vh] lg:min-h-[70vh] flex items-center overflow-hidden bg-walnut">
+            <!-- Wave Cut Container -->
+            <div class="absolute inset-0 w-full h-full">
+                <!-- Left Image Section with Wave Cut -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: path('M 0,0 L 960,0 Q 900,270 960,540 T 960,1080 L 0,1080 Z');">
+                    <img src="https://r2.flowith.net/files/jpeg/FE8CF-hero_section_woodworking_placeholder_index_2@1024x1024.jpeg" alt="Contact DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
+                    <div class="absolute inset-0 bg-gradient-to-r from-walnut/60 via-walnut/40 to-walnut/60"></div>
+                </div>
+
+                <!-- Right Content Background with Wave Cut -->
+                <div class="absolute inset-0 bg-gradient-to-br from-walnut via-oak to-walnut" style="clip-path: path('M 960,0 L 1920,0 L 1920,1080 L 960,1080 Q 900,810 960,540 T 960,0 Z');"></div>
+
+                <!-- Flowing Wave Overlay -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                    <!-- Main Wave Path -->
+                    <path d="M 960,0 Q 900,270 960,540 T 960,1080" stroke="#D4AF37" stroke-width="4" fill="none" opacity="0.7"/>
+
+                    <!-- Animated Dashed Wave -->
+                    <path d="M 960,0 Q 900,270 960,540 T 960,1080" stroke="#D4AF37" stroke-width="1" fill="none" opacity="0.4" stroke-dasharray="15,15">
+                        <animate attributeName="stroke-dashoffset" from="0" to="30" dur="3s" repeatCount="indefinite"/>
+                    </path>
+
+                    <!-- Parallel Wave Lines -->
+                    <path d="M 980,0 Q 920,270 980,540 T 980,1080" stroke="#D4AF37" stroke-width="2" fill="none" opacity="0.3" stroke-dasharray="8,8">
+                        <animate attributeName="stroke-dashoffset" from="0" to="16" dur="2.5s" repeatCount="indefinite"/>
+                    </path>
+                    <path d="M 940,0 Q 880,270 940,540 T 940,1080" stroke="#D4AF37" stroke-width="2" fill="none" opacity="0.3" stroke-dasharray="8,8">
+                        <animate attributeName="stroke-dashoffset" from="16" to="0" dur="2.5s" repeatCount="indefinite"/>
+                    </path>
+
+                    <!-- Decorative Circles along the wave -->
+                    <circle cx="960" cy="135" r="25" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3">
+                        <animate attributeName="r" from="20" to="35" dur="2.5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.4" to="0.2" dur="2.5s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="930" cy="405" r="20" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.25">
+                        <animate attributeName="r" from="15" to="30" dur="3s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.35" to="0.15" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="960" cy="675" r="30" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
+                        <animate attributeName="r" from="25" to="40" dur="3.5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.3" to="0.1" dur="3.5s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="930" cy="945" r="22" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.28">
+                        <animate attributeName="r" from="18" to="32" dur="2.8s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.38" to="0.18" dur="2.8s" repeatCount="indefinite" />
+                    </circle>
+
+                    <!-- Floating Particles -->
+                    <circle cx="200" cy="300" r="3" fill="#D4AF37" opacity="0.4">
+                        <animate attributeName="cy" from="300" to="250" dur="4s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.4" to="0" dur="4s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="350" cy="700" r="2" fill="#D4AF37" opacity="0.3">
+                        <animate attributeName="cy" from="700" to="650" dur="5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.3" to="0" dur="5s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="1500" cy="400" r="3" fill="#D4AF37" opacity="0.35">
+                        <animate attributeName="cy" from="400" to="350" dur="4.5s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.35" to="0" dur="4.5s" repeatCount="indefinite" />
+                    </circle>
+                </svg>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-20 container mx-auto px-8 py-16 lg:py-0 min-h-[60vh] lg:min-h-[70vh] flex items-center justify-center">
+                <div class="max-w-2xl text-center space-y-6">
+                    <div class="inline-block">
+                        <span class="text-gold font-serif text-xs uppercase tracking-[0.3em] border-b-2 border-gold pb-1 animate-up">Nous Contacter</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-offwhite leading-tight animate-up" style="animation-delay: 0.2s;" data-i18n="contact_page.hero_title"></h1>
+
+                    <p class="font-sans text-lg text-offwhite/90 leading-relaxed animate-up" style="animation-delay: 0.4s;" data-i18n="contact_page.hero_subtitle"></p>
+
+                    <!-- Contact Info Quick Access -->
+                    <div class="space-y-3 pt-4 animate-up" style="animation-delay: 0.6s;">
+                        <div class="flex items-center justify-center gap-3 text-offwhite/80">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                            <span class="text-sm">Yaoundé, Mendong - Cameroun</span>
+                        </div>
+                        <div class="flex items-center justify-center gap-3 text-offwhite/80">
+                            <i data-lucide="phone" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                            <a href="tel:+237694469929" class="text-sm hover:text-gold transition-colors">+237 6 94 46 99 29</a>
+                        </div>
+                        <div class="flex items-center justify-center gap-3 text-offwhite/80">
+                            <i data-lucide="mail" class="w-5 h-5 text-gold flex-shrink-0"></i>
+                            <a href="mailto:contact@dkbois.cm" class="text-sm hover:text-gold transition-colors">contact@dkbois.cm</a>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 animate-up" style="animation-delay: 0.8s;">
+                        <a href="#contact-form" class="group inline-flex items-center gap-2 text-gold hover:text-offwhite transition-colors">
+                            <span class="font-serif">Remplir le formulaire</span>
+                            <i data-lucide="arrow-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact-form" class="py-24 lg:py-32 bg-white scroll-mt-24">
+            <div class="container mx-auto px-6 max-w-7xl"><div class="flex flex-col lg:flex-row gap-20">
+                <div class="lg:w-2/5 space-y-12">
+                    <div class="bg-offwhite p-10 border border-oak/10 rounded-sm space-y-8">
+                        <h2 class="font-serif font-bold text-3xl text-walnut mb-4" data-i18n="contact_page.info_title"></h2>
+                        <div class="info-item"><i data-lucide="map-pin"></i><div><span class="font-bold text-lg">Atelier</span><span class="text-base">Douala, Cameroun</span></div></div>
+                        <div class="info-item"><i data-lucide="phone"></i><div><span class="font-bold text-lg">Téléphone</span><a href="tel:+33123456789" class="text-base">+33 1 23 45 67 89</a></div></div>
+                        <div class="info-item"><i data-lucide="mail"></i><div><span class="font-bold text-lg">Email</span><a href="mailto:contact@dkbois.fr" class="text-base">contact@dkbois.fr</a></div></div>
+                        <div class="info-item"><i data-lucide="clock"></i><div><span class="font-bold text-lg" data-i18n="contact_page.hours_label"></span><span class="text-base" data-i18n="contact_page.hours_value"></span></div></div>
+                    </div>
+                    <div class="h-80 w-full rounded-sm overflow-hidden border border-oak/10"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2624.9916256937595!2d2.3522219156743447!3d48.85661407928731!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e671e1d89122d3%3A0x729873278483870c!2sParis!5e0!3m2!1sen!2sfr!4v1620000000000!5m2!1sen!2sfr" width="100%" height="100%" style="border:0; filter: grayscale(1) opacity(0.7);" allowfullscreen="" loading="lazy"></iframe></div>
+                </div>
+
+                <div class="lg:w-3/5">
+                    <div class="bg-offwhite p-10 md:p-14 rounded-sm border border-oak/10">
+                        <h2 class="font-serif font-bold text-4xl text-walnut mb-10" data-i18n="contact_page.form_title"></h2>
+                        <form id="contact-form" class="space-y-6">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div><label class="form-label" data-i18n="contact_page.form.firstname"></label><input type="text" name="firstname" required class="form-input"></div>
+                                <div><label class="form-label" data-i18n="contact_page.form.lastname"></label><input type="text" name="lastname" required class="form-input"></div>
+                                <div><label class="form-label" data-i18n="contact_page.form.email"></label><input type="email" name="email" required class="form-input"></div>
+                                <div><label class="form-label" data-i18n="contact_page.form.phone"></label><input type="tel" name="phone" class="form-input"></div>
+                            </div>
+                            <div>
+                                <label class="form-label" data-i18n="contact_page.form.project_type"></label>
+                                <div class="relative"><select name="project_type" class="form-input appearance-none cursor-pointer" id="project-type-select"></select><i data-lucide="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 text-oak pointer-events-none"></i></div>
+                            </div>
+                            <div>
+                                <label class="form-label" data-i18n="contact_page.form.budget"></label>
+                                <div class="flex flex-wrap gap-3" id="budget-options"></div>
+                            </div>
+                            <div>
+                                <label class="form-label" data-i18n="contact_page.form.project_desc"></label>
+                                <textarea name="description" rows="4" class="form-input resize-none p-3 border"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-oak uppercase tracking-widest mb-2" data-i18n="contact_page.form.file"></label>
+                                <div id="drop-zone" class="relative border-2 border-dashed border-oak/20 rounded-sm p-6 text-center hover:bg-offwhite cursor-pointer"><input type="file" id="file-upload" class="absolute inset-0 opacity-0 cursor-pointer"><i data-lucide="upload-cloud" class="w-8 h-8 text-oak/50 mx-auto mb-2"></i><span class="text-sm text-walnut/60" data-i18n="cta.upload"></span><span id="file-name" class="block text-xs text-gold mt-2 font-bold"></span></div>
+                            </div>
+                            <div class="flex items-center gap-3 pt-2">
+                                <input type="checkbox" id="rgpd" required class="h-4 w-4 shrink-0 cursor-pointer appearance-none border border-oak/50 checked:bg-oak rounded-sm"><label for="rgpd" class="text-xs text-walnut/60 cursor-pointer" data-i18n="contact_page.form.gdpr"></label>
+                            </div>
+                            <button type="submit" class="w-full bg-gold text-walnut font-serif font-bold py-4 rounded-sm hover:bg-oak hover:text-white transition-all shadow-md" data-i18n="cta.send"></button>
+                            <div id="form-status" class="hidden text-center p-3 rounded-sm text-sm font-bold"></div>
+                        </form>
+                    </div>
+                </div>
+            </div></div>
+        </section>
+
+        <section class="py-24 bg-offwhite border-t border-oak/10">
+            <div class="container mx-auto px-6 max-w-5xl">
+                <div class="text-center mb-16">
+                    <span class="text-oak font-serif text-sm uppercase tracking-widest mb-3 block">Questions Fréquentes</span>
+                    <h2 class="font-serif font-bold text-4xl md:text-5xl text-walnut mb-6" data-i18n="contact_page.faq_title"></h2>
+                    <div class="w-20 h-1 bg-gold mx-auto"></div>
+                </div>
+                <div class="space-y-5" id="faq-container"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component Placeholder -->
+    <div id="footer-placeholder"></div>
+    
+    <style>.info-item{display:flex;gap:1rem;}.info-item i{flex-shrink:0;width:1.25rem;height:1.25rem;color:#8B4513;margin-top:0.25rem;}.info-item div{display:flex;flex-direction:column;}.info-item span{line-height:1.4;}.info-item a{color:#3E2723BF;}.form-label{display:block;font-size:0.75rem;font-weight:700;color:#8B4513;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}.form-input{width:100%;background-color:transparent;border:0;border-bottom:1px solid #8B45134D;padding:0.75rem 0;color:#3E2723;transition:border-color 0.3s;}.form-input:focus{outline:none;border-color:#D4AF37;}</style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script type="module" src="contact.js"></script>
+</body>
+</html>

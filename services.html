@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - DKbois</title>
+    <meta name="description" content="Fabrication de meubles sur mesure à Yaoundé. Ébénisterie haut de gamme, finition impeccable. DKBOIS - Satisfait ou meuble offert !">
+    <link rel="icon" type="image/png" href="image/logoFK.png">
+    <link rel="alternate" hreflang="fr" href="services.html?lang=fr" />
+    <link rel="alternate" hreflang="en" href="services.html?lang=en" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513', walnut: '#3E2723', maple: '#F5DEB3', offwhite: '#FAF9F6',
+                        forest: '#2F5233', gold: '#D4AF37', 'gold-hover': '#bfa030'
+                    },
+                    fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Lato"', 'sans-serif'] },
+                    backgroundImage: { 'wood-pattern': "url('data:image/svg+xml,%3Csvg width=\'20\' height=\'20\' viewBox=\'0 0 20 20\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'%238B4513\' fill-opacity=\'0.05\' fill-rule=\'evenodd\'%3E%3Ccircle cx=\'3\' cy=\'3\' r=\'3\'/%3E%3Ccircle cx=\'13\' cy=\'13\' r=\'3\'/%3E%3C/g%3E%3C/svg%3E')" }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-offwhite text-walnut font-sans antialiased overflow-x-hidden">
+
+    <!-- Navbar Component Placeholder -->
+    <div id="navbar-placeholder"></div>
+
+    <main>
+        <!-- Hero Section - Diagonal Asymmetric Cut -->
+        <section class="relative min-h-[70vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-walnut">
+            <!-- Diagonal Cut Container -->
+            <div class="absolute inset-0 w-full h-full">
+                <!-- Top Right Image Section -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(35% 0, 100% 0, 100% 100%, 65% 100%);">
+                    <img src="https://r2.flowith.net/files/jpeg/WS4KO-icone_services_menuiserie_ebenisterie_restauration_agencement_index_1@1024x1024.jpeg" alt="Services DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
+                    <div class="absolute inset-0 bg-walnut/50"></div>
+                </div>
+
+                <!-- Left Content Background -->
+                <div class="absolute inset-0 bg-walnut" style="clip-path: polygon(0 0, 35% 0, 65% 100%, 0 100%);"></div>
+
+                <!-- Geometric Overlays -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Diagonal Cut Lines -->
+                    <line x1="35%" y1="0" x2="65%" y2="100%" stroke="#D4AF37" stroke-width="3" opacity="0.7"/>
+                    <line x1="38%" y1="0" x2="68%" y2="100%" stroke="#D4AF37" stroke-width="1" opacity="0.3" stroke-dasharray="5,5"/>
+
+                    <!-- Decorative Elements -->
+                    <circle cx="20%" cy="50%" r="50" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
+                        <animate attributeName="r" from="40" to="60" dur="3s" repeatCount="indefinite" />
+                        <animate attributeName="opacity" from="0.3" to="0.1" dur="3s" repeatCount="indefinite" />
+                    </circle>
+
+                    <rect x="80%" y="20%" width="80" height="80" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2" transform="rotate(15 85 25)"/>
+                </svg>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative z-20 container mx-auto px-8 py-16 lg:py-0 min-h-[70vh] lg:min-h-[85vh] flex items-center">
+                <div class="max-w-xl lg:max-w-2xl space-y-6">
+                        <div class="inline-block">
+                            <span class="text-gold font-serif text-xs uppercase tracking-[0.3em] border-b-2 border-gold pb-1 animate-up">Nos Services</span>
+                        </div>
+
+                        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-offwhite leading-tight animate-up" style="animation-delay: 0.2s;" data-i18n="services_page.hero_title"></h1>
+
+                        <p class="font-sans text-lg text-offwhite/90 leading-relaxed animate-up" style="animation-delay: 0.4s;" data-i18n="services_page.hero_subtitle"></p>
+
+                        <!-- Quick Links -->
+                        <div class="flex flex-wrap gap-3 pt-4 animate-up" style="animation-delay: 0.6s;" id="service-quick-links"></div>
+
+                        <!-- CTA -->
+                        <div class="pt-6 animate-up" style="animation-delay: 0.8s;">
+                            <a href="contact.html" class="inline-flex items-center gap-2 px-8 py-3 bg-gold text-oak font-serif hover:bg-offwhite transition-all duration-300">
+                                <span>Demander un devis</span>
+                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="services-container" class="relative bg-white"></div>
+
+        <section class="py-32 bg-walnut">
+            <div class="container mx-auto px-6 text-center text-white max-w-4xl">
+                <h2 class="text-4xl md:text-5xl font-serif font-bold mb-8">Un projet qui sort de l'ordinaire ?</h2>
+                <p class="text-xl mx-auto mb-12 text-white/90 leading-relaxed">Nos artisans sont à votre écoute pour réaliser l'impossible. Discutons de vos idées les plus audacieuses.</p>
+                <a href="contact.html" class="inline-block bg-gold text-walnut px-10 py-4 rounded-sm font-serif font-bold text-lg hover:bg-white transition-all shadow-lg" data-i18n="cta.quote"></a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Component Placeholder -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script type="module" src="services.js"></script>
+</body>
+</html>
