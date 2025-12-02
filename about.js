@@ -77,7 +77,7 @@ const renderFounder = () => {
         <div class="bg-white rounded-sm shadow-lg overflow-hidden border border-oak/10">
             <div class="grid md:grid-cols-2 gap-0">
                 <div class="relative h-96 md:h-auto overflow-hidden">
-                    <img data-src="${founder.image}" alt="${founder.name}"
+                    <img data-src="${founder.image}" alt="${founder.name} - ${founder.role[currentLang]} de DKBOIS, expert en menuiserie et ébénisterie à Yaoundé, Cameroun avec ${founder.exp} ans d'expérience"
                          class="lazy w-full h-full object-cover object-center">
                     <div class="absolute inset-0 bg-gradient-to-t from-walnut/80 via-walnut/20 to-transparent"></div>
                 </div>
@@ -113,7 +113,7 @@ const renderTeam = () => {
     grid.innerHTML = teamMembers.map(member => `
         <div class="team-card group text-center">
             <div class="relative h-72 w-full overflow-hidden rounded-sm mb-4">
-                <img data-src="${member.image}" alt="${member.name}" class="lazy w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                <img data-src="${member.image}" alt="${member.name} - ${member.role[currentLang]} chez DKBOIS, artisan menuisier et ébéniste à Yaoundé, Cameroun" class="lazy w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                     <p class="text-white font-serif italic text-sm text-center">"${member.quote[currentLang]}"</p>
                 </div>
@@ -162,14 +162,7 @@ const lazyLoadImages = () => {
 };
 
 const setupInteractions = () => {
-    const menuBtn = d.getElementById('mobile-menu-btn');
-    const closeBtn = d.getElementById('close-menu-btn');
-    const mobileMenu = d.getElementById('mobile-menu');
-    const toggleMenu = () => mobileMenu.classList.toggle('translate-x-full');
-    menuBtn.addEventListener('click', toggleMenu);
-    closeBtn.addEventListener('click', toggleMenu);
-    d.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', toggleMenu));
-
+    // Mobile menu is handled by navbar-component.js
     d.getElementById('lang-toggle')?.addEventListener('click', switchLanguage);
     d.getElementById('mobile-lang-toggle')?.addEventListener('click', switchLanguage);
 };

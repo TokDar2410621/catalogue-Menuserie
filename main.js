@@ -54,7 +54,7 @@ const switchLanguage = () => {
     renderServices();
     renderPortfolio();
     renderTestimonials();
-    lucide.createIcons();
+    // lucide.createIcons() est appelé dans chaque fonction render
 };
 
 const renderServices = async () => {
@@ -146,9 +146,17 @@ const renderPortfolio = async () => {
             const sizes = ['col-span-1', 'col-span-1 lg:col-span-2', 'col-span-1'];
             const size = sizes[index % sizes.length];
 
+            // Assurer qu'on a une image valide
+            const imageUrl = (p.images && p.images.length > 0) ? p.images[0] : (p.image || '');
+
+            if (!imageUrl) {
+                console.warn(`Project ${p.title} has no image`);
+                return '';
+            }
+
             return `
                 <a href="project.html?id=${p.slug}&lang=${currentLang}" class="portfolio-item relative overflow-hidden rounded-sm group cursor-pointer ${size} h-64 md:h-80 bg-gray-200">
-                    <img data-src="${p.image || p.images[0]}" alt="${p.title}" class="lazy w-full h-full object-cover object-center">
+                    <img data-src="${imageUrl}" alt="${p.title} - ${p.category} en menuiserie et ébénisterie sur mesure par DKBOIS à Yaoundé, Cameroun" class="lazy w-full h-full object-cover object-center">
                     <div class="portfolio-overlay absolute inset-0 flex flex-col justify-end p-6">
                         <span class="text-gold-contrast text-xs font-serif tracking-widest uppercase mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${p.category}</span>
                         <h3 class="text-white font-serif text-2xl font-bold transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">${p.title}</h3>
@@ -207,7 +215,7 @@ const renderTestimonials = async () => {
         track.innerHTML = testimonials.map(t => `
             <div class="w-full flex-shrink-0 px-4">
                 <div class="bg-white/10 p-8 md:p-12 rounded-sm backdrop-blur-sm border border-white/5 text-center flex flex-col items-center">
-                    <img data-src="${t.image}" alt="${t.name}" class="lazy w-16 h-16 rounded-full object-cover border-2 border-gold/50 mb-6">
+                    <img data-src="${t.image}" alt="${t.name} - ${t.role} - Témoignage client satisfait des services de menuiserie et ébénisterie DKBOIS à Yaoundé, Cameroun" class="lazy w-16 h-16 rounded-full object-cover border-2 border-gold/50 mb-6">
                     <div class="flex justify-center gap-1 text-gold-contrast mb-6">
                         ${Array(t.stars).fill('<i data-lucide="star" class="w-5 h-5 fill-current"></i>').join('')}
                     </div>
@@ -280,14 +288,7 @@ const setupInteractions = () => {
         }
     });
 
-    const menuBtn = d.getElementById('mobile-menu-btn');
-    const closeBtn = d.getElementById('close-menu-btn');
-    const mobileMenu = d.getElementById('mobile-menu');
-    const toggleMenu = () => mobileMenu.classList.toggle('translate-x-full');
-    menuBtn.addEventListener('click', toggleMenu);
-    closeBtn.addEventListener('click', toggleMenu);
-    d.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', toggleMenu));
-
+    // Language toggle only - mobile menu is handled by navbar-component.js
     d.getElementById('lang-toggle')?.addEventListener('click', switchLanguage);
     d.getElementById('mobile-lang-toggle')?.addEventListener('click', switchLanguage);
 };
@@ -320,8 +321,11 @@ const initGSAP = () => {
     d.querySelectorAll('.reveal-section').forEach(section => {
         gsap.from(section, { opacity: 0, y: 50, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 85%', toggleActions: 'play none none none' } });
     });
-    gsap.from('.service-card', { opacity: 0, y: 30, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#services-grid', start: 'top 85%' } });
-    gsap.from('.portfolio-item', { opacity: 0, scale: 0.95, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#portfolio-grid', start: 'top 80%' } });
+    // Animations pour services et portfolio - déclenché après le rendu
+    setTimeout(() => {
+        gsap.from('.service-card', { opacity: 0, y: 30, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#services-grid', start: 'top 85%' } });
+        gsap.from('.portfolio-item', { opacity: 0, scale: 0.95, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#portfolio-grid', start: 'top 80%' } });
+    }, 100);
 };
 
 d.addEventListener('DOMContentLoaded', async () => {

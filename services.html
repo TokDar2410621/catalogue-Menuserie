@@ -37,56 +37,59 @@
     <div id="navbar-placeholder"></div>
 
     <main>
-        <!-- Hero Section - Diagonal Asymmetric Cut -->
-        <section class="relative min-h-[70vh] lg:min-h-[85vh] flex items-center overflow-hidden bg-walnut">
-            <!-- Diagonal Cut Container -->
+        <!-- Hero Section - S-Curve Cut Design -->
+        <section class="relative min-h-[65vh] lg:min-h-[75vh] flex items-center overflow-hidden bg-walnut pt-20">
+            <!-- S-Curve Cut Container -->
             <div class="absolute inset-0 w-full h-full">
-                <!-- Top Right Image Section -->
-                <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(35% 0, 100% 0, 100% 100%, 65% 100%);">
-                    <img src="https://r2.flowith.net/files/jpeg/WS4KO-icone_services_menuiserie_ebenisterie_restauration_agencement_index_1@1024x1024.jpeg" alt="Services DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
-                    <div class="absolute inset-0 bg-walnut/50"></div>
+                <!-- Top S-Curve Image Section -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: path('M 0,0 L 1920,0 Q 1600,200 1400,400 T 1000,800 L 1920,800 L 1920,1080 L 0,1080 L 0,0');">
+                    <img src="https://r2.flowith.net/files/jpeg/WS4KO-icone_services_menuiserie_ebenisterie_restauration_agencement_index_1@1024x1024.jpeg" alt="Services de menuiserie intérieure, ébénisterie sur mesure, restauration de meubles et agencement - DKBOIS Yaoundé" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
+                    <div class="absolute inset-0 bg-walnut/40"></div>
                 </div>
 
-                <!-- Left Content Background -->
-                <div class="absolute inset-0 bg-walnut" style="clip-path: polygon(0 0, 35% 0, 65% 100%, 0 100%);"></div>
+                <!-- Bottom S-Curve Content Background -->
+                <div class="absolute inset-0 bg-walnut" style="clip-path: path('M 0,0 L 0,1080 L 1920,1080 L 1920,800 Q 1700,600 1400,400 T 920,0 Z');"></div>
 
-                <!-- Geometric Overlays -->
-                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Diagonal Cut Lines -->
-                    <line x1="35%" y1="0" x2="65%" y2="100%" stroke="#D4AF37" stroke-width="3" opacity="0.7"/>
-                    <line x1="38%" y1="0" x2="68%" y2="100%" stroke="#D4AF37" stroke-width="1" opacity="0.3" stroke-dasharray="5,5"/>
+                <!-- Flowing Curve Overlay -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                    <!-- S-Curve Path -->
+                    <path d="M 1920,0 Q 1600,200 1400,400 T 1000,800" stroke="#D4AF37" stroke-width="4" fill="none" opacity="0.6"/>
+                    <path d="M 1920,0 Q 1600,200 1400,400 T 1000,800" stroke="#D4AF37" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="10,10">
+                        <animate attributeName="stroke-dashoffset" from="0" to="20" dur="2s" repeatCount="indefinite"/>
+                    </path>
 
-                    <!-- Decorative Elements -->
-                    <circle cx="20%" cy="50%" r="50" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
-                        <animate attributeName="r" from="40" to="60" dur="3s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" from="0.3" to="0.1" dur="3s" repeatCount="indefinite" />
+                    <!-- Decorative Circles along the curve -->
+                    <circle cx="1600" cy="200" r="30" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3">
+                        <animate attributeName="r" from="25" to="40" dur="2.5s" repeatCount="indefinite" />
                     </circle>
-
-                    <rect x="80%" y="20%" width="80" height="80" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2" transform="rotate(15 85 25)"/>
+                    <circle cx="1400" cy="400" r="25" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.25">
+                        <animate attributeName="r" from="20" to="35" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="1000" cy="800" r="20" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
+                        <animate attributeName="r" from="15" to="30" dur="3.5s" repeatCount="indefinite" />
+                    </circle>
                 </svg>
             </div>
 
             <!-- Content Container -->
-            <div class="relative z-20 container mx-auto px-8 py-16 lg:py-0 min-h-[70vh] lg:min-h-[85vh] flex items-center">
-                <div class="max-w-xl lg:max-w-2xl space-y-6">
-                        <div class="inline-block">
-                            <span class="text-gold font-serif text-xs uppercase tracking-[0.3em] border-b-2 border-gold pb-1 animate-up">Nos Services</span>
-                        </div>
+            <div class="relative z-20 container mx-auto px-8 py-16 lg:py-0 min-h-[65vh] lg:min-h-[75vh] flex items-center">
+                <div class="max-w-2xl space-y-6">
+                    <div class="inline-block">
+                        <span class="text-gold font-serif text-xs uppercase tracking-[0.3em] border-b-2 border-gold pb-1 animate-up">Nos Services</span>
+                    </div>
 
-                        <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-offwhite leading-tight animate-up" style="animation-delay: 0.2s;" data-i18n="services_page.hero_title"></h1>
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-offwhite leading-tight animate-up" style="animation-delay: 0.2s;" data-i18n="services_page.hero_title"></h1>
 
-                        <p class="font-sans text-lg text-offwhite/90 leading-relaxed animate-up" style="animation-delay: 0.4s;" data-i18n="services_page.hero_subtitle"></p>
+                    <p class="font-sans text-lg text-offwhite/90 leading-relaxed animate-up" style="animation-delay: 0.4s;" data-i18n="services_page.hero_subtitle"></p>
 
-                        <!-- Quick Links -->
-                        <div class="flex flex-wrap gap-3 pt-4 animate-up" style="animation-delay: 0.6s;" id="service-quick-links"></div>
+                    <!-- Quick Links Pills -->
+                    <div class="flex flex-wrap gap-3 pt-4 animate-up" style="animation-delay: 0.6s;" id="service-quick-links"></div>
 
-                        <!-- CTA -->
-                        <div class="pt-6 animate-up" style="animation-delay: 0.8s;">
-                            <a href="contact.html" class="inline-flex items-center gap-2 px-8 py-3 bg-gold text-oak font-serif hover:bg-offwhite transition-all duration-300">
-                                <span>Demander un devis</span>
-                                <i data-lucide="arrow-right" class="w-5 h-5"></i>
-                            </a>
-                        </div>
+                    <div class="pt-4 animate-up" style="animation-delay: 0.8s;">
+                        <a href="contact.html" class="group inline-flex items-center gap-2 text-gold hover:text-offwhite transition-colors">
+                            <span class="font-serif">Demander un devis</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+                        </a>
                     </div>
                 </div>
             </div>

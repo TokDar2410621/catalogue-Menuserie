@@ -25,7 +25,9 @@ const renderProject = (project) => {
     d.title = `${project.title[currentLang]} - DKbois`;
     d.querySelector('meta[name="description"]').content = project.shortDesc[currentLang];
 
-    d.getElementById('project-hero').src = project.images[0];
+    const heroImg = d.getElementById('project-hero');
+    heroImg.src = project.images[0];
+    heroImg.alt = `${project.title[currentLang]} - Projet de menuiserie et ébénisterie sur mesure DKBOIS à Yaoundé, Cameroun`;
     d.getElementById('project-title').textContent = project.title[currentLang];
     d.getElementById('project-subtitle').textContent = project.shortDesc[currentLang];
     d.getElementById('project-tags').innerHTML = project.tags.map(t => `<span class="bg-gold/90 text-walnut text-xs font-bold px-3 py-1 rounded-sm uppercase tracking-wider">${t}</span>`).join('');
@@ -38,9 +40,9 @@ const renderProject = (project) => {
     d.getElementById('spec-finish').textContent = project.specs.finish[currentLang];
     
     const gallery = d.getElementById('project-gallery');
-    gallery.innerHTML = project.images.map(img => `
+    gallery.innerHTML = project.images.map((img, index) => `
         <div class="relative aspect-[4/3] overflow-hidden rounded-sm cursor-pointer group" onclick="openLightbox('${img}')">
-            <img src="${img}" alt="Project image" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+            <img src="${img}" alt="${project.title[currentLang]} - Photo ${index + 1} - Réalisation en ${project.material} par DKBOIS Yaoundé" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
             <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
                 <i data-lucide="maximize" class="w-8 h-8 text-white"></i>
             </div>
@@ -55,7 +57,9 @@ const renderProject = (project) => {
 
 window.openLightbox = (src) => {
     const lb = d.getElementById('lightbox');
-    d.getElementById('lightbox-img').src = src;
+    const lbImg = d.getElementById('lightbox-img');
+    lbImg.src = src;
+    lbImg.alt = `Agrandissement - Détails de la réalisation en menuiserie et ébénisterie DKBOIS`;
     lb.classList.remove('hidden');
     setTimeout(() => lb.classList.remove('opacity-0'), 10);
     d.body.style.overflow = 'hidden';

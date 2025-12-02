@@ -64,15 +64,6 @@ const renderFormOptions = () => {
         select.innerHTML = `<option value="" disabled selected>${keyPath('contact_page.form.select_option')}</option>`;
         projectTypes.forEach(type => select.innerHTML += `<option value="${type}">${keyPath('contact_page.form.'+type)}</option>`);
     }
-
-    const budgetOptions = ['budget_1', 'budget_2', 'budget_3'];
-    const budgetContainer = d.getElementById('budget-options');
-    if(budgetContainer) {
-        budgetContainer.innerHTML = budgetOptions.map((opt, i) => `
-            <label class="cursor-pointer"><input type="radio" name="budget" value="${opt}" class="peer sr-only">
-            <span class="block px-4 py-2 border border-oak/30 rounded-sm text-sm text-walnut/70 peer-checked:bg-oak peer-checked:text-white peer-checked:border-oak transition-all">${keyPath('contact_page.form.'+opt)}</span></label>
-        `).join('');
-    }
 };
 
 window.toggleFAQ = (btn) => {
@@ -126,14 +117,7 @@ const setupForm = () => {
 };
 
 const setupInteractions = () => {
-    const menuBtn = d.getElementById('mobile-menu-btn');
-    const closeBtn = d.getElementById('close-menu-btn');
-    const mobileMenu = d.getElementById('mobile-menu');
-    const toggleMenu = () => mobileMenu.classList.toggle('translate-x-full');
-    if(menuBtn) menuBtn.addEventListener('click', toggleMenu);
-    if(closeBtn) closeBtn.addEventListener('click', toggleMenu);
-    d.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', toggleMenu));
-
+    // Mobile menu is handled by navbar-component.js
     d.getElementById('lang-toggle')?.addEventListener('click', switchLanguage);
     d.getElementById('mobile-lang-toggle')?.addEventListener('click', switchLanguage);
 };

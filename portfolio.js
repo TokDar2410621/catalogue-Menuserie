@@ -79,7 +79,7 @@ const renderGrid = (projects) => {
         card.className = 'project-card group block bg-white rounded-sm overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1';
         card.innerHTML = `
             <div class="relative h-64 overflow-hidden">
-                <img data-src="${p.images[0]}" alt="${p.title[currentLang]}" class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                <img data-src="${p.images[0]}" alt="${p.title[currentLang]} - ${p.category} en menuiserie et ébénisterie sur mesure par DKBOIS à Yaoundé, Cameroun" class="lazy w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                 <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
                 <div class="absolute top-4 left-4"><span class="bg-white/90 text-oak text-xs font-bold px-2 py-1 rounded-sm uppercase tracking-widest">${p.tags[0]}</span></div>
             </div>
@@ -114,14 +114,7 @@ const lazyLoadImages = () => {
 };
 
 const setupInteractions = () => {
-    const menuBtn = d.getElementById('mobile-menu-btn');
-    const closeBtn = d.getElementById('close-menu-btn');
-    const mobileMenu = d.getElementById('mobile-menu');
-    const toggleMenu = () => mobileMenu.classList.toggle('translate-x-full');
-    menuBtn.addEventListener('click', toggleMenu);
-    closeBtn.addEventListener('click', toggleMenu);
-    d.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', toggleMenu));
-
+    // Mobile menu is handled by navbar-component.js
     d.getElementById('lang-toggle')?.addEventListener('click', switchLanguage);
     d.getElementById('mobile-lang-toggle')?.addEventListener('click', switchLanguage);
 

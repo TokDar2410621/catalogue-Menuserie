@@ -24,6 +24,7 @@ export function createFooter() {
                     <ul class="space-y-3 text-sm text-walnut/80">
                         <li><a href="index.html" class="hover:text-oak transition-colors" data-i18n="nav.home"></a></li>
                         <li><a href="about.html" class="hover:text-oak transition-colors" data-i18n="nav.about"></a></li>
+                        <li><a href="mathurin-defehe.html" class="hover:text-gold transition-colors font-serif" data-i18n="nav.mathurin"></a></li>
                         <li><a href="services.html" class="hover:text-oak transition-colors" data-i18n="nav.services"></a></li>
                         <li><a href="portfolio.html" class="hover:text-oak transition-colors" data-i18n="nav.portfolio"></a></li>
                         <li><a href="contact.html" class="hover:text-oak transition-colors" data-i18n="nav.contact"></a></li>

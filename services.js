@@ -124,14 +124,7 @@ const lazyLoadImages = () => {
 };
 
 const setupInteractions = () => {
-    const menuBtn = d.getElementById('mobile-menu-btn');
-    const closeBtn = d.getElementById('close-menu-btn');
-    const mobileMenu = d.getElementById('mobile-menu');
-    const toggleMenu = () => mobileMenu.classList.toggle('translate-x-full');
-    menuBtn.addEventListener('click', toggleMenu);
-    closeBtn.addEventListener('click', toggleMenu);
-    d.querySelectorAll('.mobile-link').forEach(l => l.addEventListener('click', toggleMenu));
-
+    // Mobile menu is handled by navbar-component.js
     d.getElementById('lang-toggle')?.addEventListener('click', switchLanguage);
     d.getElementById('mobile-lang-toggle')?.addEventListener('click', switchLanguage);
 };

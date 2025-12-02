@@ -1,6 +1,6 @@
 export const translations = {
     fr: {
-        nav: { home: "Accueil", about: "À Propos", services: "Services", portfolio: "Réalisations", contact: "Contact" },
+        nav: { home: "Accueil", about: "À Propos", mathurin: "Mathurin Defehe", services: "Services", portfolio: "Réalisations", contact: "Contact" },
         hero: {
             title: "Servir l'espace<br><span class='text-gold-contrast'>et l'excellence</span><br>du bois",
             subtitle: "Menuiserie et Ébénisterie d'Excellence à Yaoundé | 20+ ans d'expérience",
@@ -100,17 +100,52 @@ export const translations = {
             success_message: "Merci ! Votre message a bien été envoyé. Nous vous répondrons sous 48h.",
             form: {
                 firstname: "Prénom", lastname: "Nom", email: "Email", phone: "Téléphone",
-                project_type: "Type de projet", budget: "Budget estimé",
+                project_type: "Type de projet",
                 project_desc: "Description du projet", file: "Fichiers (Plans, photos)",
                 gdpr: "J'accepte le traitement de mes données pour cette demande.",
                 select_option: "Sélectionnez une option",
-                budget_1: "< 5 000 €", budget_2: "5k - 15k €", budget_3: "> 15 000 €",
                 type_interior: "Menuiserie Intérieure", type_cabinetry: "Ébénisterie", type_restoration: "Restauration", type_fitting: "Agencement", type_other: "Autre",
             }
+        },
+        mathurin_page: {
+            hero_label: "Fondateur & Maître Artisan",
+            hero_subtitle: "L'Art du bois, une passion transmise avec excellence depuis plus de 20 ans",
+            bio_label: "Une Passion, Une Vie",
+            bio_title: "L'Homme Derrière DKBOIS",
+            bio_paragraphs: [
+                "Mathurin Defehe incarne l'excellence de la menuiserie et de l'ébénisterie camerounaise. Depuis plus de 20 ans, il façonne le bois avec une passion inégalée et un savoir-faire transmis de génération en génération.",
+                "Formé aux techniques traditionnelles de l'ébénisterie, Mathurin a su allier le respect des méthodes ancestrales à l'innovation contemporaine. Chaque création porte sa signature : l'attention minutieuse aux détails, la sélection rigoureuse des essences de bois et une finition impeccable.",
+                "Basé à Yaoundé, dans le quartier de Mendong, son atelier est devenu la référence en matière de menuiserie sur mesure au Cameroun. De la conception à la réalisation, Mathurin supervise personnellement chaque projet pour garantir une qualité d'exception.",
+                "Son engagement envers ses clients va au-delà de la simple fabrication : il crée des pièces qui racontent une histoire, reflètent une personnalité et traversent le temps. Cette philosophie a fait de DKBOIS la référence incontournable pour tous ceux qui recherchent l'excellence."
+            ],
+            quote: "Chaque pièce de bois raconte une histoire. Mon rôle est de la révéler avec passion et respect du savoir-faire.",
+            gallery_label: "Galerie",
+            gallery_title: "Dans l'Atelier",
+            philosophy_label: "Philosophie",
+            philosophy_title: "Les Valeurs de l'Excellence",
+            philosophy_values: [
+                {
+                    icon: "heart",
+                    title: "Passion du Métier",
+                    description: "Plus qu'un travail, la menuiserie est une vocation. Chaque projet est abordé avec le même enthousiasme et la même exigence."
+                },
+                {
+                    icon: "award",
+                    title: "Excellence Sans Compromis",
+                    description: "La qualité n'est jamais négociable. Seuls les meilleurs matériaux et techniques sont utilisés pour garantir des créations durables."
+                },
+                {
+                    icon: "users",
+                    title: "Écoute du Client",
+                    description: "Comprendre les besoins et dépasser les attentes. Chaque client mérite une attention personnalisée et un accompagnement complet."
+                }
+            ],
+            cta_title: "Confiez votre projet à un maître artisan",
+            cta_text: "Bénéficiez de plus de 20 ans d'expertise en menuiserie et ébénisterie sur mesure"
         }
     },
     en: {
-        nav: { home: "Home", about: "About", services: "Services", portfolio: "Portfolio", contact: "Contact" },
+        nav: { home: "Home", about: "About", mathurin: "Mathurin Defehe", services: "Services", portfolio: "Portfolio", contact: "Contact" },
         hero: {
             title: "Serving space<br><span class='text-gold-contrast'>and excellence</span><br>in wood",
             subtitle: "Excellence in Joinery and Cabinetmaking in Yaoundé | 20+ years of experience",
@@ -210,13 +245,48 @@ export const translations = {
             success_message: "Thank you! Your message has been sent. We will get back to you within 48 hours.",
             form: {
                 firstname: "First Name", lastname: "Last Name", email: "Email", phone: "Phone",
-                project_type: "Project Type", budget: "Estimated Budget",
+                project_type: "Project Type",
                 project_desc: "Project Description", file: "Files (Plans, photos)",
                 gdpr: "I agree to my data being processed for this request.",
                 select_option: "Select an option",
-                budget_1: "< €5,000", budget_2: "€5k - €15k", budget_3: "> €15,000",
                 type_interior: "Interior Joinery", type_cabinetry: "Cabinetmaking", type_restoration: "Restoration", type_fitting: "Fitting", type_other: "Other",
             }
+        },
+        mathurin_page: {
+            hero_label: "Founder & Master Craftsman",
+            hero_subtitle: "The Art of Wood, a passion transmitted with excellence for over 20 years",
+            bio_label: "A Passion, A Life",
+            bio_title: "The Man Behind DKBOIS",
+            bio_paragraphs: [
+                "Mathurin Defehe embodies the excellence of Cameroonian joinery and cabinetmaking. For over 20 years, he has been shaping wood with unmatched passion and expertise passed down through generations.",
+                "Trained in traditional cabinetmaking techniques, Mathurin has skillfully combined respect for ancestral methods with contemporary innovation. Every creation bears his signature: meticulous attention to detail, rigorous selection of wood species, and impeccable finishing.",
+                "Based in Yaoundé, in the Mendong district, his workshop has become the reference for custom joinery in Cameroon. From design to completion, Mathurin personally oversees each project to guarantee exceptional quality.",
+                "His commitment to his clients goes beyond simple manufacturing: he creates pieces that tell a story, reflect a personality, and stand the test of time. This philosophy has made DKBOIS the essential reference for all those seeking excellence."
+            ],
+            quote: "Every piece of wood tells a story. My role is to reveal it with passion and respect for craftsmanship.",
+            gallery_label: "Gallery",
+            gallery_title: "In the Workshop",
+            philosophy_label: "Philosophy",
+            philosophy_title: "The Values of Excellence",
+            philosophy_values: [
+                {
+                    icon: "heart",
+                    title: "Passion for the Craft",
+                    description: "More than just work, joinery is a vocation. Each project is approached with the same enthusiasm and demanding standards."
+                },
+                {
+                    icon: "award",
+                    title: "Excellence Without Compromise",
+                    description: "Quality is never negotiable. Only the best materials and techniques are used to guarantee lasting creations."
+                },
+                {
+                    icon: "users",
+                    title: "Client Focus",
+                    description: "Understanding needs and exceeding expectations. Every client deserves personalized attention and comprehensive support."
+                }
+            ],
+            cta_title: "Entrust your project to a master craftsman",
+            cta_text: "Benefit from over 20 years of expertise in custom joinery and cabinetmaking"
         }
     }
 };
@@ -238,7 +308,7 @@ export const portfolioData = [
     { id: 6, image: portfolioImage, title: 'Restauration Commode XVIII', category: 'Restauration', size: 'col-span-1 md:col-span-1 lg:col-span-1' }
 ];
 
-const portraitImage = 'https://r2.flowith.net/files/jpeg/WW58V-professional_artisan_portraits_index_4@1024x1024.jpeg';
+const portraitImage = 'image/atelier-images/image.png';
 export const testimonialsData = [
     { name: "Jean Dupont", role: "Architecte d'intérieur", text: "Une précision incroyable et un respect absolu des délais. DKbois est mon partenaire privilégié pour mes chantiers haut de gamme.", stars: 5, image: portraitImage },
     { name: "Sophie Martin", role: "Particulier", text: "Ils ont transformé notre salon avec une bibliothèque sur mesure qui dépasse toutes nos attentes. Finitions parfaites.", stars: 5, image: portraitImage },

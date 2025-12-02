@@ -36,93 +36,69 @@
     <div id="navbar-placeholder"></div>
 
     <main>
-        <!-- Hero Section - Z-Cut Dynamic -->
-        <section class="relative min-h-[80vh] flex items-center overflow-hidden bg-forest">
-            <!-- Z-Shape Cut Container -->
+        <!-- Hero Section - S-Curve Cut Design -->
+        <section class="relative min-h-[65vh] lg:min-h-[75vh] flex items-center overflow-hidden bg-walnut pt-20">
+            <!-- S-Curve Cut Container -->
             <div class="absolute inset-0 w-full h-full">
-                <!-- Top Image Section (Z top bar) -->
-                <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(0 0, 100% 0, 70% 40%, 30% 40%);">
-                    <img src="https://r2.flowith.net/files/jpeg/FE8CF-hero_section_woodworking_placeholder_index_2@1024x1024.jpeg" alt="Atelier DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
-                    <div class="absolute inset-0 bg-forest/50"></div>
+                <!-- Top S-Curve Image Section -->
+                <div class="absolute inset-0 overflow-hidden" style="clip-path: path('M 0,0 L 1920,0 Q 1600,200 1400,400 T 1000,800 L 1920,800 L 1920,1080 L 0,1080 L 0,0');">
+                    <img src="image/atelier-images/image.png" alt="Histoire de DKBOIS - 20 ans d'expertise en menuiserie et ébénisterie à Yaoundé, Cameroun - Atelier de menuiserie artisanale et ébénisterie sur mesure fondée par Mathurin Defehe" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]">
+                    <div class="absolute inset-0 bg-walnut/40"></div>
                 </div>
 
-                <!-- Bottom Image Section (Z bottom bar) -->
-                <div class="absolute inset-0 overflow-hidden" style="clip-path: polygon(30% 60%, 70% 60%, 100% 100%, 0 100%);">
-                    <img src="https://r2.flowith.net/files/jpeg/FE8CF-hero_section_woodworking_placeholder_index_2@1024x1024.jpeg" alt="Atelier DKBOIS" class="w-full h-full object-cover scale-110 hover:scale-105 transition-transform duration-[2000ms]" style="object-position: bottom;">
-                    <div class="absolute inset-0 bg-forest/50"></div>
-                </div>
+                <!-- Bottom S-Curve Content Background -->
+                <div class="absolute inset-0 bg-walnut" style="clip-path: path('M 0,0 L 0,1080 L 1920,1080 L 1920,800 Q 1700,600 1400,400 T 920,0 Z');"></div>
 
-                <!-- Content Background (Z diagonal middle) -->
-                <div class="absolute inset-0 bg-forest" style="clip-path: polygon(30% 40%, 70% 40%, 70% 60%, 30% 60%);"></div>
+                <!-- Flowing Curve Overlay -->
+                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+                    <!-- S-Curve Path -->
+                    <path d="M 1920,0 Q 1600,200 1400,400 T 1000,800" stroke="#D4AF37" stroke-width="4" fill="none" opacity="0.6"/>
+                    <path d="M 1920,0 Q 1600,200 1400,400 T 1000,800" stroke="#D4AF37" stroke-width="1" fill="none" opacity="0.3" stroke-dasharray="10,10">
+                        <animate attributeName="stroke-dashoffset" from="0" to="20" dur="2s" repeatCount="indefinite"/>
+                    </path>
 
-                <!-- Animated Light Beams -->
-                <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-br from-gold/10 via-transparent to-transparent opacity-50 blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 w-1/2 h-full bg-gradient-to-tr from-oak/10 via-transparent to-transparent opacity-50 blur-3xl"></div>
-
-                <!-- Dynamic Geometric Overlays -->
-                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Z Shape Outline -->
-                    <polyline points="20%,40% 80%,40%" stroke="#D4AF37" stroke-width="3" fill="none" opacity="0.6" stroke-dasharray="10,5"/>
-                    <line x1="70%" y1="40%" x2="30%" y2="60%" stroke="#D4AF37" stroke-width="3" opacity="0.6"/>
-                    <polyline points="30%,60% 80%,60%" stroke="#D4AF37" stroke-width="3" fill="none" opacity="0.6" stroke-dasharray="10,5"/>
-
-                    <!-- Animated Circles -->
-                    <circle cx="15%" cy="50%" r="60" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
-                        <animate attributeName="r" from="40" to="70" dur="3s" repeatCount="indefinite" />
-                        <animate attributeName="opacity" from="0.4" to="0.1" dur="3s" repeatCount="indefinite" />
+                    <!-- Decorative Circles along the curve -->
+                    <circle cx="1600" cy="200" r="30" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3">
+                        <animate attributeName="r" from="25" to="40" dur="2.5s" repeatCount="indefinite" />
                     </circle>
-                    <circle cx="85%" cy="50%" r="50" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.3" stroke-dasharray="3,3">
-                        <animateTransform attributeName="transform" type="rotate" from="0 85 50" to="360 85 50" dur="15s" repeatCount="indefinite"/>
+                    <circle cx="1400" cy="400" r="25" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.25">
+                        <animate attributeName="r" from="20" to="35" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="1000" cy="800" r="20" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.2">
+                        <animate attributeName="r" from="15" to="30" dur="3.5s" repeatCount="indefinite" />
                     </circle>
                 </svg>
             </div>
 
             <!-- Content Container -->
-            <div class="relative z-20 container mx-auto px-8 h-[80vh] flex items-center">
-                <div class="w-full max-w-4xl mx-auto text-center space-y-8">
-                    <!-- Glowing Badge -->
-                    <div class="inline-flex items-center gap-3 backdrop-blur-md bg-gold/15 px-8 py-3 border-2 border-gold/40 rounded-full animate-up">
-                        <div class="w-2 h-2 bg-gold rounded-full animate-pulse"></div>
-                        <span class="text-gold font-serif text-sm uppercase tracking-[0.3em]">Notre Histoire</span>
-                        <div class="w-2 h-2 bg-gold rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+            <div class="relative z-20 container mx-auto px-8 py-16 lg:py-0 min-h-[65vh] lg:min-h-[75vh] flex items-center">
+                <div class="max-w-2xl space-y-6">
+                    <div class="inline-block">
+                        <span class="text-gold font-serif text-xs uppercase tracking-[0.3em] border-b-2 border-gold pb-1 animate-up">Notre Histoire</span>
                     </div>
 
-                    <!-- Title with Split Color -->
-                    <h1 class="font-serif text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] animate-up" style="animation-delay: 0.2s;">
-                        <span class="text-offwhite block" data-i18n="about_page.hero_title"></span>
-                    </h1>
+                    <h1 class="font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-offwhite leading-tight animate-up" style="animation-delay: 0.2s;" data-i18n="about_page.hero_title"></h1>
 
-                    <!-- Subtitle with Glass Effect -->
-                    <p class="font-sans text-xl md:text-2xl text-offwhite/90 leading-relaxed max-w-3xl mx-auto backdrop-blur-sm bg-forest/20 p-6 rounded-lg border border-gold/20 animate-up" style="animation-delay: 0.4s;" data-i18n="about_page.hero_subtitle"></p>
+                    <p class="font-sans text-lg text-offwhite/90 leading-relaxed animate-up" style="animation-delay: 0.4s;" data-i18n="about_page.hero_subtitle"></p>
 
-                    <!-- CTA with 3D Effect -->
-                    <div class="pt-6 animate-up" style="animation-delay: 0.6s;">
-                        <a href="#history" class="group inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-gold to-gold-hover text-forest font-serif text-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
-                            <span class="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity"></span>
-                            <span class="relative z-10">Découvrir notre parcours</span>
-                            <i data-lucide="chevrons-down" class="w-6 h-6 relative z-10 group-hover:translate-y-1 transition-transform"></i>
-                            <span class="absolute bottom-0 left-0 w-full h-1 bg-offwhite transform scale-x-0 group-hover:scale-x-100 transition-transform"></span>
+                    <!-- Timeline Pills -->
+                    <div class="flex flex-wrap gap-3 pt-4 animate-up" style="animation-delay: 0.6s;">
+                        <div class="px-5 py-2 bg-gold/20 border border-gold/40 rounded-full backdrop-blur-sm">
+                            <span class="text-offwhite text-sm font-serif">1999 - Débuts</span>
+                        </div>
+                        <div class="px-5 py-2 bg-gold/20 border border-gold/40 rounded-full backdrop-blur-sm">
+                            <span class="text-offwhite text-sm font-serif">2004 - Fondation</span>
+                        </div>
+                        <div class="px-5 py-2 bg-gold/20 border border-gold/40 rounded-full backdrop-blur-sm">
+                            <span class="text-offwhite text-sm font-serif">20+ ans</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 animate-up" style="animation-delay: 0.8s;">
+                        <a href="#history" class="group inline-flex items-center gap-2 text-gold hover:text-offwhite transition-colors">
+                            <span class="font-serif">Découvrir notre parcours</span>
+                            <i data-lucide="arrow-down" class="w-5 h-5 group-hover:translate-y-1 transition-transform"></i>
                         </a>
-                    </div>
-
-                    <!-- Timeline Preview -->
-                    <div class="grid grid-cols-4 gap-4 pt-12 max-w-3xl mx-auto animate-up" style="animation-delay: 0.8s;">
-                        <div class="text-center group hover:scale-110 transition-transform">
-                            <div class="text-3xl font-serif font-bold text-gold mb-1">1999</div>
-                            <div class="text-xs text-offwhite/60 uppercase">Débuts</div>
-                        </div>
-                        <div class="text-center group hover:scale-110 transition-transform">
-                            <div class="text-3xl font-serif font-bold text-gold mb-1">2004</div>
-                            <div class="text-xs text-offwhite/60 uppercase">Fondation</div>
-                        </div>
-                        <div class="text-center group hover:scale-110 transition-transform">
-                            <div class="text-3xl font-serif font-bold text-gold mb-1">2015</div>
-                            <div class="text-xs text-offwhite/60 uppercase">Expansion</div>
-                        </div>
-                        <div class="text-center group hover:scale-110 transition-transform">
-                            <div class="text-3xl font-serif font-bold text-gold mb-1">2024</div>
-                            <div class="text-xs text-offwhite/60 uppercase">Excellence</div>
-                        </div>
                     </div>
                 </div>
             </div>
