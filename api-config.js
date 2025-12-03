@@ -1,8 +1,10 @@
 // Configuration API pour DKbois
 // Ce fichier centralise toutes les interactions avec le backend Django
 
-// URL de base de l'API (à adapter selon l'environnement)
-const API_BASE_URL = 'https://carefree-heart-production-ec3a.up.railway.app/api';
+// URL de base de l'API (détection automatique de l'environnement)
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000/api'
+    : 'https://carefree-heart-production-ec3a.up.railway.app/api';
 
 // Fonction utilitaire pour faire des requêtes API
 const apiRequest = async (endpoint, options = {}) => {
@@ -107,6 +109,23 @@ export const API = {
     testimonials: {
         list: (lang = 'fr') => {
             return apiRequest(`/testimonials/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/testimonials/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (id, data) => {
+            return apiRequest(`/testimonials/${id}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (id) => {
+            return apiRequest(`/testimonials/${id}/`, {
+                method: 'DELETE'
+            });
         }
     },
 
@@ -114,6 +133,23 @@ export const API = {
     team: {
         list: (lang = 'fr') => {
             return apiRequest(`/team/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/team/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (id, data) => {
+            return apiRequest(`/team/${id}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (id) => {
+            return apiRequest(`/team/${id}/`, {
+                method: 'DELETE'
+            });
         }
     },
 
@@ -121,6 +157,23 @@ export const API = {
     timeline: {
         list: (lang = 'fr') => {
             return apiRequest(`/timeline/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/timeline/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (id, data) => {
+            return apiRequest(`/timeline/${id}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (id) => {
+            return apiRequest(`/timeline/${id}/`, {
+                method: 'DELETE'
+            });
         }
     },
 
@@ -128,6 +181,23 @@ export const API = {
     values: {
         list: (lang = 'fr') => {
             return apiRequest(`/values/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/values/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (id, data) => {
+            return apiRequest(`/values/${id}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (id) => {
+            return apiRequest(`/values/${id}/`, {
+                method: 'DELETE'
+            });
         }
     },
 
@@ -135,6 +205,23 @@ export const API = {
     faqs: {
         list: (lang = 'fr') => {
             return apiRequest(`/faqs/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/faqs/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (id, data) => {
+            return apiRequest(`/faqs/${id}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (id) => {
+            return apiRequest(`/faqs/${id}/`, {
+                method: 'DELETE'
+            });
         }
     },
 

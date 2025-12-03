@@ -437,39 +437,185 @@
                 </div>
             </div>
 
-            <!-- Other sections placeholders -->
+            <!-- Testimonials Section -->
             <div id="section-testimonials" class="section-content">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Témoignages</h2>
-                    <p class="text-walnut/60">En cours de développement...</p>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Témoignages</h2>
+                        <p class="text-walnut/60">Gérez les témoignages clients</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('testimonial')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouveau témoignage</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Nom</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Rôle</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Note</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Ordre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="testimonials-table">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement des témoignages...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
+            <!-- Team Section -->
             <div id="section-team" class="section-content">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Équipe</h2>
-                    <p class="text-walnut/60">En cours de développement...</p>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Équipe</h2>
+                        <p class="text-walnut/60">Gérez les membres de l'équipe</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('team')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouveau membre</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Nom</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Rôle</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Expérience</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Ordre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="team-table">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement de l'équipe...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
+            <!-- Timeline Section -->
             <div id="section-timeline" class="section-content">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Timeline</h2>
-                    <p class="text-walnut/60">En cours de développement...</p>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Timeline</h2>
+                        <p class="text-walnut/60">Gérez l'historique de l'entreprise</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('timeline')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouvel événement</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Année</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Titre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Ordre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timeline-table">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement de la timeline...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
+            <!-- Values Section -->
             <div id="section-values" class="section-content">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Valeurs</h2>
-                    <p class="text-walnut/60">En cours de développement...</p>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Valeurs</h2>
+                        <p class="text-walnut/60">Gérez les valeurs de l'entreprise</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('value')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouvelle valeur</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Icône</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Titre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Ordre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="values-table">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement des valeurs...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
+            <!-- FAQs Section -->
             <div id="section-faqs" class="section-content">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">FAQs</h2>
-                    <p class="text-walnut/60">En cours de développement...</p>
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">FAQs</h2>
+                        <p class="text-walnut/60">Gérez les questions fréquentes</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('faq')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouvelle FAQ</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Question</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Catégorie</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Ordre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faqs-table">
+                                <tr>
+                                    <td colspan="4" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement des FAQs...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
@@ -479,7 +625,7 @@
     <div id="modal-project" class="modal">
         <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
-                <h3 class="font-serif text-2xl font-bold text-walnut">Nouveau projet</h3>
+                <h3 id="project-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouveau projet</h3>
                 <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('project')">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
@@ -656,7 +802,7 @@
     <div id="modal-service" class="modal">
         <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
             <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
-                <h3 class="font-serif text-2xl font-bold text-walnut">Nouveau service</h3>
+                <h3 id="service-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouveau service</h3>
                 <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('service')">
                     <i data-lucide="x" class="w-6 h-6"></i>
                 </button>
@@ -793,6 +939,376 @@
 
                     <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
                         <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('service')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Testimonial -->
+    <div id="modal-testimonial" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 id="testimonial-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouveau témoignage</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('testimonial')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="testimonial-form" class="space-y-6">
+                    <input type="hidden" id="testimonial-id" name="id">
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Nom *</label>
+                        <input type="text" id="testimonial-name" name="name" required
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Rôle (FR) *</label>
+                            <input type="text" id="testimonial-role-fr" name="role_fr" required
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="Client particulier">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Rôle (EN)</label>
+                            <input type="text" id="testimonial-role-en" name="role_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="Individual client">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Témoignage (FR) *</label>
+                            <textarea id="testimonial-text-fr" name="text_fr" rows="4" required
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Témoignage (EN)</label>
+                            <textarea id="testimonial-text-en" name="text_en" rows="4"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Image (URL Cloudinary)</label>
+                        <input type="url" id="testimonial-image" name="image"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="https://res.cloudinary.com/...">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Note (étoiles)</label>
+                            <input type="number" id="testimonial-stars" name="stars" min="1" max="5" value="5"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Ordre</label>
+                            <input type="number" id="testimonial-order" name="order" min="0" value="0"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('testimonial')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Team -->
+    <div id="modal-team" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 id="team-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouveau membre</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('team')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="team-form" class="space-y-6">
+                    <input type="hidden" id="team-id" name="id">
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Nom *</label>
+                        <input type="text" id="team-name" name="name" required
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Rôle (FR) *</label>
+                            <input type="text" id="team-role-fr" name="role_fr" required
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="Menuisier principal">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Rôle (EN)</label>
+                            <input type="text" id="team-role-en" name="role_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="Lead carpenter">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Image (URL Cloudinary)</label>
+                        <input type="url" id="team-image" name="image"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="https://res.cloudinary.com/...">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Citation (FR)</label>
+                            <textarea id="team-quote-fr" name="quote_fr" rows="2"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Citation (EN)</label>
+                            <textarea id="team-quote-en" name="quote_en" rows="2"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Bio (FR)</label>
+                            <textarea id="team-bio-fr" name="bio_fr" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Bio (EN)</label>
+                            <textarea id="team-bio-en" name="bio_en" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Expérience (années)</label>
+                            <input type="number" id="team-exp" name="exp" min="0" value="0"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Ordre</label>
+                            <input type="number" id="team-order" name="order" min="0" value="0"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('team')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Timeline -->
+    <div id="modal-timeline" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 id="timeline-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouvel événement</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('timeline')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="timeline-form" class="space-y-6">
+                    <input type="hidden" id="timeline-id" name="id">
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Année *</label>
+                        <input type="number" id="timeline-year" name="year" required min="1900" max="2100"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="2024">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (FR) *</label>
+                            <input type="text" id="timeline-title-fr" name="title_fr" required
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (EN)</label>
+                            <input type="text" id="timeline-title-en" name="title_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description (FR)</label>
+                            <textarea id="timeline-desc-fr" name="desc_fr" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description (EN)</label>
+                            <textarea id="timeline-desc-en" name="desc_en" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Ordre</label>
+                        <input type="number" id="timeline-order" name="order" min="0" value="0"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('timeline')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Value -->
+    <div id="modal-value" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 id="value-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouvelle valeur</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('value')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="value-form" class="space-y-6">
+                    <input type="hidden" id="value-id" name="id">
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Icône Lucide *</label>
+                        <input type="text" id="value-icon" name="icon" required
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="heart">
+                        <p class="text-xs text-walnut/60 mt-1">Voir: <a href="https://lucide.dev/icons/" target="_blank" class="text-oak hover:underline">lucide.dev/icons</a></p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (FR) *</label>
+                            <input type="text" id="value-title-fr" name="title_fr" required
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (EN)</label>
+                            <input type="text" id="value-title-en" name="title_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description (FR)</label>
+                            <textarea id="value-desc-fr" name="desc_fr" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description (EN)</label>
+                            <textarea id="value-desc-en" name="desc_en" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Ordre</label>
+                        <input type="number" id="value-order" name="order" min="0" value="0"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('value')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for FAQ -->
+    <div id="modal-faq" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-3xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 id="faq-modal-title" class="font-serif text-2xl font-bold text-walnut">Nouvelle FAQ</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('faq')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="faq-form" class="space-y-6">
+                    <input type="hidden" id="faq-id" name="id">
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Question (FR) *</label>
+                            <textarea id="faq-question-fr" name="question_fr" rows="2" required
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Question (EN)</label>
+                            <textarea id="faq-question-en" name="question_en" rows="2"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Réponse (FR) *</label>
+                            <textarea id="faq-answer-fr" name="answer_fr" rows="4" required
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Réponse (EN)</label>
+                            <textarea id="faq-answer-en" name="answer_en" rows="4"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Catégorie</label>
+                            <input type="text" id="faq-category" name="category"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="general">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Ordre</label>
+                            <input type="number" id="faq-order" name="order" min="0" value="0"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('faq')">
                             Annuler
                         </button>
                         <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
