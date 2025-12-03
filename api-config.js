@@ -2,7 +2,7 @@
 // Ce fichier centralise toutes les interactions avec le backend Django
 
 // URL de base de l'API (à adapter selon l'environnement)
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://carefree-heart-production-ec3a.up.railway.app/api';
 
 // Fonction utilitaire pour faire des requêtes API
 const apiRequest = async (endpoint, options = {}) => {
