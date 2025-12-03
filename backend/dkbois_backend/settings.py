@@ -157,7 +157,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # In production, add your frontend URL (e.g., "https://dkbois.netlify.app")
 CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS',
     "http://localhost:3000,http://localhost:3200,http://localhost:5500,http://localhost:8080,"
-    "http://127.0.0.1:3000,http://127.0.0.1:3200,http://127.0.0.1:5500,http://127.0.0.1:8080"
+    "http://127.0.0.1:3000,http://127.0.0.1:3200,http://127.0.0.1:5500,http://127.0.0.1:8080,"
+    "https://catalogue-menuserie.vercel.app"
 ).split(',')
 
 # Allow all origins in development only
@@ -166,7 +167,9 @@ CORS_ALLOW_ALL_ORIGINS = DEBUG
 # CSRF Settings
 # In production, add your frontend and backend URLs
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS',
-    "http://localhost:8000,http://localhost:3000,http://127.0.0.1:8000"
+    "http://localhost:8000,http://localhost:3000,http://127.0.0.1:8000,"
+    "https://carefree-heart-production-ec3a.up.railway.app,"
+    "https://catalogue-menuserie.vercel.app"
 ).split(',')
 
 # REST Framework Settings
