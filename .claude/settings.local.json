@@ -19,7 +19,9 @@
       "Bash(\"C:\\Users\\Darius\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" populate_data.py)",
       "Bash(ren:*)",
       "Bash(liste-images-actuelles.txt)",
-      "Bash(python renommer_images.py:*)"
+      "Bash(python renommer_images.py:*)",
+      "Bash(. venv/Scripts/activate)",
+      "Bash(railway run:*)"
     ],
     "deny": [],
     "ask": []

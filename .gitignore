@@ -32,6 +32,11 @@ db.sqlite3-journal
 /staticfiles
 *.pot
 
+# Database backups and temporary scripts
+backend/data_backup*.json
+backend/test_pg_connection.py
+backend/test_public_url.py
+
 # IDEs
 .vscode/
 .idea/
@@ -43,6 +48,9 @@ db.sqlite3-journal
 # Environment variables
 .env
 .env.local
+.env.production
+.env.*.local
+*.env
 
 # Node modules (if any)
 node_modules/

@@ -11,6 +11,10 @@ python manage.py migrate --noinput
 echo "📂 Collecting static files..."
 python manage.py collectstatic --noinput
 
+# Créer le superuser admin automatiquement
+echo "👤 Creating admin user..."
+python create_admin.py
+
 # Démarrer gunicorn
 echo "✅ Starting gunicorn..."
 gunicorn dkbois_backend.wsgi --log-file -
