@@ -59,6 +59,11 @@ function setupEventListeners() {
     // Form submissions
     document.getElementById('project-form').addEventListener('submit', handleProjectSubmit);
     document.getElementById('service-form').addEventListener('submit', handleServiceSubmit);
+    document.getElementById('testimonial-form').addEventListener('submit', handleTestimonialSubmit);
+    document.getElementById('team-form').addEventListener('submit', handleTeamSubmit);
+    document.getElementById('timeline-form').addEventListener('submit', handleTimelineSubmit);
+    document.getElementById('value-form').addEventListener('submit', handleValueSubmit);
+    document.getElementById('faq-form').addEventListener('submit', handleFaqSubmit);
 
     // Image uploads
     document.getElementById('project-image-files').addEventListener('change', handleProjectImageUpload);
@@ -122,6 +127,21 @@ window.switchSection = function(sectionName) {
                 break;
             case 'services':
                 loadServices();
+                break;
+            case 'testimonials':
+                loadTestimonials();
+                break;
+            case 'team':
+                loadTeam();
+                break;
+            case 'timeline':
+                loadTimeline();
+                break;
+            case 'values':
+                loadValues();
+                break;
+            case 'faqs':
+                loadFaqs();
                 break;
             case 'contact':
                 loadMessages();
@@ -364,12 +384,41 @@ window.openModal = function(type) {
     const modal = document.getElementById(`modal-${type}`);
     if (modal) {
         // Clear form for new items
+        const formId = `${type}-form`;
+        const idField = `${type}-id`;
+
+        if (document.getElementById(formId)) {
+            document.getElementById(formId).reset();
+        }
+        if (document.getElementById(idField)) {
+            document.getElementById(idField).value = '';
+        }
+
+        // Special handling for project/service images
         if (type === 'project') {
-            document.getElementById('project-form').reset();
-            document.getElementById('project-id').value = '';
+            uploadedProjectImages = [];
+            document.getElementById('project-image-previews').innerHTML = '';
+            document.getElementById('project-upload-status').textContent = '';
         } else if (type === 'service') {
-            document.getElementById('service-form').reset();
-            document.getElementById('service-id').value = '';
+            uploadedServiceImages = [];
+            document.getElementById('service-image-previews').innerHTML = '';
+            document.getElementById('service-upload-status').textContent = '';
+        }
+
+        // Reset modal title to "Nouveau..."
+        const modalTitleId = `${type}-modal-title`;
+        const modalTitle = document.getElementById(modalTitleId);
+        if (modalTitle) {
+            const titles = {
+                'project': 'Nouveau projet',
+                'service': 'Nouveau service',
+                'testimonial': 'Nouveau témoignage',
+                'team': 'Nouveau membre',
+                'timeline': 'Nouvel événement',
+                'value': 'Nouvelle valeur',
+                'faq': 'Nouvelle FAQ'
+            };
+            modalTitle.textContent = titles[type] || 'Nouveau';
         }
 
         modal.classList.add('active');
@@ -383,15 +432,22 @@ window.closeModal = function(type) {
         modal.classList.remove('active');
 
         // Clear form on close
+        const formId = `${type}-form`;
+        const idField = `${type}-id`;
+
+        if (document.getElementById(formId)) {
+            document.getElementById(formId).reset();
+        }
+        if (document.getElementById(idField)) {
+            document.getElementById(idField).value = '';
+        }
+
+        // Special handling for project/service images
         if (type === 'project') {
-            document.getElementById('project-form').reset();
-            document.getElementById('project-id').value = '';
             uploadedProjectImages = [];
             document.getElementById('project-image-previews').innerHTML = '';
             document.getElementById('project-upload-status').textContent = '';
         } else if (type === 'service') {
-            document.getElementById('service-form').reset();
-            document.getElementById('service-id').value = '';
             uploadedServiceImages = [];
             document.getElementById('service-image-previews').innerHTML = '';
             document.getElementById('service-upload-status').textContent = '';
@@ -402,8 +458,9 @@ window.closeModal = function(type) {
 // CRUD Operations
 window.editProject = async function(slug) {
     try {
-        // Load project data
-        const project = await API.projects.detail(slug, 'fr');
+        // Load project data with edit=true to get all language fields
+        const response = await fetch(`${API_BASE_URL}/projects/${slug}/?edit=true&lang=fr`);
+        const project = await response.json();
 
         // Populate form
         document.getElementById('project-id').value = slug;
@@ -424,6 +481,9 @@ window.editProject = async function(slug) {
         document.getElementById('project-tags').value = (project.tags || []).join(', ');
         document.getElementById('project-featured').checked = project.featured || false;
         document.getElementById('project-order').value = project.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('project-modal-title').textContent = 'Modifier projet';
 
         // Open modal directly without resetting
         const modal = document.getElementById('modal-project');
@@ -450,8 +510,9 @@ window.deleteProject = async function(slug) {
 
 window.editService = async function(slug) {
     try {
-        // Load service data
-        const service = await API.services.detail(slug, 'fr');
+        // Load service data with edit=true to get all language fields
+        const response = await fetch(`${API_BASE_URL}/services/${slug}/?edit=true&lang=fr`);
+        const service = await response.json();
 
         // Populate form
         document.getElementById('service-id').value = slug;
@@ -476,6 +537,9 @@ window.editService = async function(slug) {
         document.getElementById('service-images').value = (service.images || []).join(', ');
         document.getElementById('service-is-active').checked = service.is_active !== false;
         document.getElementById('service-order').value = service.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('service-modal-title').textContent = 'Modifier service';
 
         // Open modal directly without resetting
         const modal = document.getElementById('modal-service');
@@ -543,37 +607,37 @@ async function handleProjectSubmit(e) {
     if (slug) formData.slug = slug;
 
     const titleEn = document.getElementById('project-title-en').value.trim();
-    if (titleEn) formData.title_en = titleEn;
+    if (isEdit || titleEn) formData.title_en = titleEn || '';
 
     const category = document.getElementById('project-category').value;
-    if (category) formData.category = category;
+    if (isEdit || category) formData.category = category || '';
 
     const type = document.getElementById('project-type').value;
-    if (type) formData.type = type;
+    if (isEdit || type) formData.type = type || '';
 
     const material = document.getElementById('project-material').value.trim();
-    if (material) formData.material = material;
+    if (isEdit || material) formData.material = material || '';
 
     const shortDescFr = document.getElementById('project-short-desc-fr').value.trim();
-    if (shortDescFr) formData.short_desc_fr = shortDescFr;
+    if (isEdit || shortDescFr) formData.short_desc_fr = shortDescFr || '';
 
     const shortDescEn = document.getElementById('project-short-desc-en').value.trim();
-    if (shortDescEn) formData.short_desc_en = shortDescEn;
+    if (isEdit || shortDescEn) formData.short_desc_en = shortDescEn || '';
 
     const fullDescFr = document.getElementById('project-full-desc-fr').value.trim();
-    if (fullDescFr) formData.full_desc_fr = fullDescFr;
+    if (isEdit || fullDescFr) formData.full_desc_fr = fullDescFr || '';
 
     const fullDescEn = document.getElementById('project-full-desc-en').value.trim();
-    if (fullDescEn) formData.full_desc_en = fullDescEn;
+    if (isEdit || fullDescEn) formData.full_desc_en = fullDescEn || '';
 
     const location = document.getElementById('project-location').value.trim();
-    if (location) formData.location = location;
+    if (isEdit || location) formData.location = location || '';
 
     const durationFr = document.getElementById('project-duration-fr').value.trim();
-    if (durationFr) formData.duration_fr = durationFr;
+    if (isEdit || durationFr) formData.duration_fr = durationFr || '';
 
     const durationEn = document.getElementById('project-duration-en').value.trim();
-    if (durationEn) formData.duration_en = durationEn;
+    if (isEdit || durationEn) formData.duration_en = durationEn || '';
 
     // Parse images (comma-separated) and merge with uploaded images
     const imagesText = document.getElementById('project-images').value.trim();
@@ -630,22 +694,22 @@ async function handleServiceSubmit(e) {
     if (slug) formData.slug = slug;
 
     const icon = document.getElementById('service-icon').value.trim();
-    if (icon) formData.icon = icon;
+    if (isEdit || icon) formData.icon = icon || '';
 
     const titleEn = document.getElementById('service-title-en').value.trim();
-    if (titleEn) formData.title_en = titleEn;
+    if (isEdit || titleEn) formData.title_en = titleEn || '';
 
     const descriptionFr = document.getElementById('service-description-fr').value.trim();
-    if (descriptionFr) formData.description_fr = descriptionFr;
+    if (isEdit || descriptionFr) formData.description_fr = descriptionFr || '';
 
     const descriptionEn = document.getElementById('service-description-en').value.trim();
-    if (descriptionEn) formData.description_en = descriptionEn;
+    if (isEdit || descriptionEn) formData.description_en = descriptionEn || '';
 
     const timeframeFr = document.getElementById('service-timeframe-fr').value.trim();
-    if (timeframeFr) formData.timeframe_fr = timeframeFr;
+    if (isEdit || timeframeFr) formData.timeframe_fr = timeframeFr || '';
 
     const timeframeEn = document.getElementById('service-timeframe-en').value.trim();
-    if (timeframeEn) formData.timeframe_en = timeframeEn;
+    if (isEdit || timeframeEn) formData.timeframe_en = timeframeEn || '';
 
     // Parse sub-services (comma-separated)
     const subServicesFr = document.getElementById('service-sub-services-fr').value.trim();
@@ -818,4 +882,682 @@ function renderServiceImagePreviews() {
         </div>
     `).join('');
     lucide.createIcons();
+}
+
+// ========================================
+// TESTIMONIALS CRUD OPERATIONS
+// ========================================
+
+async function loadTestimonials() {
+    const tbody = document.getElementById('testimonials-table');
+    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-walnut/40">Chargement...</td></tr>';
+
+    try {
+        const response = await API.testimonials.list('fr');
+        const testimonials = response.results || response;
+
+        if (testimonials.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-walnut/40">Aucun témoignage</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = testimonials.map(testimonial => `
+            <tr class="table-row border-b border-oak/5">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        ${testimonial.image ?
+                            `<img src="${testimonial.image}" alt="${testimonial.name}" class="w-12 h-12 object-cover rounded-full">` :
+                            '<div class="w-12 h-12 bg-oak/10 rounded-full"></div>'
+                        }
+                        <div class="font-medium text-walnut">${testimonial.name}</div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-walnut">${testimonial.role || '-'}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-1">
+                        ${'★'.repeat(testimonial.stars || 5)}<span class="text-gold"></span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-walnut">${testimonial.order || 0}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 text-oak hover:bg-oak/10 rounded transition-colors" onclick="editTestimonial(${testimonial.id})">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 text-red-600 hover:bg-red-50 rounded transition-colors" onclick="deleteTestimonial(${testimonial.id})">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        lucide.createIcons();
+
+    } catch (error) {
+        console.error('Error loading testimonials:', error);
+        tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-red-600">Erreur de chargement</td></tr>';
+    }
+}
+
+window.editTestimonial = async function(id) {
+    try {
+        const response = await API.testimonials.list('fr');
+        const testimonials = response.results || response;
+        const testimonial = testimonials.find(t => t.id === id);
+
+        if (!testimonial) throw new Error('Témoignage non trouvé');
+
+        document.getElementById('testimonial-id').value = testimonial.id;
+        document.getElementById('testimonial-name').value = testimonial.name || '';
+        document.getElementById('testimonial-role-fr').value = testimonial.role_fr || '';
+        document.getElementById('testimonial-role-en').value = testimonial.role_en || '';
+        document.getElementById('testimonial-text-fr').value = testimonial.text_fr || '';
+        document.getElementById('testimonial-text-en').value = testimonial.text_en || '';
+        document.getElementById('testimonial-image').value = testimonial.image || '';
+        document.getElementById('testimonial-stars').value = testimonial.stars || 5;
+        document.getElementById('testimonial-order').value = testimonial.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('testimonial-modal-title').textContent = 'Modifier témoignage';
+
+        const modal = document.getElementById('modal-testimonial');
+        modal.classList.add('active');
+        lucide.createIcons();
+    } catch (error) {
+        console.error('Error loading testimonial:', error);
+        alert('Erreur de chargement: ' + error.message);
+    }
+}
+
+window.deleteTestimonial = async function(id) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce témoignage?')) {
+        try {
+            await fetch(`${API_BASE_URL}/testimonials/${id}/`, { method: 'DELETE' });
+            alert('Témoignage supprimé avec succès!');
+            loadTestimonials();
+        } catch (error) {
+            console.error('Error deleting testimonial:', error);
+            alert('Erreur de suppression: ' + error.message);
+        }
+    }
+}
+
+async function handleTestimonialSubmit(e) {
+    e.preventDefault();
+
+    const testimonialId = document.getElementById('testimonial-id').value;
+    const isEdit = testimonialId && testimonialId !== '';
+
+    const formData = {
+        name: document.getElementById('testimonial-name').value.trim(),
+        role_fr: document.getElementById('testimonial-role-fr').value.trim(),
+        text_fr: document.getElementById('testimonial-text-fr').value.trim(),
+        stars: parseInt(document.getElementById('testimonial-stars').value) || 5,
+        order: parseInt(document.getElementById('testimonial-order').value) || 0
+    };
+
+    const roleEn = document.getElementById('testimonial-role-en').value.trim();
+    if (isEdit || roleEn) formData.role_en = roleEn || '';
+
+    const textEn = document.getElementById('testimonial-text-en').value.trim();
+    if (isEdit || textEn) formData.text_en = textEn || '';
+
+    const image = document.getElementById('testimonial-image').value.trim();
+    if (isEdit || image) formData.image = image || '';
+
+    try {
+        const endpoint = isEdit ? `/testimonials/${testimonialId}/` : '/testimonials/';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        alert(isEdit ? 'Témoignage mis à jour avec succès!' : 'Témoignage créé avec succès!');
+        closeModal('testimonial');
+        loadTestimonials();
+
+    } catch (error) {
+        console.error('Error submitting testimonial:', error);
+        alert('Erreur: ' + error.message);
+    }
+}
+
+// ========================================
+// TEAM CRUD OPERATIONS
+// ========================================
+
+async function loadTeam() {
+    const tbody = document.getElementById('team-table');
+    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-walnut/40">Chargement...</td></tr>';
+
+    try {
+        const response = await API.team.list('fr');
+        const team = response.results || response;
+
+        if (team.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-walnut/40">Aucun membre</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = team.map(member => `
+            <tr class="table-row border-b border-oak/5">
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        ${member.image ?
+                            `<img src="${member.image}" alt="${member.name}" class="w-12 h-12 object-cover rounded-full">` :
+                            '<div class="w-12 h-12 bg-oak/10 rounded-full"></div>'
+                        }
+                        <div class="font-medium text-walnut">${member.name}</div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-sm text-walnut">${member.role || '-'}</td>
+                <td class="px-6 py-4 text-sm text-walnut">${member.exp ? member.exp + ' ans' : '-'}</td>
+                <td class="px-6 py-4 text-sm text-walnut">${member.order || 0}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 text-oak hover:bg-oak/10 rounded transition-colors" onclick="editTeamMember(${member.id})">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 text-red-600 hover:bg-red-50 rounded transition-colors" onclick="deleteTeamMember(${member.id})">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        lucide.createIcons();
+
+    } catch (error) {
+        console.error('Error loading team:', error);
+        tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-red-600">Erreur de chargement</td></tr>';
+    }
+}
+
+window.editTeamMember = async function(id) {
+    try {
+        // Load team member data with edit=true to get all language fields
+        const response = await fetch(`${API_BASE_URL}/team/${id}/?edit=true&lang=fr`);
+        const member = await response.json();
+
+        if (!member) throw new Error('Membre non trouvé');
+
+        document.getElementById('team-id').value = member.id;
+        document.getElementById('team-name').value = member.name || '';
+        document.getElementById('team-role-fr').value = member.role_fr || '';
+        document.getElementById('team-role-en').value = member.role_en || '';
+        document.getElementById('team-image').value = member.image || '';
+        document.getElementById('team-quote-fr').value = member.quote_fr || '';
+        document.getElementById('team-quote-en').value = member.quote_en || '';
+        document.getElementById('team-bio-fr').value = member.bio_fr || '';
+        document.getElementById('team-bio-en').value = member.bio_en || '';
+        document.getElementById('team-exp').value = member.exp || 0;
+        document.getElementById('team-order').value = member.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('team-modal-title').textContent = 'Modifier membre';
+
+        const modal = document.getElementById('modal-team');
+        modal.classList.add('active');
+        lucide.createIcons();
+    } catch (error) {
+        console.error('Error loading team member:', error);
+        alert('Erreur de chargement: ' + error.message);
+    }
+}
+
+window.deleteTeamMember = async function(id) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce membre?')) {
+        try {
+            await fetch(`${API_BASE_URL}/team/${id}/`, { method: 'DELETE' });
+            alert('Membre supprimé avec succès!');
+            loadTeam();
+        } catch (error) {
+            console.error('Error deleting team member:', error);
+            alert('Erreur de suppression: ' + error.message);
+        }
+    }
+}
+
+async function handleTeamSubmit(e) {
+    e.preventDefault();
+
+    const teamId = document.getElementById('team-id').value;
+    const isEdit = teamId && teamId !== '';
+
+    const formData = {
+        name: document.getElementById('team-name').value.trim(),
+        role_fr: document.getElementById('team-role-fr').value.trim(),
+        exp: parseInt(document.getElementById('team-exp').value) || 0,
+        order: parseInt(document.getElementById('team-order').value) || 0
+    };
+
+    const roleEn = document.getElementById('team-role-en').value.trim();
+    if (isEdit || roleEn) formData.role_en = roleEn || '';
+
+    const image = document.getElementById('team-image').value.trim();
+    if (isEdit || image) formData.image = image || '';
+
+    const quoteFr = document.getElementById('team-quote-fr').value.trim();
+    if (isEdit || quoteFr) formData.quote_fr = quoteFr || '';
+
+    const quoteEn = document.getElementById('team-quote-en').value.trim();
+    if (isEdit || quoteEn) formData.quote_en = quoteEn || '';
+
+    const bioFr = document.getElementById('team-bio-fr').value.trim();
+    if (isEdit || bioFr) formData.bio_fr = bioFr || '';
+
+    const bioEn = document.getElementById('team-bio-en').value.trim();
+    if (isEdit || bioEn) formData.bio_en = bioEn || '';
+
+    try {
+        const endpoint = isEdit ? `/team/${teamId}/` : '/team/';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        alert(isEdit ? 'Membre mis à jour avec succès!' : 'Membre créé avec succès!');
+        closeModal('team');
+        loadTeam();
+
+    } catch (error) {
+        console.error('Error submitting team member:', error);
+        alert('Erreur: ' + error.message);
+    }
+}
+
+// ========================================
+// TIMELINE CRUD OPERATIONS
+// ========================================
+
+async function loadTimeline() {
+    const tbody = document.getElementById('timeline-table');
+    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-walnut/40">Chargement...</td></tr>';
+
+    try {
+        const response = await API.timeline.list('fr');
+        const timeline = response.results || response;
+
+        if (timeline.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-walnut/40">Aucun événement</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = timeline.map(event => `
+            <tr class="table-row border-b border-oak/5">
+                <td class="px-6 py-4">
+                    <span class="badge badge-warning">${event.year}</span>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="font-medium text-walnut">${event.title}</div>
+                    ${event.desc ? `<div class="text-xs text-walnut/60 mt-1">${event.desc.substring(0, 50)}...</div>` : ''}
+                </td>
+                <td class="px-6 py-4 text-sm text-walnut">${event.order || 0}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 text-oak hover:bg-oak/10 rounded transition-colors" onclick="editTimelineEvent(${event.id})">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 text-red-600 hover:bg-red-50 rounded transition-colors" onclick="deleteTimelineEvent(${event.id})">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        lucide.createIcons();
+
+    } catch (error) {
+        console.error('Error loading timeline:', error);
+        tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-red-600">Erreur de chargement</td></tr>';
+    }
+}
+
+window.editTimelineEvent = async function(id) {
+    try {
+        // Load timeline event data with edit=true to get all language fields
+        const response = await fetch(`${API_BASE_URL}/timeline/${id}/?edit=true&lang=fr`);
+        const event = await response.json();
+
+        if (!event) throw new Error('Événement non trouvé');
+
+        document.getElementById('timeline-id').value = event.id;
+        document.getElementById('timeline-year').value = event.year || '';
+        document.getElementById('timeline-title-fr').value = event.title_fr || '';
+        document.getElementById('timeline-title-en').value = event.title_en || '';
+        document.getElementById('timeline-desc-fr').value = event.desc_fr || '';
+        document.getElementById('timeline-desc-en').value = event.desc_en || '';
+        document.getElementById('timeline-order').value = event.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('timeline-modal-title').textContent = 'Modifier événement';
+
+        const modal = document.getElementById('modal-timeline');
+        modal.classList.add('active');
+        lucide.createIcons();
+    } catch (error) {
+        console.error('Error loading timeline event:', error);
+        alert('Erreur de chargement: ' + error.message);
+    }
+}
+
+window.deleteTimelineEvent = async function(id) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet événement?')) {
+        try {
+            await fetch(`${API_BASE_URL}/timeline/${id}/`, { method: 'DELETE' });
+            alert('Événement supprimé avec succès!');
+            loadTimeline();
+        } catch (error) {
+            console.error('Error deleting timeline event:', error);
+            alert('Erreur de suppression: ' + error.message);
+        }
+    }
+}
+
+async function handleTimelineSubmit(e) {
+    e.preventDefault();
+
+    const timelineId = document.getElementById('timeline-id').value;
+    const isEdit = timelineId && timelineId !== '';
+
+    const formData = {
+        year: parseInt(document.getElementById('timeline-year').value),
+        title_fr: document.getElementById('timeline-title-fr').value.trim(),
+        order: parseInt(document.getElementById('timeline-order').value) || 0
+    };
+
+    const titleEn = document.getElementById('timeline-title-en').value.trim();
+    if (isEdit || titleEn) formData.title_en = titleEn || '';
+
+    const descFr = document.getElementById('timeline-desc-fr').value.trim();
+    if (isEdit || descFr) formData.desc_fr = descFr || '';
+
+    const descEn = document.getElementById('timeline-desc-en').value.trim();
+    if (isEdit || descEn) formData.desc_en = descEn || '';
+
+    try {
+        const endpoint = isEdit ? `/timeline/${timelineId}/` : '/timeline/';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        alert(isEdit ? 'Événement mis à jour avec succès!' : 'Événement créé avec succès!');
+        closeModal('timeline');
+        loadTimeline();
+
+    } catch (error) {
+        console.error('Error submitting timeline event:', error);
+        alert('Erreur: ' + error.message);
+    }
+}
+
+// ========================================
+// VALUES CRUD OPERATIONS
+// ========================================
+
+async function loadValues() {
+    const tbody = document.getElementById('values-table');
+    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-walnut/40">Chargement...</td></tr>';
+
+    try {
+        const response = await API.values.list('fr');
+        const values = response.results || response;
+
+        if (values.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-walnut/40">Aucune valeur</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = values.map(value => `
+            <tr class="table-row border-b border-oak/5">
+                <td class="px-6 py-4">
+                    <i data-lucide="${value.icon}" class="w-5 h-5 text-oak"></i>
+                </td>
+                <td class="px-6 py-4">
+                    <div class="font-medium text-walnut">${value.title}</div>
+                    ${value.desc ? `<div class="text-xs text-walnut/60 mt-1">${value.desc.substring(0, 50)}...</div>` : ''}
+                </td>
+                <td class="px-6 py-4 text-sm text-walnut">${value.order || 0}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 text-oak hover:bg-oak/10 rounded transition-colors" onclick="editValue(${value.id})">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 text-red-600 hover:bg-red-50 rounded transition-colors" onclick="deleteValue(${value.id})">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        lucide.createIcons();
+
+    } catch (error) {
+        console.error('Error loading values:', error);
+        tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-red-600">Erreur de chargement</td></tr>';
+    }
+}
+
+window.editValue = async function(id) {
+    try {
+        // Load company value data with edit=true to get all language fields
+        const response = await fetch(`${API_BASE_URL}/values/${id}/?edit=true&lang=fr`);
+        const value = await response.json();
+
+        if (!value) throw new Error('Valeur non trouvée');
+
+        document.getElementById('value-id').value = value.id;
+        document.getElementById('value-icon').value = value.icon || '';
+        document.getElementById('value-title-fr').value = value.title_fr || '';
+        document.getElementById('value-title-en').value = value.title_en || '';
+        document.getElementById('value-desc-fr').value = value.desc_fr || '';
+        document.getElementById('value-desc-en').value = value.desc_en || '';
+        document.getElementById('value-order').value = value.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('value-modal-title').textContent = 'Modifier valeur';
+
+        const modal = document.getElementById('modal-value');
+        modal.classList.add('active');
+        lucide.createIcons();
+    } catch (error) {
+        console.error('Error loading value:', error);
+        alert('Erreur de chargement: ' + error.message);
+    }
+}
+
+window.deleteValue = async function(id) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette valeur?')) {
+        try {
+            await fetch(`${API_BASE_URL}/values/${id}/`, { method: 'DELETE' });
+            alert('Valeur supprimée avec succès!');
+            loadValues();
+        } catch (error) {
+            console.error('Error deleting value:', error);
+            alert('Erreur de suppression: ' + error.message);
+        }
+    }
+}
+
+async function handleValueSubmit(e) {
+    e.preventDefault();
+
+    const valueId = document.getElementById('value-id').value;
+    const isEdit = valueId && valueId !== '';
+
+    const formData = {
+        icon: document.getElementById('value-icon').value.trim(),
+        title_fr: document.getElementById('value-title-fr').value.trim(),
+        order: parseInt(document.getElementById('value-order').value) || 0
+    };
+
+    const titleEn = document.getElementById('value-title-en').value.trim();
+    if (isEdit || titleEn) formData.title_en = titleEn || '';
+
+    const descFr = document.getElementById('value-desc-fr').value.trim();
+    if (isEdit || descFr) formData.desc_fr = descFr || '';
+
+    const descEn = document.getElementById('value-desc-en').value.trim();
+    if (isEdit || descEn) formData.desc_en = descEn || '';
+
+    try {
+        const endpoint = isEdit ? `/values/${valueId}/` : '/values/';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        alert(isEdit ? 'Valeur mise à jour avec succès!' : 'Valeur créée avec succès!');
+        closeModal('value');
+        loadValues();
+
+    } catch (error) {
+        console.error('Error submitting value:', error);
+        alert('Erreur: ' + error.message);
+    }
+}
+
+// ========================================
+// FAQS CRUD OPERATIONS
+// ========================================
+
+async function loadFaqs() {
+    const tbody = document.getElementById('faqs-table');
+    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-walnut/40">Chargement...</td></tr>';
+
+    try {
+        const response = await API.faqs.list('fr');
+        const faqs = response.results || response;
+
+        if (faqs.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-walnut/40">Aucune FAQ</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = faqs.map(faq => `
+            <tr class="table-row border-b border-oak/5">
+                <td class="px-6 py-4">
+                    <div class="font-medium text-walnut">${faq.question}</div>
+                    ${faq.answer ? `<div class="text-xs text-walnut/60 mt-1">${faq.answer.substring(0, 60)}...</div>` : ''}
+                </td>
+                <td class="px-6 py-4">
+                    <span class="badge">${faq.category || 'general'}</span>
+                </td>
+                <td class="px-6 py-4 text-sm text-walnut">${faq.order || 0}</td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-2">
+                        <button class="p-2 text-oak hover:bg-oak/10 rounded transition-colors" onclick="editFaq(${faq.id})">
+                            <i data-lucide="edit" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 text-red-600 hover:bg-red-50 rounded transition-colors" onclick="deleteFaq(${faq.id})">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        lucide.createIcons();
+
+    } catch (error) {
+        console.error('Error loading FAQs:', error);
+        tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-red-600">Erreur de chargement</td></tr>';
+    }
+}
+
+window.editFaq = async function(id) {
+    try {
+        // Load FAQ data with edit=true to get all language fields
+        const response = await fetch(`${API_BASE_URL}/faqs/${id}/?edit=true&lang=fr`);
+        const faq = await response.json();
+
+        if (!faq) throw new Error('FAQ non trouvée');
+
+        document.getElementById('faq-id').value = faq.id;
+        document.getElementById('faq-question-fr').value = faq.question_fr || '';
+        document.getElementById('faq-question-en').value = faq.question_en || '';
+        document.getElementById('faq-answer-fr').value = faq.answer_fr || '';
+        document.getElementById('faq-answer-en').value = faq.answer_en || '';
+        document.getElementById('faq-category').value = faq.category || '';
+        document.getElementById('faq-order').value = faq.order || 0;
+
+        // Change modal title to "Modifier"
+        document.getElementById('faq-modal-title').textContent = 'Modifier FAQ';
+
+        const modal = document.getElementById('modal-faq');
+        modal.classList.add('active');
+        lucide.createIcons();
+    } catch (error) {
+        console.error('Error loading FAQ:', error);
+        alert('Erreur de chargement: ' + error.message);
+    }
+}
+
+window.deleteFaq = async function(id) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette FAQ?')) {
+        try {
+            await fetch(`${API_BASE_URL}/faqs/${id}/`, { method: 'DELETE' });
+            alert('FAQ supprimée avec succès!');
+            loadFaqs();
+        } catch (error) {
+            console.error('Error deleting FAQ:', error);
+            alert('Erreur de suppression: ' + error.message);
+        }
+    }
+}
+
+async function handleFaqSubmit(e) {
+    e.preventDefault();
+
+    const faqId = document.getElementById('faq-id').value;
+    const isEdit = faqId && faqId !== '';
+
+    const formData = {
+        question_fr: document.getElementById('faq-question-fr').value.trim(),
+        answer_fr: document.getElementById('faq-answer-fr').value.trim(),
+        category: document.getElementById('faq-category').value.trim() || 'general',
+        order: parseInt(document.getElementById('faq-order').value) || 0
+    };
+
+    const questionEn = document.getElementById('faq-question-en').value.trim();
+    if (isEdit || questionEn) formData.question_en = questionEn || '';
+
+    const answerEn = document.getElementById('faq-answer-en').value.trim();
+    if (isEdit || answerEn) formData.answer_en = answerEn || '';
+
+    try {
+        const endpoint = isEdit ? `/faqs/${faqId}/` : '/faqs/';
+        const method = isEdit ? 'PUT' : 'POST';
+
+        await fetch(`${API_BASE_URL}${endpoint}`, {
+            method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        });
+
+        alert(isEdit ? 'FAQ mise à jour avec succès!' : 'FAQ créée avec succès!');
+        closeModal('faq');
+        loadFaqs();
+
+    } catch (error) {
+        console.error('Error submitting FAQ:', error);
+        alert('Erreur: ' + error.message);
+    }
 }

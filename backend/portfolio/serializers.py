@@ -306,3 +306,76 @@ class ContactSubmissionSerializer(serializers.ModelSerializer):
         if not value:
             raise serializers.ValidationError("GDPR consent is required.")
         return value
+
+
+class TeamMemberWriteSerializer(serializers.ModelSerializer):
+    """Serializer for creating and updating team members"""
+
+    # Add 'exp' as an alias for 'experience_years' for frontend compatibility
+    exp = serializers.IntegerField(source='experience_years', required=False)
+
+    class Meta:
+        model = TeamMember
+        fields = [
+            'name', 'role_fr', 'role_en', 'exp',
+            'quote_fr', 'quote_en', 'bio_fr', 'bio_en',
+            'image', 'order', 'is_active'
+        ]
+        extra_kwargs = {
+            'role_en': {'required': False, 'allow_blank': True},
+            'quote_en': {'required': False, 'allow_blank': True},
+            'bio_fr': {'required': False, 'allow_blank': True},
+            'bio_en': {'required': False, 'allow_blank': True},
+        }
+
+
+class TimelineEventWriteSerializer(serializers.ModelSerializer):
+    """Serializer for creating and updating timeline events"""
+
+    # Add 'desc' as an alias for 'description' for frontend compatibility
+    desc_fr = serializers.CharField(source='description_fr', required=False, allow_blank=True)
+    desc_en = serializers.CharField(source='description_en', required=False, allow_blank=True)
+
+    class Meta:
+        model = TimelineEvent
+        fields = [
+            'year', 'title_fr', 'title_en',
+            'desc_fr', 'desc_en', 'order'
+        ]
+        extra_kwargs = {
+            'title_en': {'required': False, 'allow_blank': True},
+        }
+
+
+class CompanyValueWriteSerializer(serializers.ModelSerializer):
+    """Serializer for creating and updating company values"""
+
+    # Add 'desc' as an alias for 'description' for frontend compatibility
+    desc_fr = serializers.CharField(source='description_fr', required=False, allow_blank=True)
+    desc_en = serializers.CharField(source='description_en', required=False, allow_blank=True)
+
+    class Meta:
+        model = CompanyValue
+        fields = [
+            'icon', 'title_fr', 'title_en',
+            'desc_fr', 'desc_en', 'order'
+        ]
+        extra_kwargs = {
+            'title_en': {'required': False, 'allow_blank': True},
+        }
+
+
+class FAQWriteSerializer(serializers.ModelSerializer):
+    """Serializer for creating and updating FAQs"""
+
+    class Meta:
+        model = FAQ
+        fields = [
+            'question_fr', 'question_en', 'answer_fr', 'answer_en',
+            'category', 'order', 'is_active'
+        ]
+        extra_kwargs = {
+            'question_en': {'required': False, 'allow_blank': True},
+            'answer_en': {'required': False, 'allow_blank': True},
+            'category': {'required': False, 'allow_blank': True},
+        }

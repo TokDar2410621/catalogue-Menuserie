@@ -20,8 +20,10 @@ from .models import (
 from .serializers import (
     ProjectListSerializer, ProjectDetailSerializer, ProjectWriteSerializer,
     ServiceSerializer, ServiceWriteSerializer,
-    TestimonialSerializer, TeamMemberSerializer, TimelineEventSerializer,
-    CompanyValueSerializer, FAQSerializer, ContactSubmissionSerializer
+    TestimonialSerializer, TeamMemberSerializer, TeamMemberWriteSerializer,
+    TimelineEventSerializer, TimelineEventWriteSerializer,
+    CompanyValueSerializer, CompanyValueWriteSerializer,
+    FAQSerializer, FAQWriteSerializer, ContactSubmissionSerializer
 )
 
 
@@ -50,6 +52,9 @@ class ProjectViewSet(viewsets.ModelViewSet):
         if self.action in ['create', 'update', 'partial_update']:
             return ProjectWriteSerializer
         elif self.action == 'retrieve':
+            # Use write serializer for admin editing (returns all language fields)
+            if self.request.query_params.get('edit') == 'true':
+                return ProjectWriteSerializer
             return ProjectDetailSerializer
         return ProjectListSerializer
 
@@ -120,6 +125,9 @@ class ServiceViewSet(viewsets.ModelViewSet):
         """Return appropriate serializer based on action"""
         if self.action in ['create', 'update', 'partial_update']:
             return ServiceWriteSerializer
+        # Use write serializer for admin editing (returns all language fields)
+        if self.action == 'retrieve' and self.request.query_params.get('edit') == 'true':
+            return ServiceWriteSerializer
         return ServiceSerializer
 
     def get_serializer_context(self):
@@ -187,13 +195,21 @@ class TestimonialViewSet(viewsets.ReadOnlyModelViewSet):
         return context
 
 
-class TeamMemberViewSet(viewsets.ReadOnlyModelViewSet):
+class TeamMemberViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for team members.
-    Returns active team members only.
+    ViewSet for team members with full CRUD operations.
     """
-    queryset = TeamMember.objects.filter(is_active=True)
-    serializer_class = TeamMemberSerializer
+    queryset = TeamMember.objects.all()  # Show all for admin
+    permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        """Return appropriate serializer based on action"""
+        if self.action in ['create', 'update', 'partial_update']:
+            return TeamMemberWriteSerializer
+        # Use write serializer for admin editing (returns all language fields)
+        if self.action == 'retrieve' and self.request.query_params.get('edit') == 'true':
+            return TeamMemberWriteSerializer
+        return TeamMemberSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -201,13 +217,21 @@ class TeamMemberViewSet(viewsets.ReadOnlyModelViewSet):
         return context
 
 
-class TimelineEventViewSet(viewsets.ReadOnlyModelViewSet):
+class TimelineEventViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for timeline events.
-    Shows company history.
+    ViewSet for timeline events with full CRUD operations.
     """
     queryset = TimelineEvent.objects.all()
-    serializer_class = TimelineEventSerializer
+    permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        """Return appropriate serializer based on action"""
+        if self.action in ['create', 'update', 'partial_update']:
+            return TimelineEventWriteSerializer
+        # Use write serializer for admin editing (returns all language fields)
+        if self.action == 'retrieve' and self.request.query_params.get('edit') == 'true':
+            return TimelineEventWriteSerializer
+        return TimelineEventSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -215,12 +239,21 @@ class TimelineEventViewSet(viewsets.ReadOnlyModelViewSet):
         return context
 
 
-class CompanyValueViewSet(viewsets.ReadOnlyModelViewSet):
+class CompanyValueViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for company values.
+    ViewSet for company values with full CRUD operations.
     """
     queryset = CompanyValue.objects.all()
-    serializer_class = CompanyValueSerializer
+    permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        """Return appropriate serializer based on action"""
+        if self.action in ['create', 'update', 'partial_update']:
+            return CompanyValueWriteSerializer
+        # Use write serializer for admin editing (returns all language fields)
+        if self.action == 'retrieve' and self.request.query_params.get('edit') == 'true':
+            return CompanyValueWriteSerializer
+        return CompanyValueSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
@@ -228,13 +261,21 @@ class CompanyValueViewSet(viewsets.ReadOnlyModelViewSet):
         return context
 
 
-class FAQViewSet(viewsets.ReadOnlyModelViewSet):
+class FAQViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for FAQs.
-    Returns active FAQs only.
+    ViewSet for FAQs with full CRUD operations.
     """
-    queryset = FAQ.objects.filter(is_active=True)
-    serializer_class = FAQSerializer
+    queryset = FAQ.objects.all()  # Show all for admin
+    permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        """Return appropriate serializer based on action"""
+        if self.action in ['create', 'update', 'partial_update']:
+            return FAQWriteSerializer
+        # Use write serializer for admin editing (returns all language fields)
+        if self.action == 'retrieve' and self.request.query_params.get('edit') == 'true':
+            return FAQWriteSerializer
+        return FAQSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

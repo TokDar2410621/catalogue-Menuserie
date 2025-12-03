@@ -1,0 +1,38 @@
+# Robots.txt pour DKBOIS - Menuiserie & Ébénisterie
+# Site: https://www.fdkbois.com
+
+User-agent: *
+Allow: /
+
+# Pages à ne pas indexer (administration)
+Disallow: /admin.html
+Disallow: /backend/
+Disallow: /api/
+
+# Fichiers et dossiers techniques
+Disallow: /*.js$
+Disallow: /*.css$
+Disallow: /*.json$
+
+# Permettre l'indexation des images
+Allow: /image/
+Allow: /images/
+Allow: /media/
+
+# Sitemap
+Sitemap: https://www.fdkbois.com/sitemap.xml
+
+# Règles spécifiques pour les moteurs de recherche principaux
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /image/
+Allow: /images/
+Allow: /media/
+
+User-agent: Bingbot
+Allow: /
+
+# Temps de visite (politesse)
+Crawl-delay: 1
