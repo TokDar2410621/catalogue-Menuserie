@@ -167,27 +167,27 @@ const setupInteractions = () => {
 
 const initGSAP = () => {
     gsap.registerPlugin(ScrollTrigger);
+    // Animations GSAP DÉSACTIVÉES pour éviter les problèmes d'invisibilité du contenu
+    // d.querySelectorAll('.animate-up').forEach(el => {
+    //     gsap.fromTo(el,
+    //         { opacity: 0, y: 30 },
+    //         { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: parseFloat(el.style.animationDelay) || 0 }
+    //     );
+    // });
 
-    d.querySelectorAll('.animate-up').forEach(el => {
-        gsap.fromTo(el,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: parseFloat(el.style.animationDelay) || 0 }
-        );
-    });
-
-    d.querySelectorAll('.reveal-section').forEach(section => {
-        gsap.from(section, {
-            opacity: 0,
-            y: 50,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: section,
-                start: 'top 85%',
-                toggleActions: 'play none none none'
-            }
-        });
-    });
+    // d.querySelectorAll('.reveal-section').forEach(section => {
+    //     gsap.from(section, {
+    //         opacity: 0,
+    //         y: 50,
+    //         duration: 1,
+    //         ease: 'power3.out',
+    //         scrollTrigger: {
+    //             trigger: section,
+    //             start: 'top 85%',
+    //             toggleActions: 'play none none none'
+    //         }
+    //     });
+    // });
 };
 
 d.addEventListener('DOMContentLoaded', () => {

@@ -130,6 +130,7 @@ d.addEventListener('DOMContentLoaded', () => {
     setupInteractions();
     setupForm();
     lucide.createIcons();
-    gsap.from('.animate-up', { y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out' });
+    // Animation GSAP DÉSACTIVÉE pour éviter les problèmes d'invisibilité du contenu
+    // gsap.from('.animate-up', { y: 30, opacity: 0, duration: 0.5, stagger: 0.1, ease: 'power3.out' });
     UXEnhancements.runEnhancements();
 });

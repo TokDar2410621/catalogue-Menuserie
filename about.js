@@ -169,16 +169,17 @@ const setupInteractions = () => {
 
 const initGSAP = () => {
     gsap.registerPlugin(ScrollTrigger);
-    d.querySelectorAll('.animate-up').forEach(el => {
-        gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: parseFloat(el.style.animationDelay) || 0 });
-    });
-    d.querySelectorAll('.reveal-section').forEach(section => {
-        gsap.from(section, { opacity: 0, y: 50, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 85%', toggleActions: 'play none none none' } });
-    });
-    gsap.from('.timeline-item', { opacity: 0, x: -30, stagger: 0.2, duration: 0.8, scrollTrigger: { trigger: '#timeline-container', start: 'top 70%' } });
-    gsap.from('#founder-content', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#founder-content', start: 'top 80%', toggleActions: 'play none none none' } });
-    gsap.from('.team-card', { opacity: 0, y: 30, stagger: 0.15, duration: 0.8, scrollTrigger: { trigger: '#team-grid', start: 'top 80%' } });
-    gsap.from('.value-item', { opacity: 0, y: 40, stagger: 0.15, duration: 0.8, scrollTrigger: { trigger: '#values-grid', start: 'top 80%' } });
+    // Animations GSAP DÉSACTIVÉES pour éviter les problèmes d'invisibilité du contenu
+    // d.querySelectorAll('.animate-up').forEach(el => {
+    //     gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: parseFloat(el.style.animationDelay) || 0 });
+    // });
+    // d.querySelectorAll('.reveal-section').forEach(section => {
+    //     gsap.from(section, { opacity: 0, y: 50, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 85%', toggleActions: 'play none none none' } });
+    // });
+    // gsap.from('.timeline-item', { opacity: 0, x: -30, stagger: 0.2, duration: 0.8, scrollTrigger: { trigger: '#timeline-container', start: 'top 70%' } });
+    // gsap.from('#founder-content', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '#founder-content', start: 'top 80%', toggleActions: 'play none none none' } });
+    // gsap.from('.team-card', { opacity: 0, y: 30, stagger: 0.15, duration: 0.8, scrollTrigger: { trigger: '#team-grid', start: 'top 80%' } });
+    // gsap.from('.value-item', { opacity: 0, y: 40, stagger: 0.15, duration: 0.8, scrollTrigger: { trigger: '#values-grid', start: 'top 80%' } });
 };
 
 d.addEventListener('DOMContentLoaded', () => {

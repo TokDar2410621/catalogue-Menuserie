@@ -131,15 +131,16 @@ const setupInteractions = () => {
 
 const initGSAP = () => {
     gsap.registerPlugin(ScrollTrigger);
-    d.querySelectorAll('.animate-up').forEach(el => {
-        gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: parseFloat(el.style.animationDelay) || 0 });
-    });
-    d.querySelectorAll('.service-section').forEach(section => {
-        const content = section.querySelector('.lg\\:w-7\\/12');
-        const gallery = section.querySelector('.lg\\:w-5\\/12');
-        if (content) gsap.from(content, { opacity: 0, x: -30, duration: 1, scrollTrigger: { trigger: section, start: 'top 70%' } });
-        if (gallery) gsap.from(gallery, { opacity: 0, x: 30, duration: 1, delay: 0.2, scrollTrigger: { trigger: section, start: 'top 70%' } });
-    });
+    // Animations GSAP DÉSACTIVÉES pour éviter les problèmes d'invisibilité du contenu
+    // d.querySelectorAll('.animate-up').forEach(el => {
+    //     gsap.fromTo(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', delay: parseFloat(el.style.animationDelay) || 0 });
+    // });
+    // d.querySelectorAll('.service-section').forEach(section => {
+    //     const content = section.querySelector('.lg\\:w-7\\/12');
+    //     const gallery = section.querySelector('.lg\\:w-5\\/12');
+    //     if (content) gsap.from(content, { opacity: 0, x: -30, duration: 1, scrollTrigger: { trigger: section, start: 'top 70%' } });
+    //     if (gallery) gsap.from(gallery, { opacity: 0, x: 30, duration: 1, delay: 0.2, scrollTrigger: { trigger: section, start: 'top 70%' } });
+    // });
 };
 
 d.addEventListener('DOMContentLoaded', () => {
