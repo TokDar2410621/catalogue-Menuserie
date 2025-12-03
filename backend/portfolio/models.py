@@ -241,12 +241,6 @@ class ContactSubmission(models.Model):
         ('other', 'Other'),
     ]
 
-    BUDGET_CHOICES = [
-        ('< 5000', '< 5,000 €'),
-        ('5000-15000', '5,000 - 15,000 €'),
-        ('> 15000', '> 15,000 €'),
-    ]
-
     # Contact information
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
@@ -255,7 +249,6 @@ class ContactSubmission(models.Model):
 
     # Project details
     project_type = models.CharField(max_length=20, choices=PROJECT_TYPE_CHOICES)
-    budget = models.CharField(max_length=20, choices=BUDGET_CHOICES, blank=True)
     description = models.TextField()
 
     # File uploads (stored as JSON list of URLs or file paths)

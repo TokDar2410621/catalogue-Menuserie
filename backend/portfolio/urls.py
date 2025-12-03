@@ -17,6 +17,7 @@ router.register(r'contact', views.ContactSubmissionViewSet, basename='contact')
 urlpatterns = [
     # API endpoints
     path('api/', include(router.urls)),
+    path('api/upload/', views.upload_image, name='upload_image'),
 
     # Authentication
     path('login/', views.login_view, name='login'),

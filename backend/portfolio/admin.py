@@ -142,11 +142,11 @@ class FAQAdmin(admin.ModelAdmin):
 
 @admin.register(ContactSubmission)
 class ContactSubmissionAdmin(admin.ModelAdmin):
-    list_display = ['full_name', 'email', 'project_type', 'budget', 'is_read', 'is_replied', 'created_at']
-    list_filter = ['is_read', 'is_replied', 'project_type', 'budget', 'created_at']
+    list_display = ['full_name', 'email', 'project_type', 'is_read', 'is_replied', 'created_at']
+    list_filter = ['is_read', 'is_replied', 'project_type', 'created_at']
     search_fields = ['firstname', 'lastname', 'email', 'description']
     list_editable = ['is_read', 'is_replied']
-    readonly_fields = ['firstname', 'lastname', 'email', 'phone', 'project_type', 'budget', 'description', 'files', 'gdpr_consent', 'created_at']
+    readonly_fields = ['firstname', 'lastname', 'email', 'phone', 'project_type', 'description', 'files', 'gdpr_consent', 'created_at']
     ordering = ['-created_at']
 
     fieldsets = (
@@ -154,7 +154,7 @@ class ContactSubmissionAdmin(admin.ModelAdmin):
             'fields': ('firstname', 'lastname', 'email', 'phone', 'created_at')
         }),
         ('Project Details', {
-            'fields': ('project_type', 'budget', 'description', 'files')
+            'fields': ('project_type', 'description', 'files')
         }),
         ('Admin', {
             'fields': ('is_read', 'is_replied', 'notes', 'gdpr_consent')

@@ -1,0 +1,5 @@
+# Netlify redirects configuration
+# This ensures that all routes are handled correctly
+
+# No redirects needed for static HTML files
+# Each .html file is served directly

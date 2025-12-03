@@ -18,7 +18,22 @@ const apiRequest = async (endpoint, options = {}) => {
         });
 
         if (!response.ok) {
-            throw new Error(`API Error: ${response.status} ${response.statusText}`);
+            // Try to get error details from response
+            let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                if (errorData.message || errorData.error) {
+                    errorMessage = errorData.message || errorData.error;
+                }
+            } catch (e) {
+                // Response is not JSON, use default error message
+            }
+            throw new Error(errorMessage);
+        }
+
+        // DELETE requests return 204 No Content
+        if (response.status === 204 || options.method === 'DELETE') {
+            return { message: 'Operation successful' };
         }
 
         return await response.json();
@@ -41,6 +56,23 @@ export const API = {
         },
         detail: (slug, lang = 'fr') => {
             return apiRequest(`/projects/${slug}/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/projects/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (slug, data) => {
+            return apiRequest(`/projects/${slug}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (slug) => {
+            return apiRequest(`/projects/${slug}/`, {
+                method: 'DELETE'
+            });
         }
     },
 
@@ -51,6 +83,23 @@ export const API = {
         },
         detail: (slug, lang = 'fr') => {
             return apiRequest(`/services/${slug}/?lang=${lang}`);
+        },
+        create: (data) => {
+            return apiRequest('/services/', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        },
+        update: (slug, data) => {
+            return apiRequest(`/services/${slug}/`, {
+                method: 'PUT',
+                body: JSON.stringify(data)
+            });
+        },
+        delete: (slug) => {
+            return apiRequest(`/services/${slug}/`, {
+                method: 'DELETE'
+            });
         }
     },
 
@@ -96,6 +145,32 @@ export const API = {
                 method: 'POST',
                 body: JSON.stringify(data)
             });
+        }
+    },
+
+    // Upload
+    upload: {
+        image: async (file) => {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/upload/`, {
+                    method: 'POST',
+                    body: formData
+                    // Don't set Content-Type header, browser will set it with boundary
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Upload failed');
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Upload error:', error);
+                throw error;
+            }
         }
     }
 };

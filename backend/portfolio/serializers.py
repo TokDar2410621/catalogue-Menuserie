@@ -184,6 +184,111 @@ class FAQSerializer(serializers.ModelSerializer):
         return obj.answer_fr if lang == 'fr' else obj.answer_en
 
 
+class ProjectWriteSerializer(serializers.ModelSerializer):
+    """Serializer for creating and updating projects"""
+
+    class Meta:
+        model = Project
+        fields = [
+            'slug', 'title_fr', 'title_en', 'category', 'type', 'material',
+            'short_desc_fr', 'short_desc_en', 'full_desc_fr', 'full_desc_en',
+            'challenge_fr', 'challenge_en', 'duration_fr', 'duration_en',
+            'location', 'finish_fr', 'finish_en', 'tags', 'images',
+            'featured', 'order'
+        ]
+        read_only_fields = []
+        # Allow partial updates - all fields optional except title_fr
+        extra_kwargs = {
+            'title_en': {'required': False, 'allow_blank': True},
+            'category': {'required': False, 'allow_blank': True},
+            'type': {'required': False, 'allow_blank': True},
+            'material': {'required': False, 'allow_blank': True},
+            'short_desc_fr': {'required': False, 'allow_blank': True},
+            'short_desc_en': {'required': False, 'allow_blank': True},
+            'full_desc_fr': {'required': False, 'allow_blank': True},
+            'full_desc_en': {'required': False, 'allow_blank': True},
+            'slug': {'required': False, 'allow_blank': True},
+        }
+
+    def validate_slug(self, value):
+        """Validate slug uniqueness on update"""
+        # Skip validation for empty slug
+        if not value:
+            return value
+
+        instance = self.instance
+        if instance and Project.objects.exclude(pk=instance.pk).filter(slug=value).exists():
+            raise serializers.ValidationError("A project with this slug already exists.")
+        elif not instance and Project.objects.filter(slug=value).exists():
+            raise serializers.ValidationError("A project with this slug already exists.")
+        return value
+
+    def create(self, validated_data):
+        """Create a new project - slug auto-generated if not provided"""
+        if not validated_data.get('slug'):
+            # Slug will be auto-generated in model save()
+            validated_data['slug'] = ''
+        return super().create(validated_data)
+
+
+class ServiceWriteSerializer(serializers.ModelSerializer):
+    """Serializer for creating and updating services"""
+
+    class Meta:
+        model = Service
+        fields = [
+            'service_id', 'slug', 'icon', 'title_fr', 'title_en',
+            'description_fr', 'description_en', 'sub_services',
+            'process_steps', 'timeframe_fr', 'timeframe_en',
+            'images', 'order', 'is_active'
+        ]
+        read_only_fields = []
+        # Allow partial updates - all fields optional except title_fr
+        extra_kwargs = {
+            'service_id': {'required': False, 'allow_blank': True},
+            'slug': {'required': False, 'allow_blank': True},
+            'icon': {'required': False, 'allow_blank': True},
+            'title_en': {'required': False, 'allow_blank': True},
+            'description_fr': {'required': False, 'allow_blank': True},
+            'description_en': {'required': False, 'allow_blank': True},
+            'timeframe_fr': {'required': False, 'allow_blank': True},
+            'timeframe_en': {'required': False, 'allow_blank': True},
+        }
+
+    def validate_slug(self, value):
+        """Validate slug uniqueness on update"""
+        # Skip validation for empty slug
+        if not value:
+            return value
+
+        instance = self.instance
+        if instance and Service.objects.exclude(pk=instance.pk).filter(slug=value).exists():
+            raise serializers.ValidationError("A service with this slug already exists.")
+        elif not instance and Service.objects.filter(slug=value).exists():
+            raise serializers.ValidationError("A service with this slug already exists.")
+        return value
+
+    def validate_service_id(self, value):
+        """Validate service_id uniqueness on update"""
+        # Skip validation for empty service_id
+        if not value:
+            return value
+
+        instance = self.instance
+        if instance and Service.objects.exclude(pk=instance.pk).filter(service_id=value).exists():
+            raise serializers.ValidationError("A service with this service_id already exists.")
+        elif not instance and Service.objects.filter(service_id=value).exists():
+            raise serializers.ValidationError("A service with this service_id already exists.")
+        return value
+
+    def create(self, validated_data):
+        """Create a new service - slug auto-generated if not provided"""
+        if not validated_data.get('slug'):
+            # Slug will be auto-generated in model save()
+            validated_data['slug'] = ''
+        return super().create(validated_data)
+
+
 class ContactSubmissionSerializer(serializers.ModelSerializer):
     """Serializer for contact form submissions"""
 
@@ -191,7 +296,7 @@ class ContactSubmissionSerializer(serializers.ModelSerializer):
         model = ContactSubmission
         fields = [
             'id', 'firstname', 'lastname', 'email', 'phone',
-            'project_type', 'budget', 'description', 'files',
+            'project_type', 'description', 'files',
             'gdpr_consent', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']

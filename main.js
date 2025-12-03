@@ -321,11 +321,11 @@ const initGSAP = () => {
     d.querySelectorAll('.reveal-section').forEach(section => {
         gsap.from(section, { opacity: 0, y: 50, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: section, start: 'top 85%', toggleActions: 'play none none none' } });
     });
-    // Animations pour services et portfolio - déclenché après le rendu
-    setTimeout(() => {
-        gsap.from('.service-card', { opacity: 0, y: 30, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#services-grid', start: 'top 85%' } });
-        gsap.from('.portfolio-item', { opacity: 0, scale: 0.95, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#portfolio-grid', start: 'top 80%' } });
-    }, 100);
+    // Animations GSAP pour services et portfolio DÉSACTIVÉES pour éviter les problèmes d'invisibilité
+    // setTimeout(() => {
+    //     gsap.from('.service-card', { opacity: 0, y: 30, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#services-grid', start: 'top 85%' } });
+    //     gsap.from('.portfolio-item', { opacity: 0, scale: 0.95, stagger: 0.1, duration: 0.8, ease: 'power2.out', scrollTrigger: { trigger: '#portfolio-grid', start: 'top 80%' } });
+    // }, 100);
 };
 
 d.addEventListener('DOMContentLoaded', async () => {

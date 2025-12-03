@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DKBOIS - Administration</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oak: '#8B4513',
+                        walnut: '#3E2723',
+                        maple: '#F5DEB3',
+                        offwhite: '#FAF9F6',
+                        forest: '#2F5233',
+                        gold: '#D4AF37',
+                        'gold-contrast': '#E5C158'
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Lato', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.15);
+        }
+
+        .sidebar-link {
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+            background-color: rgba(139, 69, 19, 0.1);
+            border-left: 4px solid #8B4513;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .table-row {
+            transition: background-color 0.2s ease;
+        }
+
+        .table-row:hover {
+            background-color: rgba(139, 69, 19, 0.05);
+        }
+
+        .btn-primary {
+            background-color: #8B4513;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #D4AF37;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #2F5233;
+            color: white;
+        }
+
+        .badge-warning {
+            background-color: #D4AF37;
+            color: #3E2723;
+        }
+
+        .badge-danger {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF9F6;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+    </style>
+</head>
+<body class="bg-offwhite">
+    <!-- Login Screen -->
+    <div id="login-screen" class="min-h-screen flex items-center justify-center px-4">
+        <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <h1 class="font-serif text-3xl font-bold text-walnut mb-2">DKBOIS</h1>
+                <p class="text-walnut/60">Administration</p>
+            </div>
+
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label class="block text-walnut font-medium mb-2">Nom d'utilisateur</label>
+                    <input type="text" id="username" required
+                           class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                </div>
+
+                <div>
+                    <label class="block text-walnut font-medium mb-2">Mot de passe</label>
+                    <input type="password" id="password" required
+                           class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                </div>
+
+                <div id="login-error" class="hidden text-red-600 text-sm"></div>
+
+                <button type="submit" class="w-full btn-primary py-3 rounded-lg font-medium">
+                    Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="hidden min-h-screen">
+        <!-- Sidebar -->
+        <aside class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-40">
+            <div class="p-6 border-b border-oak/10">
+                <h1 class="font-serif text-2xl font-bold text-walnut">DKBOIS</h1>
+                <p class="text-walnut/60 text-sm">Administration</p>
+            </div>
+
+            <nav class="p-4 space-y-2">
+                <button class="sidebar-link active w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="dashboard">
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                    <span>Dashboard</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="projects">
+                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                    <span>Projets</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="services">
+                    <i data-lucide="hammer" class="w-5 h-5"></i>
+                    <span>Services</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="testimonials">
+                    <i data-lucide="message-square" class="w-5 h-5"></i>
+                    <span>Témoignages</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="team">
+                    <i data-lucide="users" class="w-5 h-5"></i>
+                    <span>Équipe</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="timeline">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
+                    <span>Timeline</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="values">
+                    <i data-lucide="heart" class="w-5 h-5"></i>
+                    <span>Valeurs</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="faqs">
+                    <i data-lucide="help-circle" class="w-5 h-5"></i>
+                    <span>FAQs</span>
+                </button>
+
+                <button class="sidebar-link w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 text-walnut" data-section="contact">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                    <span>Messages</span>
+                </button>
+            </nav>
+
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-oak/10">
+                <button id="logout-btn" class="w-full px-4 py-2 text-oak hover:bg-oak/10 rounded-lg transition-colors flex items-center gap-2">
+                    <i data-lucide="log-out" class="w-5 h-5"></i>
+                    <span>Déconnexion</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-64 p-8">
+            <!-- Dashboard Section -->
+            <div id="section-dashboard" class="section-content active">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Dashboard</h2>
+                    <p class="text-walnut/60">Vue d'ensemble de votre contenu</p>
+                </div>
+
+                <!-- Statistics Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="stat-card bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-oak/10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="briefcase" class="w-6 h-6 text-oak"></i>
+                            </div>
+                            <span id="stat-projects" class="font-serif text-3xl font-bold text-walnut">0</span>
+                        </div>
+                        <h3 class="text-walnut/60 text-sm font-medium">Total Projets</h3>
+                        <p class="text-xs text-gold mt-1"><span id="stat-projects-featured">0</span> en vedette</p>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-forest/10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="hammer" class="w-6 h-6 text-forest"></i>
+                            </div>
+                            <span id="stat-services" class="font-serif text-3xl font-bold text-walnut">0</span>
+                        </div>
+                        <h3 class="text-walnut/60 text-sm font-medium">Services</h3>
+                        <p class="text-xs text-forest mt-1"><span id="stat-services-active">0</span> actifs</p>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-gold/10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="message-square" class="w-6 h-6 text-gold"></i>
+                            </div>
+                            <span id="stat-testimonials" class="font-serif text-3xl font-bold text-walnut">0</span>
+                        </div>
+                        <h3 class="text-walnut/60 text-sm font-medium">Témoignages</h3>
+                    </div>
+
+                    <div class="stat-card bg-white rounded-lg p-6 shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                                <i data-lucide="mail" class="w-6 h-6 text-red-600"></i>
+                            </div>
+                            <span id="stat-messages" class="font-serif text-3xl font-bold text-walnut">0</span>
+                        </div>
+                        <h3 class="text-walnut/60 text-sm font-medium">Messages</h3>
+                        <p class="text-xs text-red-600 mt-1"><span id="stat-messages-unread">0</span> non lus</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <h3 class="font-serif text-xl font-bold text-walnut mb-4">Actions rapides</h3>
+                        <div class="space-y-3">
+                            <button class="w-full px-4 py-3 bg-oak/10 hover:bg-oak/20 text-oak rounded-lg transition-colors flex items-center gap-3" onclick="switchSection('projects')">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                                <span>Ajouter un projet</span>
+                            </button>
+                            <button class="w-full px-4 py-3 bg-forest/10 hover:bg-forest/20 text-forest rounded-lg transition-colors flex items-center gap-3" onclick="switchSection('services')">
+                                <i data-lucide="plus" class="w-5 h-5"></i>
+                                <span>Ajouter un service</span>
+                            </button>
+                            <button class="w-full px-4 py-3 bg-gold/10 hover:bg-gold/20 text-walnut rounded-lg transition-colors flex items-center gap-3" onclick="switchSection('contact')">
+                                <i data-lucide="inbox" class="w-5 h-5"></i>
+                                <span>Voir les messages</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-6 shadow-md">
+                        <h3 class="font-serif text-xl font-bold text-walnut mb-4">Derniers messages</h3>
+                        <div id="recent-messages" class="space-y-3">
+                            <p class="text-walnut/40 text-sm">Chargement...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div id="section-projects" class="section-content">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Projets</h2>
+                        <p class="text-walnut/60">Gérez vos projets et réalisations</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('project')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouveau projet</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Titre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Catégorie</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Type</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">En vedette</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="projects-table">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement des projets...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div id="section-services" class="section-content">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Services</h2>
+                        <p class="text-walnut/60">Gérez vos services</p>
+                    </div>
+                    <button class="btn-primary px-6 py-3 rounded-lg flex items-center gap-2" onclick="openModal('service')">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
+                        <span>Nouveau service</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Titre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Icône</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Statut</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Ordre</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-table">
+                                <tr>
+                                    <td colspan="5" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement des services...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Messages Section -->
+            <div id="section-contact" class="section-content">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Messages</h2>
+                    <p class="text-walnut/60">Gérez les demandes de contact</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-oak/5 border-b border-oak/10">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Nom</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Email</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Type de projet</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Date</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Statut</th>
+                                    <th class="px-6 py-4 text-left text-sm font-semibold text-walnut">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="messages-table">
+                                <tr>
+                                    <td colspan="6" class="px-6 py-8 text-center text-walnut/40">
+                                        Chargement des messages...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections placeholders -->
+            <div id="section-testimonials" class="section-content">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Témoignages</h2>
+                    <p class="text-walnut/60">En cours de développement...</p>
+                </div>
+            </div>
+
+            <div id="section-team" class="section-content">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Équipe</h2>
+                    <p class="text-walnut/60">En cours de développement...</p>
+                </div>
+            </div>
+
+            <div id="section-timeline" class="section-content">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Timeline</h2>
+                    <p class="text-walnut/60">En cours de développement...</p>
+                </div>
+            </div>
+
+            <div id="section-values" class="section-content">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Valeurs</h2>
+                    <p class="text-walnut/60">En cours de développement...</p>
+                </div>
+            </div>
+
+            <div id="section-faqs" class="section-content">
+                <div class="mb-8">
+                    <h2 class="font-serif text-3xl font-bold text-walnut mb-2">FAQs</h2>
+                    <p class="text-walnut/60">En cours de développement...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal for Project -->
+    <div id="modal-project" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 class="font-serif text-2xl font-bold text-walnut">Nouveau projet</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('project')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="project-form" class="space-y-6">
+                    <input type="hidden" id="project-id" name="id">
+
+                    <!-- Titre et Slug -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (FR) *</label>
+                            <input type="text" id="project-title-fr" name="title_fr" required
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (EN)</label>
+                            <input type="text" id="project-title-en" name="title_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Slug</label>
+                        <input type="text" id="project-slug" name="slug"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="cuisine-moderne-bois">
+                    </div>
+
+                    <!-- Descriptions courtes -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description courte (FR)</label>
+                            <textarea id="project-short-desc-fr" name="short_desc_fr" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description courte (EN)</label>
+                            <textarea id="project-short-desc-en" name="short_desc_en" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Descriptions complètes -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description complète (FR)</label>
+                            <textarea id="project-full-desc-fr" name="full_desc_fr" rows="4"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description complète (EN)</label>
+                            <textarea id="project-full-desc-en" name="full_desc_en" rows="4"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Catégorie, Type, Matériau -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Catégorie</label>
+                            <select id="project-category" name="category"
+                                    class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                                <option value="kitchen">Cuisine</option>
+                                <option value="bedroom">Chambre</option>
+                                <option value="living">Salon</option>
+                                <option value="office">Bureau</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Type</label>
+                            <select id="project-type" name="type"
+                                    class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                                <option value="creation">Création</option>
+                                <option value="restoration">Restauration</option>
+                                <option value="installation">Installation</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Matériau</label>
+                            <input type="text" id="project-material" name="material"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="Bois massif">
+                        </div>
+                    </div>
+
+                    <!-- Localisation et Durée -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Localisation</label>
+                            <input type="text" id="project-location" name="location"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="Yaoundé, Cameroun">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-walnut font-medium mb-2">Durée (FR)</label>
+                                <input type="text" id="project-duration-fr" name="duration_fr"
+                                       class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                       placeholder="2 semaines">
+                            </div>
+                            <div>
+                                <label class="block text-walnut font-medium mb-2">Durée (EN)</label>
+                                <input type="text" id="project-duration-en" name="duration_en"
+                                       class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                       placeholder="2 weeks">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Images</label>
+
+                        <!-- File upload button -->
+                        <div class="mb-3">
+                            <input type="file" id="project-image-files" name="image_files" multiple accept="image/*"
+                                   class="hidden">
+                            <button type="button" onclick="document.getElementById('project-image-files').click()"
+                                    class="px-4 py-2 bg-oak text-white rounded-lg hover:bg-oak/90 transition-colors inline-flex items-center gap-2">
+                                <i data-lucide="upload" class="w-4 h-4"></i>
+                                <span>Téléverser des images</span>
+                            </button>
+                            <span id="project-upload-status" class="ml-3 text-sm text-walnut/60"></span>
+                        </div>
+
+                        <!-- Preview uploaded images -->
+                        <div id="project-image-previews" class="grid grid-cols-4 gap-2 mb-3"></div>
+
+                        <!-- Manual URL input (optional) -->
+                        <textarea id="project-images" name="images" rows="2"
+                                  class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                  placeholder="Ou entrez les URLs manuellement (séparées par des virgules)"></textarea>
+                        <p class="text-xs text-walnut/60 mt-1">Les images téléversées seront ajoutées automatiquement</p>
+                    </div>
+
+                    <!-- Tags -->
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Tags (séparés par des virgules)</label>
+                        <input type="text" id="project-tags" name="tags"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="Cuisine, Moderne, Bois">
+                    </div>
+
+                    <!-- En vedette et Ordre -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="project-featured" name="featured"
+                                   class="w-5 h-5 text-oak border-oak/20 rounded focus:ring-oak">
+                            <label for="project-featured" class="text-walnut font-medium">Projet en vedette</label>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Ordre</label>
+                            <input type="number" id="project-order" name="order" min="0" value="0"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('project')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Service -->
+    <div id="modal-service" class="modal">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="sticky top-0 bg-white border-b border-oak/10 px-6 py-4 flex items-center justify-between">
+                <h3 class="font-serif text-2xl font-bold text-walnut">Nouveau service</h3>
+                <button class="text-walnut/60 hover:text-walnut" onclick="closeModal('service')">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <form id="service-form" class="space-y-6">
+                    <input type="hidden" id="service-id" name="id">
+
+                    <!-- Titre et Slug -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (FR) *</label>
+                            <input type="text" id="service-title-fr" name="title_fr" required
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Titre (EN)</label>
+                            <input type="text" id="service-title-en" name="title_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Service ID</label>
+                            <input type="text" id="service-service-id" name="service_id"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="menuiserie">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Slug</label>
+                            <input type="text" id="service-slug" name="slug"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="menuiserie-interieure">
+                        </div>
+                    </div>
+
+                    <!-- Icône -->
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Icône Lucide</label>
+                        <input type="text" id="service-icon" name="icon"
+                               class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                               placeholder="hammer">
+                        <p class="text-xs text-walnut/60 mt-1">Voir: <a href="https://lucide.dev/icons/" target="_blank" class="text-oak hover:underline">lucide.dev/icons</a></p>
+                    </div>
+
+                    <!-- Descriptions -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description (FR)</label>
+                            <textarea id="service-description-fr" name="description_fr" rows="4"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Description (EN)</label>
+                            <textarea id="service-description-en" name="description_en" rows="4"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Sous-services -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Sous-services (FR)</label>
+                            <textarea id="service-sub-services-fr" name="sub_services_fr" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                      placeholder="Portes sur mesure, Fenêtres, Escaliers"></textarea>
+                            <p class="text-xs text-walnut/60 mt-1">Séparez par des virgules</p>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Sous-services (EN)</label>
+                            <textarea id="service-sub-services-en" name="sub_services_en" rows="3"
+                                      class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                      placeholder="Custom doors, Windows, Stairs"></textarea>
+                            <p class="text-xs text-walnut/60 mt-1">Séparez par des virgules</p>
+                        </div>
+                    </div>
+
+                    <!-- Délai -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Délai (FR)</label>
+                            <input type="text" id="service-timeframe-fr" name="timeframe_fr"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="2-4 semaines">
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Délai (EN)</label>
+                            <input type="text" id="service-timeframe-en" name="timeframe_en"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                   placeholder="2-4 weeks">
+                        </div>
+                    </div>
+
+                    <!-- Images -->
+                    <div>
+                        <label class="block text-walnut font-medium mb-2">Images</label>
+
+                        <!-- File upload button -->
+                        <div class="mb-3">
+                            <input type="file" id="service-image-files" name="image_files" multiple accept="image/*"
+                                   class="hidden">
+                            <button type="button" onclick="document.getElementById('service-image-files').click()"
+                                    class="px-4 py-2 bg-oak text-white rounded-lg hover:bg-oak/90 transition-colors inline-flex items-center gap-2">
+                                <i data-lucide="upload" class="w-4 h-4"></i>
+                                <span>Téléverser des images</span>
+                            </button>
+                            <span id="service-upload-status" class="ml-3 text-sm text-walnut/60"></span>
+                        </div>
+
+                        <!-- Preview uploaded images -->
+                        <div id="service-image-previews" class="grid grid-cols-4 gap-2 mb-3"></div>
+
+                        <!-- Manual URL input (optional) -->
+                        <textarea id="service-images" name="images" rows="2"
+                                  class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors"
+                                  placeholder="Ou entrez les URLs manuellement (séparées par des virgules)"></textarea>
+                        <p class="text-xs text-walnut/60 mt-1">Les images téléversées seront ajoutées automatiquement</p>
+                    </div>
+
+                    <!-- Statut et Ordre -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="service-is-active" name="is_active" checked
+                                   class="w-5 h-5 text-oak border-oak/20 rounded focus:ring-oak">
+                            <label for="service-is-active" class="text-walnut font-medium">Service actif</label>
+                        </div>
+                        <div>
+                            <label class="block text-walnut font-medium mb-2">Ordre</label>
+                            <input type="number" id="service-order" name="order" min="0" value="0"
+                                   class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-oak/10">
+                        <button type="button" class="px-6 py-2 border border-oak/20 text-walnut rounded-lg hover:bg-oak/5 transition-colors" onclick="closeModal('service')">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-primary px-6 py-2 rounded-lg">
+                            Enregistrer
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>
