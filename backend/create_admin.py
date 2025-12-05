@@ -19,15 +19,16 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Supprimer tous les superusers existants
-deleted = User.objects.filter(is_superuser=True).delete()
-print(f"Superusers supprimes: {deleted}")
-
-# Créer nouveau superuser
 username = 'admin'
 email = 'admin@fdkbois.com'
 password = 'admin123'
 
+# Supprimer l'utilisateur admin existant s'il existe
+if User.objects.filter(username=username).exists():
+    User.objects.filter(username=username).delete()
+    print(f"Ancien utilisateur '{username}' supprime")
+
+# Créer nouveau superuser
 user = User.objects.create_superuser(
     username=username,
     email=email,
