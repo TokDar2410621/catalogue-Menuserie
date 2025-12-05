@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -158,28 +159,32 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS Settings
 # In production, add your frontend URL (e.g., "https://dkbois.netlify.app")
-CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS',
+CORS_ALLOWED_ORIGINS = [
+    origin.rstrip('/') for origin in os.environ.get('CORS_ALLOWED_ORIGINS',
     "http://localhost:3000,http://localhost:3200,http://localhost:5500,http://localhost:8080,"
     "http://127.0.0.1:3000,http://127.0.0.1:3200,http://127.0.0.1:5500,http://127.0.0.1:8080,"
     "https://catalogue-menuserie.vercel.app"
-).split(',')
+).split(',') if origin.strip()
+]
 
 # Allow all origins in development only
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 # CSRF Settings
 # In production, add your frontend and backend URLs
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS',
+CSRF_TRUSTED_ORIGINS = [
+    origin.rstrip('/') for origin in os.environ.get('CSRF_TRUSTED_ORIGINS',
     "http://localhost:8000,http://localhost:3000,http://127.0.0.1:8000,"
     "https://carefree-heart-production-ec3a.up.railway.app,"
     "https://catalogue-menuserie.vercel.app"
-).split(',')
+).split(',') if origin.strip()
+]
 
 # Cloudinary Configuration for Image Storage
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY', ''),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET', ''),
+    'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=''),
+    'API_KEY': config('CLOUDINARY_API_KEY', default=''),
+    'API_SECRET': config('CLOUDINARY_API_SECRET', default=''),
 }
 
 # REST Framework Settings
