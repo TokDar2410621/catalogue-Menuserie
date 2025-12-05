@@ -19,18 +19,18 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-# Informations du superuser (à configurer via variables d'environnement)
-username = os.environ.get('ADMIN_USERNAME', 'admin')
-email = os.environ.get('ADMIN_EMAIL', 'admin@dkbois.com')
-password = os.environ.get('ADMIN_PASSWORD', 'admin123456')  # Changez en production !
+# Supprimer tous les superusers existants
+deleted = User.objects.filter(is_superuser=True).delete()
+print(f"Superusers supprimes: {deleted}")
 
-# Créer le superuser seulement s'il n'existe pas
-if not User.objects.filter(username=username).exists():
-    User.objects.create_superuser(
-        username=username,
-        email=email,
-        password=password
-    )
-    print(f"✅ Superuser '{username}' créé avec succès !")
-else:
-    print(f"ℹ️  Superuser '{username}' existe déjà.")
+# Créer nouveau superuser
+username = 'admin'
+email = 'admin@fdkbois.com'
+password = 'admin123'
+
+user = User.objects.create_superuser(
+    username=username,
+    email=email,
+    password=password
+)
+print(f"Superuser '{username}' cree avec succes!")
