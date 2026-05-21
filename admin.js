@@ -45,6 +45,18 @@ function setupEventListeners() {
     // Login form
     document.getElementById('login-form').addEventListener('submit', handleLogin);
 
+    // Toggle password visibility on login screen
+    const togglePasswordBtn = document.getElementById('toggle-password');
+    if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener('click', () => {
+            const pwdInput = document.getElementById('password');
+            const showing = pwdInput.type === 'password';
+            pwdInput.type = showing ? 'text' : 'password';
+            togglePasswordBtn.innerHTML = `<i data-lucide="${showing ? 'eye-off' : 'eye'}" class="w-5 h-5"></i>`;
+            lucide.createIcons();
+        });
+    }
+
     // Logout button
     document.getElementById('logout-btn').addEventListener('click', handleLogout);
 

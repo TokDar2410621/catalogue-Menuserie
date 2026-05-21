@@ -170,8 +170,15 @@
 
                 <div>
                     <label class="block text-walnut font-medium mb-2">Mot de passe</label>
-                    <input type="password" id="password" required
-                           class="w-full px-4 py-2 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                    <div class="relative">
+                        <input type="password" id="password" required
+                               class="w-full px-4 py-2 pr-12 border border-oak/20 rounded-lg focus:outline-none focus:border-oak transition-colors">
+                        <button type="button" id="toggle-password"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-walnut/50 hover:text-oak transition-colors"
+                                aria-label="Afficher ou masquer le mot de passe">
+                            <i data-lucide="eye" class="w-5 h-5"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div id="login-error" class="hidden text-red-600 text-sm"></div>
