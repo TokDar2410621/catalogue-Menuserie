@@ -92,7 +92,7 @@ window.toggleFAQ = (btn) => {
 };
 
 const setupForm = () => {
-    const form = d.getElementById('contact-form');
+    const form = d.getElementById('contact-form-element');
     if (!form) return;
     
     d.getElementById('file-upload').addEventListener('change', (e) => {
