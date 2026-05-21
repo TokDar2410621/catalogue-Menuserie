@@ -98,6 +98,7 @@ export const translations = {
             hours_value: "Lundi - Vendredi : 9h00 - 18h00",
             faq_title: "Questions Fréquentes",
             success_message: "Merci ! Votre message a bien été envoyé. Nous vous répondrons sous 48h.",
+            error_message: "Une erreur est survenue lors de l'envoi. Merci de réessayer ou de nous contacter directement par email.",
             form: {
                 firstname: "Prénom", lastname: "Nom", email: "Email", phone: "Téléphone",
                 project_type: "Type de projet",
@@ -243,6 +244,7 @@ export const translations = {
             hours_value: "Monday - Friday: 9:00 AM - 6:00 PM",
             faq_title: "Frequently Asked Questions",
             success_message: "Thank you! Your message has been sent. We will get back to you within 48 hours.",
+            error_message: "An error occurred while sending your message. Please try again or contact us directly by email.",
             form: {
                 firstname: "First Name", lastname: "Last Name", email: "Email", phone: "Phone",
                 project_type: "Project Type",

@@ -45,7 +45,7 @@ export function createFooter() {
                         </li>
                         <li class="flex gap-3">
                             <i data-lucide="mail" class="w-5 h-5 text-oak flex-shrink-0 mt-1" aria-hidden="true"></i>
-                            <a href="mailto:contact@dkbois.cm" class="hover:text-gold transition-colors">contact@dkbois.cm</a>
+                            <a href="mailto:defehekamdemfobhamathurin@gmail.com" class="hover:text-gold transition-colors">defehekamdemfobhamathurin@gmail.com</a>
                         </li>
                     </ul>
                 </div>

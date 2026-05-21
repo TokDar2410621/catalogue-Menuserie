@@ -4,379 +4,129 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**DKbois** - A bilingual (French/English) portfolio website for a woodworking and cabinetry business.
+**DKbois** — bilingual (FR/EN) portfolio site for a woodworking / cabinetry business.
 
-**Architecture:** Full-stack application with:
-- **Frontend:** Static HTML/CSS/JS with ES6 modules (no build process)
-- **Backend:** Django REST API with SQLite database
-- **Integration:** Hybrid approach - homepage uses API, other pages transitioning from static data
+Two halves:
+- **Frontend** ([repo root](.)): static HTML + ES6 module JS, no build step. Tailwind/GSAP/Lucide via CDN. Deployed to Vercel (`catalogue-menuserie.vercel.app`).
+- **Backend** ([backend/](backend/)): Django 5.1 + DRF, SQLite locally / PostgreSQL on Railway, Cloudinary for media uploads. Deployed to Railway (`carefree-heart-production-ec3a.up.railway.app`).
 
-## Running the Site
+The two are connected via [api-config.js](api-config.js), which **auto-detects environment** (localhost → `http://localhost:3000/api`, otherwise → Railway URL). When adding new pages, do NOT hardcode the API base — import from [api-config.js](api-config.js).
 
-### Backend (Django REST API)
+## Running Locally
 
-**Windows (Python 3.13):**
+### Backend
 ```bash
 cd backend
 pip install -r requirements.txt
 python manage.py migrate
-python populate_data.py  # Optional: populate sample data
-python manage.py createsuperuser  # Create admin account
-py -3.13 manage.py runserver 3000  # Run on port 3000
+py -3.13 manage.py runserver 3000   # Windows w/ multiple Pythons; else: python manage.py runserver 3000
 ```
 
-**Other Systems:**
-```bash
-cd backend
-pip install -r requirements.txt
-python manage.py migrate
-python populate_data.py
-python manage.py createsuperuser
-python manage.py runserver 3000
-```
+Port **must be 3000** — the frontend auto-detection in [api-config.js](api-config.js) assumes it.
 
-**Access Points:**
-- API: http://localhost:3000/api/
-- Django Admin: http://localhost:3000/admin/
-- Custom Dashboard: http://localhost:3000/dashboard/
+Optional one-time data setup:
+- `python populate_data.py` — sample bilingual content
+- `python populate_real_data.py` — real DKbois content
+- `python create_admin.py` — creates/resets superuser `admin` / `admin123` (also runs automatically on Railway via [backend/start.sh](backend/start.sh))
 
-**Common Commands:**
-- `python manage.py makemigrations` - Create new migrations after model changes
-- `python manage.py migrate` - Apply migrations
-- `python manage.py shell` - Open Django shell
-- `python test_api.py` - Test API endpoints
-- `python update_data_simple.py` - Update/sync data (run from backend directory)
+### Frontend
+Any static server from the repo root (VS Code Live Server, `npx http-server -p 8080`). ES6 modules require HTTP, not `file://`.
 
-### Frontend (Static Website)
+### Access points (local)
+- Frontend: whatever port your static server uses
+- API: `http://localhost:3000/api/`
+- Django admin: `http://localhost:3000/admin/`
+- Custom Django dashboard: `http://localhost:3000/dashboard/` (login-required, separate from the static [admin.html](admin.html))
 
-- **Local Development:** Use any local server (e.g., VS Code Live Server extension, `npx http-server`)
-- **No build step required:** All dependencies loaded via CDN
-- **ES6 modules:** Requires local server (can't use file:// protocol)
+### Testing endpoints
+- `python test_api.py` — basic GET smoke tests
+- `python test_crud_api.py` — full CRUD coverage
+- `python test_cloudinary.py` — verifies Cloudinary credentials in `.env`
 
 ## Architecture
 
-### Hybrid Data Architecture (In Transition)
+### Frontend pages and pairing
+Each page is `<name>.html` + `<name>.js`. JS uses ES6 modules and is imported with `type="module"`.
 
-**Current State:** The project is transitioning from static data to API-driven content:
+API-integrated pages (import [api-config.js](api-config.js)):
+- [index.html](index.html) + [main.js](main.js) — services, featured projects, testimonials
+- [admin.html](admin.html) + [admin.js](admin.js) — **standalone single-page admin app** that talks to the DRF endpoints (separate from Django's `/admin/`). Auth state is kept in `localStorage` under `adminToken`.
 
-**Static Data ([data.js](data.js)):**
-- `translations` - UI strings still used by all pages for interface text
-- Legacy data structures for pages not yet migrated
+The remaining pages ([about](about.html), [services](services.html), [portfolio](portfolio.html), [project](project.html), [contact](contact.html), [mathurin-defehe](mathurin-defehe.html)) currently read from [data.js](data.js) — migration to the API is ongoing. Check the file's imports before assuming which source it uses.
 
-**API Data ([api-config.js](api-config.js)):**
-- Centralized API client with functions for all endpoints
-- Base URL: `http://localhost:3000/api`
-- All endpoints support `?lang=fr` or `?lang=en` parameter
-- Used by [main.js](main.js) (homepage) for dynamic content
+Shared chrome lives in [navbar-component.js](navbar-component.js) and [footer-component.js](footer-component.js) (re-exported via [components.js](components.js)).
 
-**Migration Status:**
-- ✅ **Homepage ([main.js](main.js)):** Fully integrated with API (services, featured projects, testimonials)
-- 🔄 **Other pages:** Still using [data.js](data.js), migration pending
+### Bilingual system
+- **UI strings**: hardcoded in [data.js](data.js) under `translations.fr` / `translations.en`, applied via `data-i18n="key.path"` attributes. Every page implements `setupLanguage()` / `switchLanguage()`.
+- **Content** (DB-backed): each model has `_fr` / `_en` field pairs. List/detail endpoints accept `?lang=fr|en` and serializers collapse to single-language output via context. Default `fr`.
+- **Admin editing exception**: detail endpoints accept `?edit=true` which switches to the `*WriteSerializer`, returning ALL language fields. [admin.js](admin.js) relies on this. See `get_serializer_class` in [backend/portfolio/views.py](backend/portfolio/views.py).
 
-### Backend API Structure
+Language is propagated via the `?lang=` URL parameter — keep this when generating links.
 
-**Location:** `backend/` directory
+### Backend layout
+Single app `portfolio` inside project `dkbois_backend`.
 
-**Tech Stack:**
-- Django 5.1.7
-- Django REST Framework 3.15.2
-- django-cors-headers 4.7.0
-- django-filter 25.1
-- Pillow 10.4.0
-- SQLite database (can upgrade to PostgreSQL)
+- [backend/portfolio/models.py](backend/portfolio/models.py) — 8 models: `Project`, `Service`, `Testimonial`, `TeamMember`, `TimelineEvent`, `CompanyValue`, `FAQ`, `ContactSubmission`. Bilingual fields are stored as `_fr`/`_en` columns; `tags`/`images`/`sub_services`/`process_steps` are `JSONField` lists.
+- [backend/portfolio/views.py](backend/portfolio/views.py) — DRF `ModelViewSet` per model. All currently use `permission_classes = [AllowAny]` (intentional, with `TODO` comments). `ContactSubmission` is the only one that gates non-POST behind `IsAdminUser`. Plus standalone views: `upload_image` (POST `/api/upload/`), `login_view`, `logout_view`, `admin_dashboard`.
+- [backend/portfolio/serializers.py](backend/portfolio/serializers.py) — paired `*Serializer` (read, single-lang via `context['lang']`) and `*WriteSerializer` (full bilingual fields).
+- [backend/portfolio/urls.py](backend/portfolio/urls.py) — DRF router registers all viewsets under `/api/`.
 
-**Key Files:**
-- `backend/portfolio/models.py` - Database models
-- `backend/portfolio/serializers.py` - DRF serializers
-- `backend/portfolio/views.py` - API viewsets and views
-- `backend/portfolio/admin.py` - Django admin configuration
-- `backend/dkbois_backend/settings.py` - Project settings (CORS, allowed hosts)
+### Endpoints
+All resources except `testimonials` (read-only) and `contact` (POST-public, others admin) expose full CRUD:
 
-**Available Endpoints:**
-- `GET /api/projects/` - List projects (supports filters: category, type, material, featured, search)
-- `GET /api/projects/featured/` - Featured projects only
-- `GET /api/projects/{slug}/` - Project detail
-- `GET /api/services/` - List services
-- `GET /api/services/{slug}/` - Service detail
-- `GET /api/testimonials/` - List testimonials
-- `GET /api/team/` - Team members
-- `GET /api/timeline/` - Timeline events
-- `GET /api/values/` - Company values
-- `GET /api/faqs/` - FAQs
-- `POST /api/contact/` - Submit contact form
-- `GET /api/contact/` - List submissions (admin only)
-
-**CORS Configuration:**
-- Development: Allows localhost:3000, localhost:5500, localhost:8080, 127.0.0.1 variants
-- **Production:** Must update `CORS_ALLOWED_ORIGINS` in settings.py
-
-### Frontend Page Structure
-
-**Two Implementation Patterns:**
-
-**1. API-Powered Pages** (using [api-config.js](api-config.js)):
-- [index.html](index.html) + [main.js](main.js) - Homepage
-  - Imports both [data.js](data.js) (for translations) and [api-config.js](api-config.js) (for content)
-  - Fetches services, featured projects, testimonials from API
-  - Re-renders content on language switch
-  - Example: `await API.services.list(currentLang)`
-
-**2. Static Data Pages** (using [data.js](data.js)):
-- [about.html](about.html) + [about.js](about.js) - Company history, team, values, timeline
-- [services.html](services.html) + [services.js](services.js) - Service descriptions with process steps
-- [portfolio.html](portfolio.html) + [portfolio.js](portfolio.js) - Filterable project gallery
-- [project.html](project.html) + [project.js](project.js) - Project detail pages (`?id=` URL param)
-- [contact.html](contact.html) + [contact.js](contact.js) - Contact form and FAQs
-
-**Common Pattern for All Pages:**
-- HTML has `data-i18n` attributes for translatable UI text
-- JS implements `setupLanguage()` and `switchLanguage()`
-- Language parameter propagated via URL (`?lang=fr` or `?lang=en`)
-- Mobile menu, navbar scroll behavior, GSAP animations
-
-### Language System
-
-Language is managed via URL parameters (`?lang=fr` or `?lang=en`):
-- Default language is French (`fr`)
-- Falls back to browser language if supported
-- All translatable elements use `data-i18n="key.path"` attributes
-- `setupLanguage()` in each JS file initializes translation on page load
-- `switchLanguage()` toggles between languages and updates URL
-
-When adding new translatable content:
-1. Add keys to both `fr` and `en` sections in [data.js](data.js) `translations` object
-2. Use `data-i18n="your.key.path"` in HTML
-
-### Styling System
-
-Uses **Tailwind CSS** (loaded via CDN) with custom configuration in `<script>` tags within each HTML file:
-
-Custom colors defined:
-- `oak` - #8B4513 (primary brown)
-- `walnut` - #3E2723 (dark brown, main text)
-- `maple` - #F5DEB3 (light wood)
-- `offwhite` - #FAF9F6 (backgrounds)
-- `forest` - #2F5233 (green accent)
-- `gold` - #D4AF37 (premium accent)
-
-Custom fonts:
-- `font-serif` - Playfair Display (headings)
-- `font-sans` - Lato (body text)
-
-[styles.css](styles.css) contains:
-- Animation keyframes
-- Custom hover effects for cards and portfolio items
-- Navigation underline animations
-- Custom scrollbar styling
-- Parallax helpers
-
-### Animations
-
-Uses **GSAP** with ScrollTrigger plugin:
-- Hero section parallax backgrounds
-- Fade-in animations for sections on scroll
-- Staggered card animations
-- Element reveals on viewport entry
-
-Common animation classes:
-- `.animate-up` - Initial hero animations with delays
-- `.reveal-section` - Sections that animate on scroll
-- Service/portfolio cards have stagger animations
-
-### Image Handling
-
-All images use lazy loading via IntersectionObserver:
-- Images have `data-src` attribute and `lazy` class
-- `lazyLoadImages()` function swaps `data-src` to `src` when in viewport
-- Placeholder background color while loading
-- 200px rootMargin for early loading
-
-## Common Development Tasks
-
-### Backend Development
-
-#### Adding a New Portfolio Project via Django Admin
-1. Start backend: `cd backend && py -3.13 manage.py runserver 3000`
-2. Access admin: http://localhost:3000/admin/
-3. Navigate to Projects → Add Project
-4. Fill in bilingual fields (title_fr, title_en, description_fr, etc.)
-5. Set category, type, material, featured status
-6. Add images, tags (JSON format)
-7. Slug auto-generated from title
-
-#### Modifying Database Models
-1. Edit `backend/portfolio/models.py`
-2. Create migration: `python manage.py makemigrations`
-3. Review migration file in `backend/portfolio/migrations/`
-4. Apply migration: `python manage.py migrate`
-5. Update serializers in `backend/portfolio/serializers.py` if needed
-6. Test with `python test_api.py`
-
-#### Adding a New API Endpoint
-1. Add method to viewset in `backend/portfolio/views.py`
-2. Add route in `backend/portfolio/urls.py` if needed
-3. Add function to [api-config.js](api-config.js) for frontend access
-4. Test endpoint with curl or `python test_api.py`
-
-#### Syncing Data Between data.js and Database
-Use the update script to sync static data to database:
-```bash
-cd backend
-python update_data_simple.py
+```
+GET|POST    /api/{projects|services|testimonials|team|timeline|values|faqs}/
+GET|PUT|PATCH|DELETE  /api/projects/{slug}/        (lookup_field=slug)
+GET|PUT|PATCH|DELETE  /api/services/{slug}/        (lookup_field=slug)
+GET|PUT|PATCH|DELETE  /api/{team|timeline|values|faqs}/{id}/
+GET         /api/projects/featured/                (custom action)
+POST        /api/contact/                          (public; list/detail require admin)
+POST        /api/upload/                           (multipart file upload, 5MB max, jpg/png/gif/webp)
 ```
 
-### Frontend Development
+Query params: `?lang=fr|en`, `?edit=true` (detail endpoints, see bilingual section above), and on `/api/services/` `?show_all=true` to include inactive services. Project list supports filters: `category`, `type`, `material`, `featured`, plus `search` on titles/tags.
 
-#### Migrating a Page from Static to API
-1. Import [api-config.js](api-config.js) in page JS file
-2. Replace data.js imports with API calls (see [main.js](main.js) as example)
-3. Update render functions to use API data structure
-4. Handle async loading and errors
-5. Ensure language switching triggers re-fetch
+### Media storage
+- **Local dev**: Django default storage → `backend/media/`.
+- **Production**: Cloudinary via `cloudinary_storage.storage.MediaCloudinaryStorage` (set in [settings.py](backend/dkbois_backend/settings.py) `STORAGES["default"]`). Static files always served by WhiteNoise.
+- Cloudinary credentials come from `.env` (see [backend/.env.example](backend/.env.example) and [backend/CLOUDINARY_SETUP.md](backend/CLOUDINARY_SETUP.md)).
 
-Example:
-```javascript
-import { API } from './api-config.js';
+When working with image fields locally vs production, the URLs returned by `/api/upload/` differ — Cloudinary returns absolute URLs, the local file storage returns a relative path like `uploads/<filename>`.
 
-const renderServices = async () => {
-    const response = await API.services.list(currentLang);
-    const services = response.results || response;
-    // render services...
-};
-```
+### Configuration via environment
+Driven entirely by env vars (with sensible local defaults baked into [backend/dkbois_backend/settings.py](backend/dkbois_backend/settings.py)):
+- `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`
+- `DATABASE_URL` — if present, switches to PostgreSQL via `dj_database_url`; else SQLite
+- `CORS_ALLOWED_ORIGINS`, `CSRF_TRUSTED_ORIGINS` — comma-separated. Trailing slashes are stripped automatically by the list comprehensions in settings.py — there was a real bug from this (commit `fc3ab77`)
+- `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET`
+- `CORS_ALLOW_ALL_ORIGINS = DEBUG`, so when `DEBUG=False` the explicit allowlist is enforced.
 
-#### Adding a New Service (Static - Legacy)
+### Deployment specifics
+- **Backend (Railway)**: [backend/Procfile](backend/Procfile) → [backend/start.sh](backend/start.sh) runs `migrate`, `collectstatic`, `create_admin.py`, then `gunicorn`. The `create_admin.py` script **deletes and recreates** the `admin` superuser on every boot with password `admin123` — do not store other data under that user.
+- **Frontend (Vercel/Netlify)**: zero-build static deploy. [_redirects](_redirects) handles SPA-style fallbacks on Netlify.
 
-1. Add to `servicesData` in [data.js](data.js)
-2. Add translations to `translations.fr.services` and `translations.en.services`
-3. For detailed service page, add to `detailedServicesData`
+## Styling system
 
-*Note: Prefer adding via Django Admin once page is migrated to API*
+Tailwind via CDN, with a per-page inline `tailwind.config` `<script>`. Custom palette repeated across HTML files:
+- `oak` #8B4513, `walnut` #3E2723 (main text), `maple` #F5DEB3, `offwhite` #FAF9F6, `forest` #2F5233, `gold` #D4AF37
+- `font-serif` = Playfair Display (headings), `font-sans` = Lato (body)
 
-#### Modifying UI Translations
+[styles.css](styles.css) holds keyframes, hover effects, navbar underline animation, custom scrollbar. GSAP + ScrollTrigger drive reveal animations (`.animate-up`, `.reveal-section`).
 
-Edit [data.js](data.js) `translations` object. All pages use this for UI strings.
+Images use a custom `IntersectionObserver` lazy loader: set `class="lazy"` and `data-src="…"`, the `lazyLoadImages()` helper swaps `data-src` → `src` when in view.
 
-#### Adding Pages
+## Patterns to follow when changing things
 
-1. Copy structure from existing page HTML (header, footer, navigation)
-2. Create corresponding `.js` file with language setup
-3. Decide: static data or API-powered (import [data.js](data.js) or [api-config.js](api-config.js))
-4. Update navigation links in all HTML files
+- **Adding a model field**: edit [models.py](backend/portfolio/models.py) → `makemigrations` → `migrate` → add to BOTH the read serializer AND the `*WriteSerializer` in [serializers.py](backend/portfolio/serializers.py). The admin UI ([admin.js](admin.js)) consumes the write serializer via `?edit=true` and will silently drop unknown fields.
+- **New bilingual UI string**: add to both `fr` and `en` blocks in [data.js](data.js) `translations`, then use `data-i18n="path.to.key"` in HTML. The string is applied on `setupLanguage()` and re-applied on `switchLanguage()`.
+- **New API consumer in JS**: import `{ API }` from `./api-config.js` — don't write new `fetch` calls or hardcode the base URL. Add a new resource block to [api-config.js](api-config.js) if you're hitting a new endpoint.
+- **CORS / CSRF issues in production**: check that the env-var list in Railway has no trailing slashes (the settings code strips them but the symptom is confusing — see commit `fc3ab77`).
+- **Resetting prod admin password**: re-run [backend/create_admin.py](backend/create_admin.py) on Railway, or let the next deploy do it (start.sh runs it on every boot).
 
-## External Dependencies (CDN)
+## Reference docs in repo
 
-- **Tailwind CSS:** https://cdn.tailwindcss.com
-- **GSAP:** https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/
-- **Lucide Icons:** https://unpkg.com/lucide@latest
-- **Google Fonts:** Playfair Display, Lato
-
-All dependencies are loaded in `<head>` of each HTML file.
-
-## Navigation and Mobile Menu
-
-Each page includes:
-- Fixed header with logo, nav links, language toggle, CTA button
-- Mobile menu overlay (slides in from right)
-- Navbar shrinks on scroll (`h-24` → `h-20`)
-- Active page indicated with `.active` class and gold underline
-
-Mobile menu is controlled by:
-- `#mobile-menu-btn` - Opens menu
-- `#close-menu-btn` - Closes menu
-- `.mobile-link` clicks - Auto-close menu
-
-## Forms
-
-[contact.html](contact.html) has a contact form with:
-- Form fields: firstname, lastname, email, phone, project_type, budget, description, file upload
-- Form validation (HTML5 `required` attributes)
-- GDPR checkbox
-- **API Integration Available:** `POST /api/contact/` endpoint ready
-- Submissions viewable in Django Admin at http://localhost:3000/admin/portfolio/contactsubmission/
-
-To integrate contact form with API:
-```javascript
-import { API } from './api-config.js';
-
-const handleSubmit = async (formData) => {
-    try {
-        const response = await API.contact.submit(formData);
-        // Show success message
-    } catch (error) {
-        // Show error message
-    }
-};
-```
-
-## Integration Status & Documentation
-
-See [INTEGRATION.md](INTEGRATION.md) for current API integration progress and next steps.
-
-**Backend Documentation:**
-- [backend/README.md](backend/README.md) - Complete API documentation
-- [backend/QUICKSTART.md](backend/QUICKSTART.md) - Quick setup guide
-- [backend/API_ENDPOINTS.md](backend/API_ENDPOINTS.md) - Endpoint reference (if exists)
-
-## Development Workflow
-
-### Working with Both Frontend and Backend
-
-**Typical Development Setup:**
-1. Terminal 1: Run Django backend
-   ```bash
-   cd backend
-   py -3.13 manage.py runserver 3000
-   ```
-
-2. Terminal 2: Run frontend dev server
-   ```bash
-   # From project root, use VS Code Live Server or:
-   npx http-server -p 8080
-   ```
-
-3. Access:
-   - Frontend: http://localhost:8080 (or Live Server port)
-   - Backend API: http://localhost:3000/api/
-   - Django Admin: http://localhost:3000/admin/
-
-**Content Management:**
-- Add/edit content via Django Admin (http://localhost:3000/admin/)
-- Changes immediately reflected in API responses
-- API-powered pages (like homepage) update automatically
-- Static pages require migration to see API changes
-
-**Debugging API Issues:**
-- Check browser console for fetch errors
-- Verify CORS settings in `backend/dkbois_backend/settings.py`
-- Test endpoints directly: `curl http://localhost:3000/api/projects/?lang=fr`
-- Use `python test_api.py` for automated endpoint testing
-
-### Data Management Strategy
-
-**For New Content:**
-1. Add via Django Admin (preferred for API-integrated pages)
-2. Content automatically available via API
-3. Update [data.js](data.js) if static pages need it (temporary until migration)
-
-**For UI Text/Translations:**
-- Continue using [data.js](data.js) `translations` object
-- All pages depend on this for interface text
-- Backend models handle content translations (title_fr/en, description_fr/en)
-
-## Browser Support
-
-Modern browsers only (ES6 modules, IntersectionObserver, CSS Grid). No transpilation or polyfills included.
-
-## Deployment Notes
-
-**Frontend:** Can deploy to any static host (Netlify, Vercel, GitHub Pages)
-
-**Backend:**
-- Update `DEBUG = False` in settings.py
-- Set `SECRET_KEY` via environment variable
-- Configure `ALLOWED_HOSTS`
-- Restrict `CORS_ALLOWED_ORIGINS` to production domain
-- Use PostgreSQL instead of SQLite
-- Run `python manage.py collectstatic`
-- See [backend/README.md](backend/README.md) for full production checklist
+- [INTEGRATION.md](INTEGRATION.md) — frontend↔API migration tracker (status notes may lag behind code; verify against imports)
+- [DEPLOIEMENT_RESUME.md](DEPLOIEMENT_RESUME.md), [NETLIFY_DEPLOYMENT.md](NETLIFY_DEPLOYMENT.md), [backend/DEPLOYMENT.md](backend/DEPLOYMENT.md) — deployment walkthroughs (FR)
+- [backend/README.md](backend/README.md), [backend/QUICKSTART.md](backend/QUICKSTART.md), [backend/API_ENDPOINTS.md](backend/API_ENDPOINTS.md)
+- [backend/CRUD_API_GUIDE.md](backend/CRUD_API_GUIDE.md), [backend/CRUD_IMPLEMENTATION_SUMMARY.md](backend/CRUD_IMPLEMENTATION_SUMMARY.md) — CRUD endpoint reference
+- [backend/CLOUDINARY_SETUP.md](backend/CLOUDINARY_SETUP.md)

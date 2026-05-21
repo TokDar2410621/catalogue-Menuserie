@@ -1,6 +1,7 @@
 import { translations, faqData } from './data.js';
 import { UXEnhancements } from './ux-enhancements.js';
 import { initComponents } from './components.js';
+import { API } from './api-config.js';
 
 let currentLang = 'fr';
 const d = document;
@@ -98,21 +99,77 @@ const setupForm = () => {
         d.getElementById('file-name').textContent = e.target.files.length > 0 ? e.target.files[0].name : '';
     });
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const statusBox = d.getElementById('form-status');
         const btn = form.querySelector('button[type="submit"]');
         btn.disabled = true;
         btn.innerHTML = `<span class="animate-pulse">...</span>`;
+        statusBox.className = 'hidden';
 
-        setTimeout(() => {
-            btn.disabled = false;
-            btn.innerHTML = keyPath('cta.send');
+        try {
+            const fileInput = d.getElementById('file-upload');
+            const files = [];
+            if (fileInput.files.length > 0) {
+                const uploadResult = await API.upload.image(fileInput.files[0]);
+                files.push(uploadResult.url);
+            }
+
+            const fd = new FormData(form);
+            const payload = {
+                firstname: fd.get('firstname'),
+                lastname: fd.get('lastname'),
+                email: fd.get('email'),
+                phone: fd.get('phone') || '',
+                project_type: (fd.get('project_type') || '').replace(/^type_/, ''),
+                description: fd.get('description') || '',
+                files,
+                gdpr_consent: d.getElementById('rgpd').checked,
+            };
+
+            const formspreePayload = {
+                ...payload,
+                _subject: `Nouvelle demande DKBOIS - ${payload.firstname} ${payload.lastname}`,
+                _replyto: payload.email,
+                attachment: files[0] || '',
+            };
+
+            const [djangoResult, formspreeResult] = await Promise.allSettled([
+                API.contact.submit(payload),
+                fetch('https://formspree.io/f/xeedgvgz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify(formspreePayload),
+                }).then(r => {
+                    if (!r.ok) throw new Error(`Formspree ${r.status}`);
+                    return r.json();
+                }),
+            ]);
+
+            if (djangoResult.status === 'rejected' && formspreeResult.status === 'rejected') {
+                throw djangoResult.reason;
+            }
+            if (formspreeResult.status === 'rejected') {
+                console.warn('Formspree notification failed:', formspreeResult.reason);
+            }
+            if (djangoResult.status === 'rejected') {
+                console.warn('Django storage failed:', djangoResult.reason);
+            }
+
             statusBox.textContent = keyPath('contact_page.success_message');
             statusBox.className = 'block p-3 rounded-sm text-sm font-bold bg-green-100 text-green-800';
             form.reset();
             d.getElementById('file-name').textContent = '';
-        }, 1500);
+        } catch (error) {
+            statusBox.textContent = error.message || keyPath('contact_page.error_message');
+            statusBox.className = 'block p-3 rounded-sm text-sm font-bold bg-red-100 text-red-800';
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = keyPath('cta.send');
+        }
     });
 };
 
