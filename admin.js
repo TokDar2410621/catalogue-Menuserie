@@ -40,6 +40,21 @@ function showAdminDashboard() {
     lucide.createIcons();
 }
 
+// Mobile sidebar drawer
+function openSidebar() {
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (sidebar) sidebar.classList.remove('-translate-x-full');
+    if (overlay) overlay.classList.remove('hidden');
+}
+
+function closeSidebar() {
+    const sidebar = document.getElementById('admin-sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    if (sidebar) sidebar.classList.add('-translate-x-full');
+    if (overlay) overlay.classList.add('hidden');
+}
+
 // Event listeners
 function setupEventListeners() {
     // Login form
@@ -65,8 +80,17 @@ function setupEventListeners() {
         link.addEventListener('click', function() {
             const section = this.dataset.section;
             switchSection(section);
+            if (window.innerWidth < 1024) closeSidebar();
         });
     });
+
+    // Mobile sidebar (hamburger drawer)
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+    if (sidebarToggle) sidebarToggle.addEventListener('click', openSidebar);
+    if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 
     // Form submissions
     document.getElementById('project-form').addEventListener('submit', handleProjectSubmit);
@@ -92,7 +116,7 @@ async function handleLogin(e) {
 
     // For demo purposes - simple authentication
     // TODO: Replace with actual Django authentication
-    if (username === 'admin' && password === 'admin') {
+    if (username === 'admin' && password === 'admin123') {
         authToken = 'demo-token-' + Date.now();
         localStorage.setItem('adminToken', authToken);
         currentUser = { username: 'admin' };

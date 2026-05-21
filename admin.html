@@ -192,11 +192,27 @@
 
     <!-- Admin Dashboard -->
     <div id="admin-dashboard" class="hidden min-h-screen">
+        <!-- Mobile top bar (hamburger) -->
+        <header class="lg:hidden fixed top-0 left-0 right-0 bg-white shadow-sm z-30 px-4 py-3 flex items-center justify-between">
+            <h1 class="font-serif text-xl font-bold text-walnut">DKBOIS</h1>
+            <button id="sidebar-toggle" class="text-walnut p-2 -mr-2" aria-label="Ouvrir le menu">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </header>
+
+        <!-- Sidebar overlay (mobile only) -->
+        <div id="sidebar-overlay" class="hidden lg:hidden fixed inset-0 bg-black/50 z-30"></div>
+
         <!-- Sidebar -->
-        <aside class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-40">
-            <div class="p-6 border-b border-oak/10">
-                <h1 class="font-serif text-2xl font-bold text-walnut">DKBOIS</h1>
-                <p class="text-walnut/60 text-sm">Administration</p>
+        <aside id="admin-sidebar" class="fixed left-0 top-0 h-full w-64 bg-white shadow-lg z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+            <div class="p-6 border-b border-oak/10 flex items-start justify-between">
+                <div>
+                    <h1 class="font-serif text-2xl font-bold text-walnut">DKBOIS</h1>
+                    <p class="text-walnut/60 text-sm">Administration</p>
+                </div>
+                <button id="sidebar-close" class="lg:hidden text-walnut/60 hover:text-walnut p-1 -mr-1" aria-label="Fermer le menu">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
             </div>
 
             <nav class="p-4 space-y-2">
@@ -255,7 +271,7 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="ml-64 p-8">
+        <main class="lg:ml-64 p-4 md:p-6 lg:p-8 pt-20 lg:pt-8">
             <!-- Dashboard Section -->
             <div id="section-dashboard" class="section-content active">
                 <div class="mb-8">
@@ -340,7 +356,7 @@
 
             <!-- Projects Section -->
             <div id="section-projects" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Projets</h2>
                         <p class="text-walnut/60">Gérez vos projets et réalisations</p>
@@ -377,7 +393,7 @@
 
             <!-- Services Section -->
             <div id="section-services" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Services</h2>
                         <p class="text-walnut/60">Gérez vos services</p>
@@ -446,7 +462,7 @@
 
             <!-- Testimonials Section -->
             <div id="section-testimonials" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Témoignages</h2>
                         <p class="text-walnut/60">Gérez les témoignages clients</p>
@@ -483,7 +499,7 @@
 
             <!-- Team Section -->
             <div id="section-team" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Équipe</h2>
                         <p class="text-walnut/60">Gérez les membres de l'équipe</p>
@@ -520,7 +536,7 @@
 
             <!-- Timeline Section -->
             <div id="section-timeline" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Timeline</h2>
                         <p class="text-walnut/60">Gérez l'historique de l'entreprise</p>
@@ -556,7 +572,7 @@
 
             <!-- Values Section -->
             <div id="section-values" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">Valeurs</h2>
                         <p class="text-walnut/60">Gérez les valeurs de l'entreprise</p>
@@ -592,7 +608,7 @@
 
             <!-- FAQs Section -->
             <div id="section-faqs" class="section-content">
-                <div class="flex items-center justify-between mb-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
                     <div>
                         <h2 class="font-serif text-3xl font-bold text-walnut mb-2">FAQs</h2>
                         <p class="text-walnut/60">Gérez les questions fréquentes</p>
