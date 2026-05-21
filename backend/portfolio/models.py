@@ -249,7 +249,7 @@ class ContactSubmission(models.Model):
 
     # Project details
     project_type = models.CharField(max_length=20, choices=PROJECT_TYPE_CHOICES)
-    description = models.TextField()
+    description = models.TextField(blank=True)
 
     # File uploads (stored as JSON list of URLs or file paths)
     files = models.JSONField(default=list, blank=True, help_text="List of uploaded file URLs")
