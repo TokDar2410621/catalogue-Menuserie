@@ -405,8 +405,14 @@ def upload_image(request):
         file_path = os.path.join(upload_dir, unique_filename)
         saved_path = default_storage.save(file_path, uploaded_file)
 
-        # Return relative URL (without /media/ prefix as frontend expects)
-        file_url = saved_path.replace('\\', '/')
+        # Build absolute URL so frontend works regardless of storage backend
+        # (Cloudinary in prod returns https://res.cloudinary.com/...,
+        # local FileSystemStorage returns /media/uploads/...).
+        storage_url = default_storage.url(saved_path)
+        if storage_url.startswith('http://') or storage_url.startswith('https://'):
+            file_url = storage_url
+        else:
+            file_url = request.build_absolute_uri(storage_url)
 
         return Response({
             'url': file_url,

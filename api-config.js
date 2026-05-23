@@ -22,15 +22,19 @@ const apiRequest = async (endpoint, options = {}) => {
         if (!response.ok) {
             // Try to get error details from response
             let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+            let errorData = null;
             try {
-                const errorData = await response.json();
-                if (errorData.message || errorData.error) {
-                    errorMessage = errorData.message || errorData.error;
+                errorData = await response.json();
+                if (errorData.message || errorData.error || errorData.detail) {
+                    errorMessage = errorData.message || errorData.error || errorData.detail;
                 }
             } catch (e) {
                 // Response is not JSON, use default error message
             }
-            throw new Error(errorMessage);
+            const err = new Error(errorMessage);
+            err.status = response.status;
+            err.data = errorData;
+            throw err;
         }
 
         // DELETE requests return 204 No Content

@@ -6,6 +6,151 @@ let authToken = null;
 let uploadedProjectImages = [];
 let uploadedServiceImages = [];
 
+// ============================================================
+// UI Helpers : toasts, confirm, lang tabs, loading, errors
+// ============================================================
+
+const FIELD_LABELS = {
+    title_fr: 'Titre (FR)', title_en: 'Titre (EN)',
+    short_desc_fr: 'Description courte (FR)', short_desc_en: 'Description courte (EN)',
+    full_desc_fr: 'Description complète (FR)', full_desc_en: 'Description complète (EN)',
+    description_fr: 'Description (FR)', description_en: 'Description (EN)',
+    sub_services_fr: 'Sous-services (FR)', sub_services_en: 'Sous-services (EN)',
+    timeframe_fr: 'Délai (FR)', timeframe_en: 'Délai (EN)',
+    duration_fr: 'Durée (FR)', duration_en: 'Durée (EN)',
+    category: 'Catégorie', type: 'Type', material: 'Matériau',
+    location: 'Localisation', tags: 'Tags', images: 'Images',
+    slug: 'Slug', icon: 'Icône', service_id: 'Service ID',
+    featured: 'Vedette', is_active: 'Actif', order: 'Ordre',
+    non_field_errors: 'Erreur',
+};
+
+function showToast(message, type = 'info', duration = 4000) {
+    const container = document.getElementById('toast-container');
+    if (!container) return;
+    const styles = {
+        success: { bg: 'bg-forest', icon: 'check-circle' },
+        error:   { bg: 'bg-red-600', icon: 'alert-circle' },
+        info:    { bg: 'bg-walnut', icon: 'info' },
+    };
+    const style = styles[type] || styles.info;
+    const toast = document.createElement('div');
+    toast.className = `${style.bg} text-white px-4 py-3 rounded-lg shadow-lg pointer-events-auto transform transition-all duration-300 translate-x-full opacity-0`;
+    toast.innerHTML = `<div class="flex items-start gap-2">
+        <i data-lucide="${style.icon}" class="w-5 h-5 flex-shrink-0 mt-0.5"></i>
+        <span class="text-sm leading-snug">${message}</span>
+    </div>`;
+    container.appendChild(toast);
+    lucide.createIcons();
+    requestAnimationFrame(() => toast.classList.remove('translate-x-full', 'opacity-0'));
+    setTimeout(() => {
+        toast.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+window.showToast = showToast;
+
+function showConfirm(message, { title = 'Confirmer', okLabel = 'Confirmer', danger = true } = {}) {
+    return new Promise((resolve) => {
+        const modal = document.getElementById('confirm-modal');
+        if (!modal) { resolve(window.confirm(message)); return; }
+        document.getElementById('confirm-modal-title').textContent = title;
+        document.getElementById('confirm-modal-message').textContent = message;
+        const okBtn = document.getElementById('confirm-ok');
+        const cancelBtn = document.getElementById('confirm-cancel');
+        okBtn.textContent = okLabel;
+        okBtn.className = danger
+            ? 'px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm font-medium'
+            : 'px-4 py-2 btn-primary rounded-lg text-sm font-medium';
+
+        const cleanup = (result) => {
+            modal.classList.remove('active');
+            okBtn.removeEventListener('click', onOk);
+            cancelBtn.removeEventListener('click', onCancel);
+            resolve(result);
+        };
+        const onOk = () => cleanup(true);
+        const onCancel = () => cleanup(false);
+        okBtn.addEventListener('click', onOk);
+        cancelBtn.addEventListener('click', onCancel);
+        modal.classList.add('active');
+    });
+}
+window.showConfirm = showConfirm;
+
+function setSubmitLoading(formType, loading) {
+    const btn = document.getElementById(`${formType}-submit-btn`);
+    if (!btn) return;
+    btn.disabled = loading;
+    const spinner = btn.querySelector('.submit-spinner');
+    const label = btn.querySelector('.submit-label');
+    if (spinner) spinner.classList.toggle('hidden', !loading);
+    if (label) label.textContent = loading ? 'Enregistrement…' : 'Enregistrer';
+}
+
+function showFormErrors(formType, errorOrData) {
+    const banner = document.getElementById(`${formType}-form-error`);
+    if (!banner) return;
+    let messages = [];
+    const data = errorOrData && errorOrData.data ? errorOrData.data : errorOrData;
+    if (data && typeof data === 'object' && !Array.isArray(data)) {
+        for (const [field, msgs] of Object.entries(data)) {
+            if (field === 'message' || field === 'error' || field === 'detail') continue;
+            const text = Array.isArray(msgs) ? msgs.join(' ') : String(msgs);
+            messages.push(`<strong>${FIELD_LABELS[field] || field}</strong> : ${text}`);
+        }
+    }
+    if (messages.length === 0) {
+        const msg = (errorOrData && errorOrData.message) || (data && (data.detail || data.message || data.error)) || 'Erreur inconnue';
+        messages = [String(msg)];
+    }
+    banner.innerHTML = messages.map(m => `<div>${m}</div>`).join('');
+    banner.classList.remove('hidden');
+    banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function clearFormErrors(formType) {
+    const banner = document.getElementById(`${formType}-form-error`);
+    if (banner) {
+        banner.classList.add('hidden');
+        banner.innerHTML = '';
+    }
+}
+
+function setupLangTabs() {
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            const form = tab.dataset.form;
+            const lang = tab.dataset.lang;
+            document.querySelectorAll(`.lang-tab[data-form="${form}"]`).forEach(t => {
+                const active = t === tab;
+                t.classList.toggle('active', active);
+                t.classList.toggle('border-oak', active);
+                t.classList.toggle('text-oak', active);
+                t.classList.toggle('border-transparent', !active);
+                t.classList.toggle('text-walnut/60', !active);
+            });
+            document.querySelectorAll(`.lang-content[data-form="${form}"]`).forEach(c => {
+                c.classList.toggle('hidden', c.dataset.lang !== lang);
+            });
+        });
+    });
+}
+
+function resetLangTabs(formType) {
+    document.querySelectorAll(`.lang-tab[data-form="${formType}"]`).forEach(t => {
+        const active = t.dataset.lang === 'fr';
+        t.classList.toggle('active', active);
+        t.classList.toggle('border-oak', active);
+        t.classList.toggle('text-oak', active);
+        t.classList.toggle('border-transparent', !active);
+        t.classList.toggle('text-walnut/60', !active);
+    });
+    document.querySelectorAll(`.lang-content[data-form="${formType}"]`).forEach(c => {
+        c.classList.toggle('hidden', c.dataset.lang !== 'fr');
+    });
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     initializeAdmin();
@@ -104,6 +249,16 @@ function setupEventListeners() {
     // Image uploads
     document.getElementById('project-image-files').addEventListener('change', handleProjectImageUpload);
     document.getElementById('service-image-files').addEventListener('change', handleServiceImageUpload);
+
+    // FR/EN language tabs on bilingual forms
+    setupLangTabs();
+
+    // Close any modal by clicking its backdrop
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.remove('active');
+        });
+    });
 }
 
 // Login handler
@@ -430,6 +585,12 @@ window.openModal = function(type) {
             document.getElementById(idField).value = '';
         }
 
+        // Reset error banner & language tab to FR
+        clearFormErrors(type);
+        if (document.querySelector(`.lang-tab[data-form="${type}"]`)) {
+            resetLangTabs(type);
+        }
+
         // Special handling for project/service images
         if (type === 'project') {
             uploadedProjectImages = [];
@@ -494,9 +655,15 @@ window.closeModal = function(type) {
 // CRUD Operations
 window.editProject = async function(slug) {
     try {
-        // Load project data with edit=true to get all language fields
         const response = await fetch(`${API_BASE_URL}/projects/${slug}/?edit=true&lang=fr`);
         const project = await response.json();
+
+        // Reset all transient state from previous sessions
+        uploadedProjectImages = [];
+        document.getElementById('project-image-previews').innerHTML = '';
+        document.getElementById('project-upload-status').textContent = '';
+        clearFormErrors('project');
+        resetLangTabs('project');
 
         // Populate form
         document.getElementById('project-id').value = slug;
@@ -505,7 +672,7 @@ window.editProject = async function(slug) {
         document.getElementById('project-title-en').value = project.title_en || '';
         document.getElementById('project-category').value = project.category || 'kitchen';
         document.getElementById('project-type').value = project.type || 'creation';
-        document.getElementById('project-material').value = project.material || '';
+        document.getElementById('project-material').value = project.material || 'oak';
         document.getElementById('project-short-desc-fr').value = project.short_desc_fr || '';
         document.getElementById('project-short-desc-en').value = project.short_desc_en || '';
         document.getElementById('project-full-desc-fr').value = project.full_desc_fr || '';
@@ -518,39 +685,41 @@ window.editProject = async function(slug) {
         document.getElementById('project-featured').checked = project.featured || false;
         document.getElementById('project-order').value = project.order || 0;
 
-        // Change modal title to "Modifier"
-        document.getElementById('project-modal-title').textContent = 'Modifier projet';
+        document.getElementById('project-modal-title').textContent = 'Modifier le projet';
 
-        // Open modal directly without resetting
-        const modal = document.getElementById('modal-project');
-        modal.classList.add('active');
+        document.getElementById('modal-project').classList.add('active');
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading project:', error);
-        alert('❌ Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement du projet', 'error');
     }
 }
 
 window.deleteProject = async function(slug) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce projet?')) {
-        try {
-            await API.projects.delete(slug);
-            alert('✅ Projet supprimé avec succès!');
-            loadProjects(); // Refresh list
-        } catch (error) {
-            console.error('Error deleting project:', error);
-            alert('❌ Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer la suppression de ce projet ?', { title: 'Supprimer le projet', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await API.projects.delete(slug);
+        showToast('Projet supprimé', 'success');
+        loadProjects();
+    } catch (error) {
+        console.error('Error deleting project:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
 window.editService = async function(slug) {
     try {
-        // Load service data with edit=true to get all language fields
         const response = await fetch(`${API_BASE_URL}/services/${slug}/?edit=true&lang=fr`);
         const service = await response.json();
 
-        // Populate form
+        // Reset transient state
+        uploadedServiceImages = [];
+        document.getElementById('service-image-previews').innerHTML = '';
+        document.getElementById('service-upload-status').textContent = '';
+        clearFormErrors('service');
+        resetLangTabs('service');
+
         document.getElementById('service-id').value = slug;
         document.getElementById('service-service-id').value = service.service_id || '';
         document.getElementById('service-slug').value = service.slug || '';
@@ -562,54 +731,49 @@ window.editService = async function(slug) {
         document.getElementById('service-timeframe-fr').value = service.timeframe_fr || '';
         document.getElementById('service-timeframe-en').value = service.timeframe_en || '';
 
-        // Handle sub-services
         if (service.sub_services) {
-            const subServicesFr = service.sub_services.fr || [];
-            const subServicesEn = service.sub_services.en || [];
-            document.getElementById('service-sub-services-fr').value = subServicesFr.join(', ');
-            document.getElementById('service-sub-services-en').value = subServicesEn.join(', ');
+            const subFr = service.sub_services.fr || [];
+            const subEn = service.sub_services.en || [];
+            document.getElementById('service-sub-services-fr').value = subFr.join(', ');
+            document.getElementById('service-sub-services-en').value = subEn.join(', ');
+        } else {
+            document.getElementById('service-sub-services-fr').value = '';
+            document.getElementById('service-sub-services-en').value = '';
         }
 
         document.getElementById('service-images').value = (service.images || []).join(', ');
         document.getElementById('service-is-active').checked = service.is_active !== false;
         document.getElementById('service-order').value = service.order || 0;
 
-        // Change modal title to "Modifier"
-        document.getElementById('service-modal-title').textContent = 'Modifier service';
-
-        // Open modal directly without resetting
-        const modal = document.getElementById('modal-service');
-        modal.classList.add('active');
+        document.getElementById('service-modal-title').textContent = 'Modifier le service';
+        document.getElementById('modal-service').classList.add('active');
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading service:', error);
-        alert('❌ Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement du service', 'error');
     }
 }
 
 window.deleteService = async function(slug) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce service?')) {
-        try {
-            await API.services.delete(slug);
-            alert('✅ Service supprimé avec succès!');
-            loadServices(); // Refresh list
-        } catch (error) {
-            console.error('Error deleting service:', error);
-            alert('❌ Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer la suppression de ce service ?', { title: 'Supprimer le service', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await API.services.delete(slug);
+        showToast('Service supprimé', 'success');
+        loadServices();
+    } catch (error) {
+        console.error('Error deleting service:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
 window.viewMessage = function(id) {
-    console.log('View message:', id);
-    alert('Fonction de visualisation en cours de développement');
+    showToast('Fonctionnalité en développement', 'info');
 }
 
-window.deleteMessage = function(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce message?')) {
-        console.log('Delete message:', id);
-        alert('Fonction de suppression en cours de développement');
-    }
+window.deleteMessage = async function(id) {
+    if (!await showConfirm('Supprimer ce message ?', { title: 'Supprimer', okLabel: 'Supprimer' })) return;
+    showToast('Fonctionnalité en développement', 'info');
 }
 
 // Helper function to remove empty string values from form data
@@ -684,29 +848,27 @@ async function handleProjectSubmit(e) {
     const tagsText = document.getElementById('project-tags').value.trim();
     formData.tags = tagsText ? tagsText.split(',').map(tag => tag.trim()).filter(tag => tag) : [];
 
+    clearFormErrors('project');
+    setSubmitLoading('project', true);
+
     try {
         let response;
         if (isEdit) {
-            // Update existing project
             response = await API.projects.update(projectId, formData);
-            alert('✅ Projet mis à jour avec succès!');
+            showToast('Projet mis à jour', 'success');
         } else {
-            // Create new project
             response = await API.projects.create(formData);
-            alert('✅ Projet créé avec succès!');
+            showToast('Projet créé', 'success');
         }
 
-        console.log('Project response:', response);
-
         closeModal('project');
-        document.getElementById('project-form').reset();
-        uploadedProjectImages = [];
-        document.getElementById('project-image-previews').innerHTML = '';
-        loadProjects(); // Refresh list
-
+        loadProjects();
     } catch (error) {
         console.error('Error submitting project:', error);
-        alert('❌ Erreur: ' + error.message);
+        showFormErrors('project', error);
+        showToast('Erreur de validation', 'error');
+    } finally {
+        setSubmitLoading('project', false);
     }
 }
 
@@ -766,29 +928,27 @@ async function handleServiceSubmit(e) {
     const manualImages = imagesText ? imagesText.split(',').map(img => img.trim()).filter(img => img) : [];
     formData.images = [...uploadedServiceImages, ...manualImages];
 
+    clearFormErrors('service');
+    setSubmitLoading('service', true);
+
     try {
         let response;
         if (isEdit) {
-            // Update existing service
             response = await API.services.update(serviceId, formData);
-            alert('✅ Service mis à jour avec succès!');
+            showToast('Service mis à jour', 'success');
         } else {
-            // Create new service
             response = await API.services.create(formData);
-            alert('✅ Service créé avec succès!');
+            showToast('Service créé', 'success');
         }
 
-        console.log('Service response:', response);
-
         closeModal('service');
-        document.getElementById('service-form').reset();
-        uploadedServiceImages = [];
-        document.getElementById('service-image-previews').innerHTML = '';
-        loadServices(); // Refresh list
-
+        loadServices();
     } catch (error) {
         console.error('Error submitting service:', error);
-        alert('❌ Erreur: ' + error.message);
+        showFormErrors('service', error);
+        showToast('Erreur de validation', 'error');
+    } finally {
+        setSubmitLoading('service', false);
     }
 }
 
@@ -814,9 +974,9 @@ async function handleProjectImageUpload(e) {
             const previewDiv = document.createElement('div');
             previewDiv.className = 'relative group';
             previewDiv.innerHTML = `
-                <img src="/media/${response.url}" class="w-full h-20 object-cover rounded border border-oak/20">
+                <img src="${response.url}" class="w-full h-24 object-cover rounded border border-oak/20">
                 <button type="button" onclick="removeProjectImage('${response.url}')"
-                        class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-colors">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             `;
@@ -854,9 +1014,9 @@ async function handleServiceImageUpload(e) {
             const previewDiv = document.createElement('div');
             previewDiv.className = 'relative group';
             previewDiv.innerHTML = `
-                <img src="/media/${response.url}" class="w-full h-20 object-cover rounded border border-oak/20">
+                <img src="${response.url}" class="w-full h-24 object-cover rounded border border-oak/20">
                 <button type="button" onclick="removeServiceImage('${response.url}')"
-                        class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-colors">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             `;
@@ -896,9 +1056,9 @@ function renderProjectImagePreviews() {
     const previewEl = document.getElementById('project-image-previews');
     previewEl.innerHTML = uploadedProjectImages.map(url => `
         <div class="relative group">
-            <img src="/media/${url}" class="w-full h-20 object-cover rounded border border-oak/20">
+            <img src="${url}" class="w-full h-24 object-cover rounded border border-oak/20">
             <button type="button" onclick="removeProjectImage('${url}')"
-                    class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-colors">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
@@ -910,9 +1070,9 @@ function renderServiceImagePreviews() {
     const previewEl = document.getElementById('service-image-previews');
     previewEl.innerHTML = uploadedServiceImages.map(url => `
         <div class="relative group">
-            <img src="/media/${url}" class="w-full h-20 object-cover rounded border border-oak/20">
+            <img src="${url}" class="w-full h-24 object-cover rounded border border-oak/20">
             <button type="button" onclick="removeServiceImage('${url}')"
-                    class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-colors">
                 <i data-lucide="x" class="w-4 h-4"></i>
             </button>
         </div>
@@ -1002,20 +1162,20 @@ window.editTestimonial = async function(id) {
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading testimonial:', error);
-        alert('Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement', 'error');
     }
 }
 
 window.deleteTestimonial = async function(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce témoignage?')) {
-        try {
-            await fetch(`${API_BASE_URL}/testimonials/${id}/`, { method: 'DELETE' });
-            alert('Témoignage supprimé avec succès!');
-            loadTestimonials();
-        } catch (error) {
-            console.error('Error deleting testimonial:', error);
-            alert('Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer ?', { title: 'Supprimer le témoignage', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await fetch(`${API_BASE_URL}/testimonials/${id}/`, { method: 'DELETE' });
+        showToast('Témoignage supprimé', 'success');
+        loadTestimonials();
+    } catch (error) {
+        console.error('Error deleting testimonial:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
@@ -1052,13 +1212,13 @@ async function handleTestimonialSubmit(e) {
             body: JSON.stringify(formData)
         });
 
-        alert(isEdit ? 'Témoignage mis à jour avec succès!' : 'Témoignage créé avec succès!');
+        showToast(isEdit ? 'Témoignage mis à jour' : 'Témoignage créé', 'success');
         closeModal('testimonial');
         loadTestimonials();
 
     } catch (error) {
         console.error('Error submitting testimonial:', error);
-        alert('Erreur: ' + error.message);
+        showToast(error.message || 'Erreur', 'error');
     }
 }
 
@@ -1142,20 +1302,20 @@ window.editTeamMember = async function(id) {
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading team member:', error);
-        alert('Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement', 'error');
     }
 }
 
 window.deleteTeamMember = async function(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce membre?')) {
-        try {
-            await fetch(`${API_BASE_URL}/team/${id}/`, { method: 'DELETE' });
-            alert('Membre supprimé avec succès!');
-            loadTeam();
-        } catch (error) {
-            console.error('Error deleting team member:', error);
-            alert('Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer ?', { title: 'Supprimer le membre', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await fetch(`${API_BASE_URL}/team/${id}/`, { method: 'DELETE' });
+        showToast('Membre supprimé', 'success');
+        loadTeam();
+    } catch (error) {
+        console.error('Error deleting team member:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
@@ -1200,13 +1360,13 @@ async function handleTeamSubmit(e) {
             body: JSON.stringify(formData)
         });
 
-        alert(isEdit ? 'Membre mis à jour avec succès!' : 'Membre créé avec succès!');
+        showToast(isEdit ? 'Membre mis à jour' : 'Membre créé', 'success');
         closeModal('team');
         loadTeam();
 
     } catch (error) {
         console.error('Error submitting team member:', error);
-        alert('Erreur: ' + error.message);
+        showToast(error.message || 'Erreur', 'error');
     }
 }
 
@@ -1282,20 +1442,20 @@ window.editTimelineEvent = async function(id) {
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading timeline event:', error);
-        alert('Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement', 'error');
     }
 }
 
 window.deleteTimelineEvent = async function(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cet événement?')) {
-        try {
-            await fetch(`${API_BASE_URL}/timeline/${id}/`, { method: 'DELETE' });
-            alert('Événement supprimé avec succès!');
-            loadTimeline();
-        } catch (error) {
-            console.error('Error deleting timeline event:', error);
-            alert('Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer ?', { title: 'Supprimer l\'événement', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await fetch(`${API_BASE_URL}/timeline/${id}/`, { method: 'DELETE' });
+        showToast('Événement supprimé', 'success');
+        loadTimeline();
+    } catch (error) {
+        console.error('Error deleting timeline event:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
@@ -1330,13 +1490,13 @@ async function handleTimelineSubmit(e) {
             body: JSON.stringify(formData)
         });
 
-        alert(isEdit ? 'Événement mis à jour avec succès!' : 'Événement créé avec succès!');
+        showToast(isEdit ? 'Événement mis à jour' : 'Événement créé', 'success');
         closeModal('timeline');
         loadTimeline();
 
     } catch (error) {
         console.error('Error submitting timeline event:', error);
-        alert('Erreur: ' + error.message);
+        showToast(error.message || 'Erreur', 'error');
     }
 }
 
@@ -1412,20 +1572,20 @@ window.editValue = async function(id) {
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading value:', error);
-        alert('Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement', 'error');
     }
 }
 
 window.deleteValue = async function(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette valeur?')) {
-        try {
-            await fetch(`${API_BASE_URL}/values/${id}/`, { method: 'DELETE' });
-            alert('Valeur supprimée avec succès!');
-            loadValues();
-        } catch (error) {
-            console.error('Error deleting value:', error);
-            alert('Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer ?', { title: 'Supprimer la valeur', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await fetch(`${API_BASE_URL}/values/${id}/`, { method: 'DELETE' });
+        showToast('Valeur supprimée', 'success');
+        loadValues();
+    } catch (error) {
+        console.error('Error deleting value:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
@@ -1460,13 +1620,13 @@ async function handleValueSubmit(e) {
             body: JSON.stringify(formData)
         });
 
-        alert(isEdit ? 'Valeur mise à jour avec succès!' : 'Valeur créée avec succès!');
+        showToast(isEdit ? 'Valeur mise à jour' : 'Valeur créée', 'success');
         closeModal('value');
         loadValues();
 
     } catch (error) {
         console.error('Error submitting value:', error);
-        alert('Erreur: ' + error.message);
+        showToast(error.message || 'Erreur', 'error');
     }
 }
 
@@ -1542,20 +1702,20 @@ window.editFaq = async function(id) {
         lucide.createIcons();
     } catch (error) {
         console.error('Error loading FAQ:', error);
-        alert('Erreur de chargement: ' + error.message);
+        showToast('Erreur de chargement', 'error');
     }
 }
 
 window.deleteFaq = async function(id) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer cette FAQ?')) {
-        try {
-            await fetch(`${API_BASE_URL}/faqs/${id}/`, { method: 'DELETE' });
-            alert('FAQ supprimée avec succès!');
-            loadFaqs();
-        } catch (error) {
-            console.error('Error deleting FAQ:', error);
-            alert('Erreur de suppression: ' + error.message);
-        }
+    const ok = await showConfirm('Cette action est irréversible. Confirmer ?', { title: 'Supprimer la FAQ', okLabel: 'Supprimer' });
+    if (!ok) return;
+    try {
+        await fetch(`${API_BASE_URL}/faqs/${id}/`, { method: 'DELETE' });
+        showToast('FAQ supprimée', 'success');
+        loadFaqs();
+    } catch (error) {
+        console.error('Error deleting FAQ:', error);
+        showToast(error.message || 'Erreur de suppression', 'error');
     }
 }
 
@@ -1588,12 +1748,12 @@ async function handleFaqSubmit(e) {
             body: JSON.stringify(formData)
         });
 
-        alert(isEdit ? 'FAQ mise à jour avec succès!' : 'FAQ créée avec succès!');
+        showToast(isEdit ? 'FAQ mise à jour' : 'FAQ créée', 'success');
         closeModal('faq');
         loadFaqs();
 
     } catch (error) {
         console.error('Error submitting FAQ:', error);
-        alert('Erreur: ' + error.message);
+        showToast(error.message || 'Erreur', 'error');
     }
 }
