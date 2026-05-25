@@ -137,6 +137,80 @@ function setupLangTabs() {
     });
 }
 
+// ============================================================
+// Single-image upload widget (for testimonial / team / etc.)
+// HTML expected per `type` :
+//   <input type="hidden" id="${type}-image" name="image">
+//   <input type="file"   id="${type}-image-file" accept="image/*" class="hidden">
+//   <div id="${type}-image-preview"></div>
+//   <span id="${type}-image-status"></span>
+//   <input type="url"   id="${type}-image-url-input"> (optional fallback)
+// ============================================================
+
+function renderSingleImagePreview(type, url) {
+    const previewEl = document.getElementById(`${type}-image-preview`);
+    if (!previewEl) return;
+    if (!url) {
+        previewEl.innerHTML = '';
+        return;
+    }
+    previewEl.innerHTML = `
+        <div class="relative inline-block">
+            <img src="${url}" alt="Aperçu" class="w-32 h-32 object-cover rounded border border-oak/20">
+            <button type="button" onclick="removeSingleImage('${type}')"
+                    class="absolute top-1 right-1 bg-red-600 hover:bg-red-700 text-white rounded-full w-7 h-7 flex items-center justify-center shadow-md transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>`;
+    lucide.createIcons();
+}
+
+function setSingleImage(type, url) {
+    const hidden = document.getElementById(`${type}-image`);
+    if (hidden) hidden.value = url || '';
+    renderSingleImagePreview(type, url);
+}
+
+window.removeSingleImage = function(type) {
+    setSingleImage(type, '');
+    const urlInput = document.getElementById(`${type}-image-url-input`);
+    if (urlInput) urlInput.value = '';
+    const statusEl = document.getElementById(`${type}-image-status`);
+    if (statusEl) statusEl.textContent = '';
+};
+
+function setupSingleImageUpload(type) {
+    const fileInput = document.getElementById(`${type}-image-file`);
+    const urlInput  = document.getElementById(`${type}-image-url-input`);
+    const statusEl  = document.getElementById(`${type}-image-status`);
+
+    if (fileInput && !fileInput.dataset.bound) {
+        fileInput.dataset.bound = '1';
+        fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (statusEl) statusEl.textContent = 'Téléversement…';
+            try {
+                const response = await API.upload.image(file);
+                setSingleImage(type, response.url);
+                if (statusEl) statusEl.textContent = '';
+            } catch (error) {
+                console.error('Single-image upload error:', error);
+                if (statusEl) statusEl.textContent = '';
+                showToast(error.message || 'Échec de l\'upload', 'error');
+            }
+            e.target.value = '';
+        });
+    }
+
+    if (urlInput && !urlInput.dataset.bound) {
+        urlInput.dataset.bound = '1';
+        urlInput.addEventListener('input', () => {
+            setSingleImage(type, urlInput.value.trim());
+        });
+    }
+}
+
 function resetLangTabs(formType) {
     document.querySelectorAll(`.lang-tab[data-form="${formType}"]`).forEach(t => {
         const active = t.dataset.lang === 'fr';
@@ -252,6 +326,10 @@ function setupEventListeners() {
 
     // FR/EN language tabs on bilingual forms
     setupLangTabs();
+
+    // Single-image upload widgets
+    setupSingleImageUpload('testimonial');
+    setupSingleImageUpload('team');
 
     // Close any modal by clicking its backdrop
     document.querySelectorAll('.modal').forEach(modal => {
@@ -600,6 +678,10 @@ window.openModal = function(type) {
             uploadedServiceImages = [];
             document.getElementById('service-image-previews').innerHTML = '';
             document.getElementById('service-upload-status').textContent = '';
+        } else if (type === 'testimonial' || type === 'team') {
+            setSingleImage(type, '');
+            const urlInput = document.getElementById(`${type}-image-url-input`);
+            if (urlInput) urlInput.value = '';
         }
 
         // Reset modal title to "Nouveau..."
@@ -648,6 +730,10 @@ window.closeModal = function(type) {
             uploadedServiceImages = [];
             document.getElementById('service-image-previews').innerHTML = '';
             document.getElementById('service-upload-status').textContent = '';
+        } else if (type === 'testimonial' || type === 'team') {
+            setSingleImage(type, '');
+            const urlInput = document.getElementById(`${type}-image-url-input`);
+            if (urlInput) urlInput.value = '';
         }
     }
 }
@@ -1156,7 +1242,9 @@ window.editTestimonial = async function(id) {
         document.getElementById('testimonial-role-en').value = testimonial.role_en || '';
         document.getElementById('testimonial-text-fr').value = testimonial.text_fr || '';
         document.getElementById('testimonial-text-en').value = testimonial.text_en || '';
-        document.getElementById('testimonial-image').value = testimonial.image || '';
+        setSingleImage('testimonial', testimonial.image || '');
+        const tImgUrlInput = document.getElementById('testimonial-image-url-input');
+        if (tImgUrlInput) tImgUrlInput.value = '';
         document.getElementById('testimonial-stars').value = testimonial.stars || 5;
         document.getElementById('testimonial-order').value = testimonial.order || 0;
 
@@ -1292,7 +1380,9 @@ window.editTeamMember = async function(id) {
         document.getElementById('team-name').value = member.name || '';
         document.getElementById('team-role-fr').value = member.role_fr || '';
         document.getElementById('team-role-en').value = member.role_en || '';
-        document.getElementById('team-image').value = member.image || '';
+        setSingleImage('team', member.image || '');
+        const teamImgUrlInput = document.getElementById('team-image-url-input');
+        if (teamImgUrlInput) teamImgUrlInput.value = '';
         document.getElementById('team-quote-fr').value = member.quote_fr || '';
         document.getElementById('team-quote-en').value = member.quote_en || '';
         document.getElementById('team-bio-fr').value = member.bio_fr || '';
