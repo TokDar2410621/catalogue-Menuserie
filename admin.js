@@ -659,11 +659,13 @@ window.editProject = async function(slug) {
         const project = await response.json();
 
         // Reset all transient state from previous sessions
-        uploadedProjectImages = [];
-        document.getElementById('project-image-previews').innerHTML = '';
         document.getElementById('project-upload-status').textContent = '';
         clearFormErrors('project');
         resetLangTabs('project');
+
+        // Existing images become editable previews (can be deleted via X)
+        uploadedProjectImages = [...(project.images || [])];
+        renderProjectImagePreviews();
 
         // Populate form
         document.getElementById('project-id').value = slug;
@@ -680,7 +682,8 @@ window.editProject = async function(slug) {
         document.getElementById('project-location').value = project.location || '';
         document.getElementById('project-duration-fr').value = project.duration_fr || '';
         document.getElementById('project-duration-en').value = project.duration_en || '';
-        document.getElementById('project-images').value = (project.images || []).join(', ');
+        // Manual URLs textarea cleared : existing images already managed via previews
+        document.getElementById('project-images').value = '';
         document.getElementById('project-tags').value = (project.tags || []).join(', ');
         document.getElementById('project-featured').checked = project.featured || false;
         document.getElementById('project-order').value = project.order || 0;
@@ -714,11 +717,13 @@ window.editService = async function(slug) {
         const service = await response.json();
 
         // Reset transient state
-        uploadedServiceImages = [];
-        document.getElementById('service-image-previews').innerHTML = '';
         document.getElementById('service-upload-status').textContent = '';
         clearFormErrors('service');
         resetLangTabs('service');
+
+        // Existing images become editable previews (can be deleted via X)
+        uploadedServiceImages = [...(service.images || [])];
+        renderServiceImagePreviews();
 
         document.getElementById('service-id').value = slug;
         document.getElementById('service-service-id').value = service.service_id || '';
@@ -741,7 +746,8 @@ window.editService = async function(slug) {
             document.getElementById('service-sub-services-en').value = '';
         }
 
-        document.getElementById('service-images').value = (service.images || []).join(', ');
+        // Manual URLs textarea cleared : existing images already managed via previews
+        document.getElementById('service-images').value = '';
         document.getElementById('service-is-active').checked = service.is_active !== false;
         document.getElementById('service-order').value = service.order || 0;
 
