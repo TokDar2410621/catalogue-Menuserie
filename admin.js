@@ -761,8 +761,8 @@ window.editProject = async function(slug) {
         document.getElementById('project-category').value = project.category || 'kitchen';
         document.getElementById('project-type').value = project.type || '';
         document.getElementById('project-material').value = project.material || '';
-        document.getElementById('project-short-desc-fr').value = project.short_desc_fr || '';
-        document.getElementById('project-full-desc-fr').value = project.full_desc_fr || '';
+        // Single description field : prefere full_desc_fr (le plus long), fallback short_desc_fr
+        document.getElementById('project-description').value = project.full_desc_fr || project.short_desc_fr || '';
         document.getElementById('project-location').value = project.location || '';
         document.getElementById('project-duration-fr').value = project.duration_fr || '';
         document.getElementById('project-duration-en').value = project.duration_en || '';
@@ -908,11 +908,13 @@ async function handleProjectSubmit(e) {
     const material = document.getElementById('project-material').value.trim();
     if (isEdit || material) formData.material = material || '';
 
-    const shortDescFr = document.getElementById('project-short-desc-fr').value.trim();
-    if (isEdit || shortDescFr) formData.short_desc_fr = shortDescFr || '';
-
-    const fullDescFr = document.getElementById('project-full-desc-fr').value.trim();
-    if (isEdit || fullDescFr) formData.full_desc_fr = fullDescFr || '';
+    // Single description : on duplique vers short_desc_fr et full_desc_fr
+    // pour que la carte portfolio et la fiche detail aient toutes deux du contenu
+    const description = document.getElementById('project-description').value.trim();
+    if (isEdit || description) {
+        formData.short_desc_fr = description;
+        formData.full_desc_fr = description;
+    }
 
     const location = document.getElementById('project-location').value.trim();
     if (isEdit || location) formData.location = location || '';

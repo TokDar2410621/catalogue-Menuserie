@@ -28,8 +28,16 @@
 </head>
 <body class="bg-offwhite text-walnut font-sans antialiased">
 
-    <!-- Navbar Component Placeholder -->
-    <div id="navbar-placeholder"></div>
+    <header id="navbar" class="fixed w-full top-0 z-50 bg-offwhite/95 backdrop-blur-sm border-b border-oak/10">
+        <div class="container mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3">
+                <img src="image/Création sans titre.svg" alt="DKBOIS - Menuiserie et Ébénisterie d'Excellence à Yaoundé, Cameroun" class="h-24 w-auto object-contain">
+            </a>
+            <a href="portfolio.html" id="back-to-portfolio" class="flex items-center gap-2 text-oak hover:text-gold transition-colors font-serif text-sm tracking-widest uppercase">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i><span data-i18n="project_page.back"></span>
+            </a>
+        </div>
+    </header>
 
     <main class="pt-20">
         <div class="h-[60vh] w-full relative overflow-hidden mb-16">
@@ -38,7 +46,7 @@
                 <div class="container mx-auto text-white">
                     <div class="flex flex-wrap gap-3 mb-4" id="project-tags"></div>
                     <h1 id="project-title" class="text-4xl md:text-6xl font-serif font-bold mb-2"></h1>
-                    <p id="project-subtitle" class="text-xl font-light max-w-2xl"></p>
+                    <p id="project-subtitle" class="text-xl font-light max-w-2xl line-clamp-2"></p>
                 </div>
             </div>
         </div>

@@ -86,6 +86,8 @@ const renderProject = (project) => {
             </div>
         </div>`).join('');
 
+    const backLink = d.getElementById('back-to-portfolio');
+    if (backLink) backLink.href = `portfolio.html?lang=${currentLang}`;
     const contactLink = d.getElementById('contact-link');
     if (contactLink) contactLink.href = `contact.html?lang=${currentLang}`;
 
