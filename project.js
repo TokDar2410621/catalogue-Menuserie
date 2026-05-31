@@ -1,6 +1,7 @@
 import { translations } from './data.js';
 import { UXEnhancements } from './ux-enhancements.js';
 import { API } from './api-config.js';
+import { initComponents } from './components.js';
 
 let currentLang = 'fr';
 let currentProject = null;
@@ -85,10 +86,8 @@ const renderProject = (project) => {
             </div>
         </div>`).join('');
 
-    d.getElementById('back-to-portfolio').href = `portfolio.html?lang=${currentLang}`;
-    d.getElementById('contact-link').href = `contact.html?lang=${currentLang}`;
-    const headerLogo = d.querySelector('header a');
-    if (headerLogo) headerLogo.href = `index.html?lang=${currentLang}`;
+    const contactLink = d.getElementById('contact-link');
+    if (contactLink) contactLink.href = `contact.html?lang=${currentLang}`;
 
     lucide.createIcons();
 };
@@ -132,6 +131,7 @@ const setupLightbox = () => {
 };
 
 d.addEventListener('DOMContentLoaded', () => {
+    initComponents('portfolio');
     setupLanguage();
 
     // Accept either ?id=<slug> (legacy) or ?slug=<slug>
