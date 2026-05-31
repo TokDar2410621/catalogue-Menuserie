@@ -759,12 +759,10 @@ window.editProject = async function(slug) {
         document.getElementById('project-title-fr').value = project.title_fr || '';
         document.getElementById('project-title-en').value = project.title_en || '';
         document.getElementById('project-category').value = project.category || 'kitchen';
-        document.getElementById('project-type').value = project.type || 'creation';
-        document.getElementById('project-material').value = project.material || 'oak';
+        document.getElementById('project-type').value = project.type || '';
+        document.getElementById('project-material').value = project.material || '';
         document.getElementById('project-short-desc-fr').value = project.short_desc_fr || '';
-        document.getElementById('project-short-desc-en').value = project.short_desc_en || '';
         document.getElementById('project-full-desc-fr').value = project.full_desc_fr || '';
-        document.getElementById('project-full-desc-en').value = project.full_desc_en || '';
         document.getElementById('project-location').value = project.location || '';
         document.getElementById('project-duration-fr').value = project.duration_fr || '';
         document.getElementById('project-duration-en').value = project.duration_en || '';
@@ -913,14 +911,8 @@ async function handleProjectSubmit(e) {
     const shortDescFr = document.getElementById('project-short-desc-fr').value.trim();
     if (isEdit || shortDescFr) formData.short_desc_fr = shortDescFr || '';
 
-    const shortDescEn = document.getElementById('project-short-desc-en').value.trim();
-    if (isEdit || shortDescEn) formData.short_desc_en = shortDescEn || '';
-
     const fullDescFr = document.getElementById('project-full-desc-fr').value.trim();
     if (isEdit || fullDescFr) formData.full_desc_fr = fullDescFr || '';
-
-    const fullDescEn = document.getElementById('project-full-desc-en').value.trim();
-    if (isEdit || fullDescEn) formData.full_desc_en = fullDescEn || '';
 
     const location = document.getElementById('project-location').value.trim();
     if (isEdit || location) formData.location = location || '';

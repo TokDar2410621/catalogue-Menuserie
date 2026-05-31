@@ -6,9 +6,11 @@ let currentLang = 'fr';
 let currentProject = null;
 const d = document;
 
+// Legacy English code translations. New projects store French labels
+// directly so values are displayed as-is via the fallback below.
 const MATERIAL_LABELS = {
     fr: { oak: 'Chêne', walnut: 'Noyer', maple: 'Érable' },
-    en: { oak: 'Oak', walnut: 'Walnut', maple: 'Maple' },
+    en: { oak: 'Oak', walnut: 'Walnut', maple: 'Maple', 'Chêne': 'Oak', 'Noyer': 'Walnut', 'Érable': 'Maple' },
 };
 
 const keyPath = path => path.split('.').reduce((acc, part) => acc && acc[part], translations[currentLang]) || path;

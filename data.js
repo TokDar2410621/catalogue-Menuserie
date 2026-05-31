@@ -412,15 +412,19 @@ export const allProjectsData = [
 
 export const filterOptions = {
     category: [
-        { value: "kitchen", label: { fr: "Cuisine", en: "Kitchen" } }, { value: "living", label: { fr: "Salon", en: "Living Room" } },
-        { value: "exterior", label: { fr: "Extérieur", en: "Exterior" } }
+        { value: "Cuisine", label: { fr: "Cuisine", en: "Kitchen" } },
+        { value: "Salon", label: { fr: "Salon", en: "Living Room" } },
+        { value: "Extérieur", label: { fr: "Extérieur", en: "Exterior" } }
     ],
     type: [
-        { value: "creation", label: { fr: "Création", en: "Creation" } }, { value: "restoration", label: { fr: "Restauration", en: "Restoration" } },
-        { value: "fitting", label: { fr: "Agencement", en: "Fitting" } }
+        { value: "Création", label: { fr: "Création", en: "Creation" } },
+        { value: "Restauration", label: { fr: "Restauration", en: "Restoration" } },
+        { value: "Agencement", label: { fr: "Agencement", en: "Fitting" } }
     ],
     material: [
-        { value: "oak", label: { fr: "Chêne", en: "Oak" } }, { value: "walnut", label: { fr: "Noyer", en: "Walnut" } }
+        { value: "Chêne", label: { fr: "Chêne", en: "Oak" } },
+        { value: "Noyer", label: { fr: "Noyer", en: "Walnut" } },
+        { value: "Érable", label: { fr: "Érable", en: "Maple" } }
     ]
 };
 

@@ -21,12 +21,15 @@ class ProjectListSerializer(serializers.ModelSerializer):
     def get_title(self, obj):
         """Return title based on language context"""
         lang = self.context.get('lang', 'fr')
-        return obj.title_fr if lang == 'fr' else obj.title_en
+        return obj.title_fr if lang == 'fr' else (obj.title_en or obj.title_fr)
 
     def get_short_desc(self, obj):
-        """Return short description based on language context"""
+        """Return short description with FR fallback when EN is empty.
+        Descriptions are now single-language (FR) in the admin form."""
         lang = self.context.get('lang', 'fr')
-        return obj.short_desc_fr if lang == 'fr' else obj.short_desc_en
+        if lang == 'en':
+            return obj.short_desc_en or obj.short_desc_fr
+        return obj.short_desc_fr
 
 
 class ProjectDetailSerializer(serializers.ModelSerializer):
@@ -48,19 +51,25 @@ class ProjectDetailSerializer(serializers.ModelSerializer):
 
     def get_title(self, obj):
         lang = self.context.get('lang', 'fr')
-        return obj.title_fr if lang == 'fr' else obj.title_en
+        return obj.title_fr if lang == 'fr' else (obj.title_en or obj.title_fr)
 
     def get_short_desc(self, obj):
+        # Single-language field (FR) with EN fallback to FR
         lang = self.context.get('lang', 'fr')
-        return obj.short_desc_fr if lang == 'fr' else obj.short_desc_en
+        if lang == 'en':
+            return obj.short_desc_en or obj.short_desc_fr
+        return obj.short_desc_fr
 
     def get_full_desc(self, obj):
+        # Single-language field (FR) with EN fallback to FR
         lang = self.context.get('lang', 'fr')
-        return obj.full_desc_fr if lang == 'fr' else obj.full_desc_en
+        if lang == 'en':
+            return obj.full_desc_en or obj.full_desc_fr
+        return obj.full_desc_fr
 
     def get_challenge(self, obj):
         lang = self.context.get('lang', 'fr')
-        return obj.challenge_fr if lang == 'fr' else obj.challenge_en
+        return obj.challenge_fr if lang == 'fr' else (obj.challenge_en or obj.challenge_fr)
 
     def get_specs(self, obj):
         """Return specifications object based on language"""

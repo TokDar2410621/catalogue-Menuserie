@@ -6,33 +6,20 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class Project(models.Model):
     """Portfolio project with bilingual content"""
 
-    CATEGORY_CHOICES = [
-        ('kitchen', 'Kitchen'),
-        ('living', 'Living Room'),
-        ('exterior', 'Exterior'),
-    ]
-
-    TYPE_CHOICES = [
-        ('creation', 'Creation'),
-        ('restoration', 'Restoration'),
-        ('fitting', 'Fitting'),
-    ]
-
-    MATERIAL_CHOICES = [
-        ('oak', 'Oak'),
-        ('walnut', 'Walnut'),
-        ('maple', 'Maple'),
-    ]
+    # Suggested values shown in the admin as datalist hints (non-binding)
+    CATEGORY_SUGGESTIONS = ['Cuisine', 'Salon', 'Extérieur']
+    TYPE_SUGGESTIONS = ['Création', 'Restauration', 'Agencement']
+    MATERIAL_SUGGESTIONS = ['Chêne', 'Noyer', 'Érable']
 
     # Basic fields
     slug = models.SlugField(unique=True, max_length=200, blank=True)
     title_fr = models.CharField(max_length=200, verbose_name="Title (French)")
-    title_en = models.CharField(max_length=200, verbose_name="Title (English)")
+    title_en = models.CharField(max_length=200, verbose_name="Title (English)", blank=True)
 
-    # Classification
-    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    material = models.CharField(max_length=20, choices=MATERIAL_CHOICES)
+    # Classification (free-text, suggestions surfaced via datalist in admin)
+    category = models.CharField(max_length=50, blank=True)
+    type = models.CharField(max_length=50, blank=True)
+    material = models.CharField(max_length=50, blank=True)
 
     # Descriptions
     short_desc_fr = models.TextField(verbose_name="Short Description (French)")
