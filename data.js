@@ -2,8 +2,8 @@ export const translations = {
     fr: {
         nav: { home: "Accueil", about: "À Propos", mathurin: "Mathurin Defehe", services: "Services", portfolio: "Réalisations", contact: "Contact" },
         hero: {
-            title: "Servir l'espace<br><span class='text-gold-contrast'>et l'excellence</span><br>du bois",
-            subtitle: "Menuiserie et Ébénisterie d'Excellence à Yaoundé | 20+ ans d'expérience",
+            title: "Menuiserie au Cameroun<br><span class='text-gold-contrast'>l'excellence du bois</span><br>depuis 20 ans",
+            subtitle: "DKBOIS, votre menuisier-ébéniste à Yaoundé. Cuisines, dressings et mobilier sur mesure en bois noble. Atelier au quartier Mendong.",
             cta1: "Découvrir nos réalisations",
             cta2: "Demander un devis",
             stats: {
@@ -55,8 +55,8 @@ export const translations = {
             upload: "Cliquez ou glissez vos fichiers"
         },
         about_page: {
-            hero_title: "DKBOIS - L'Art du Bois<br>à Yaoundé",
-            hero_subtitle: "Plus de 20 ans d'expertise au Cameroun | Menuiserie et Ébénisterie d'excellence",
+            hero_title: "À propos de DKBOIS - Menuiserie au Cameroun depuis 20 ans",
+            hero_subtitle: "Fondé par Mathurin Defehe en 2003, DKBOIS est l'atelier de référence en menuiserie et ébénisterie au Cameroun. Quartier Mendong, Yaoundé.",
             history_title: "Notre Histoire",
             history_subtitle: "De l'atelier de Mendong à la référence menuiserie de Yaoundé",
             founder_title: "Mathurin FOBHA - Fondateur",
@@ -66,15 +66,15 @@ export const translations = {
             certs_title: "Notre Engagement Qualité"
         },
         services_page: {
-            hero_title: "Notre Expertise",
-            hero_subtitle: "De la conception à la pose, une maîtrise complète du bois.",
+            hero_title: "Services de menuiserie au Cameroun",
+            hero_subtitle: "Cuisines sur mesure, dressings, mobilier de bureau, agencements : DKBOIS conçoit et fabrique en bois noble à Yaoundé. Devis gratuit.",
             process_title: "Notre Processus",
             delay_title: "Délais Moyens",
             gallery_title: "En Images"
         },
         portfolio_page: {
-            hero_title: "Nos Réalisations",
-            hero_subtitle: "Découvrez notre collection de projets, témoins de notre passion.",
+            hero_title: "Réalisations de menuiserie au Cameroun",
+            hero_subtitle: "Galerie des projets DKBOIS : cuisines, dressings, salons, mobilier sur mesure réalisés à Yaoundé et partout au Cameroun.",
             filters: { category: "Catégorie", type: "Type", material: "Matériau", reset: "Réinitialiser" },
             empty: "Aucun projet ne correspond à vos critères."
         },
@@ -90,8 +90,8 @@ export const translations = {
             prev: "Projet Précédent"
         },
         contact_page: {
-            hero_title: "Parlons de votre Projet",
-            hero_subtitle: "Notre équipe est à votre écoute pour transformer vos idées en réalité.",
+            hero_title: "Contactez DKBOIS pour votre projet de menuiserie au Cameroun",
+            hero_subtitle: "Demandez un devis gratuit pour vos travaux de menuiserie et ébénisterie. Réponse sous 48h. Atelier à Mendong, Yaoundé.",
             info_title: "Informations Pratiques",
             form_title: "Formulaire de Devis",
             hours_label: "Horaires",
@@ -439,6 +439,6 @@ export const faqData = [
     },
     {
         id: "q3", question: { fr: "Travaillez-vous uniquement avec du bois local ?", en: "Do you only work with local wood?" },
-        answer: { fr: "Nous privilégions les essences de bois françaises et européennes issues de forêts gérées durablement (PEFC, FSC). Nous pouvons également travailler avec des bois exotiques sur demande spécifique.", en: "We prioritize French and European wood species from sustainably managed forests (PEFC, FSC). We can also work with exotic woods upon specific request." }
+        answer: { fr: "Nous privilégions les essences locales du Cameroun (ayous, sapelli, iroko, bibinga, ébène) issues de filières durables. Nous travaillons aussi le chêne, le noyer et l'érable importés pour des projets spécifiques.", en: "We prioritize local Cameroonian wood species (ayous, sapelli, iroko, bibinga, ebony) sourced from sustainable supply chains. We also work with imported oak, walnut and maple for specific projects." }
     }
 ];
