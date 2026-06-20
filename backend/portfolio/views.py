@@ -181,13 +181,17 @@ class ServiceViewSet(viewsets.ModelViewSet):
         )
 
 
-class TestimonialViewSet(viewsets.ReadOnlyModelViewSet):
+class TestimonialViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for testimonials.
-    Returns active testimonials only.
+    ViewSet for testimonials with full CRUD operations.
+    Returns active testimonials only (new testimonials default to is_active=True).
+
+    NOTE: Currently allows all operations for development.
+    TODO: Gate POST/PUT/PATCH/DELETE behind IsAdminUser for production.
     """
     queryset = Testimonial.objects.filter(is_active=True)
     serializer_class = TestimonialSerializer
+    permission_classes = [AllowAny]
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

@@ -1232,10 +1232,8 @@ window.editTestimonial = async function(id) {
 
         document.getElementById('testimonial-id').value = testimonial.id;
         document.getElementById('testimonial-name').value = testimonial.name || '';
-        document.getElementById('testimonial-role-fr').value = testimonial.role_fr || '';
-        document.getElementById('testimonial-role-en').value = testimonial.role_en || '';
-        document.getElementById('testimonial-text-fr').value = testimonial.text_fr || '';
-        document.getElementById('testimonial-text-en').value = testimonial.text_en || '';
+        document.getElementById('testimonial-role').value = testimonial.role || '';
+        document.getElementById('testimonial-text').value = testimonial.text || '';
         setSingleImage('testimonial', testimonial.image || '');
         const tImgUrlInput = document.getElementById('testimonial-image-url-input');
         if (tImgUrlInput) tImgUrlInput.value = '';
@@ -1258,7 +1256,7 @@ window.deleteTestimonial = async function(id) {
     const ok = await showConfirm('Cette action est irréversible. Confirmer ?', { title: 'Supprimer le témoignage', okLabel: 'Supprimer' });
     if (!ok) return;
     try {
-        await fetch(`${API_BASE_URL}/testimonials/${id}/`, { method: 'DELETE' });
+        await API.testimonials.delete(id);
         showToast('Témoignage supprimé', 'success');
         loadTestimonials();
     } catch (error) {
@@ -1275,30 +1273,21 @@ async function handleTestimonialSubmit(e) {
 
     const formData = {
         name: document.getElementById('testimonial-name').value.trim(),
-        role_fr: document.getElementById('testimonial-role-fr').value.trim(),
-        text_fr: document.getElementById('testimonial-text-fr').value.trim(),
+        role: document.getElementById('testimonial-role').value.trim(),
+        text: document.getElementById('testimonial-text').value.trim(),
         stars: parseInt(document.getElementById('testimonial-stars').value) || 5,
         order: parseInt(document.getElementById('testimonial-order').value) || 0
     };
-
-    const roleEn = document.getElementById('testimonial-role-en').value.trim();
-    if (isEdit || roleEn) formData.role_en = roleEn || '';
-
-    const textEn = document.getElementById('testimonial-text-en').value.trim();
-    if (isEdit || textEn) formData.text_en = textEn || '';
 
     const image = document.getElementById('testimonial-image').value.trim();
     if (isEdit || image) formData.image = image || '';
 
     try {
-        const endpoint = isEdit ? `/testimonials/${testimonialId}/` : '/testimonials/';
-        const method = isEdit ? 'PUT' : 'POST';
-
-        await fetch(`${API_BASE_URL}${endpoint}`, {
-            method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        });
+        if (isEdit) {
+            await API.testimonials.update(testimonialId, formData);
+        } else {
+            await API.testimonials.create(formData);
+        }
 
         showToast(isEdit ? 'Témoignage mis à jour' : 'Témoignage créé', 'success');
         closeModal('testimonial');
