@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.conf import settings
+from django.utils import timezone
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
@@ -429,3 +430,86 @@ def upload_image(request):
             {'error': f'Failed to upload file: {str(e)}'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+# Static frontend pages: (path, changefreq, priority).
+# path '' is the homepage. These mirror the real .html files at the site root.
+SITEMAP_STATIC_PAGES = [
+    ('', 'weekly', '1.0'),
+    ('about.html', 'monthly', '0.8'),
+    ('services.html', 'monthly', '0.9'),
+    ('portfolio.html', 'weekly', '0.9'),
+    ('contact.html', 'monthly', '0.8'),
+    ('mathurin-defehe.html', 'monthly', '0.7'),
+]
+
+
+def sitemap_view(request):
+    """
+    Dynamic XML sitemap generated from the database.
+
+    Lists the static frontend pages plus one URL per project detail page
+    (project.html?id=<slug>), so newly published projects appear in the
+    sitemap automatically with a content-driven <lastmod>.
+
+    Served at /sitemap.xml on this backend. The frontend domain proxies
+    /sitemap.xml to this endpoint (see vercel.json) so crawlers fetch it
+    from https://fdkbois.com/sitemap.xml — same host as the listed URLs.
+
+    FRONTEND_URL must be the canonical host. Vercel canonicalises to the
+    apex (www.fdkbois.com 307-redirects to fdkbois.com), so the default and
+    every <loc>/hreflang use the apex to avoid listing redirecting URLs.
+    """
+    frontend = os.environ.get('FRONTEND_URL', 'https://fdkbois.com').rstrip('/')
+
+    # Only list projects with a usable slug; a blank slug would yield
+    # project.html?id= which the frontend renders as a "project not found"
+    # soft-404 (project.js). Blank slugs are possible via the admin write path.
+    projects = list(Project.objects.exclude(slug='').exclude(slug__isnull=True))
+    services = list(Service.objects.filter(is_active=True))
+
+    now = timezone.now()
+    project_lastmods = [p.updated_at for p in projects if p.updated_at]
+    service_lastmods = [s.updated_at for s in services if s.updated_at]
+    projects_lastmod = max(project_lastmods) if project_lastmods else now
+    services_lastmod = max(service_lastmods) if service_lastmods else now
+    site_lastmod = max(projects_lastmod, services_lastmod)
+
+    # Per-page lastmod: portfolio tracks projects, services tracks services,
+    # everything else tracks the most recent content change site-wide.
+    page_lastmods = {
+        'portfolio.html': projects_lastmod,
+        'services.html': services_lastmod,
+    }
+
+    def build_entry(path, lastmod, changefreq, priority):
+        base = f"{frontend}/{path}"
+        sep = '&' if '?' in path else '?'
+        return {
+            'loc': base,
+            'loc_fr': f"{base}{sep}lang=fr",
+            'loc_en': f"{base}{sep}lang=en",
+            'lastmod': lastmod.strftime('%Y-%m-%d'),
+            'changefreq': changefreq,
+            'priority': priority,
+        }
+
+    urls = [
+        build_entry(path, page_lastmods.get(path, site_lastmod), changefreq, priority)
+        for path, changefreq, priority in SITEMAP_STATIC_PAGES
+    ]
+
+    for project in projects:
+        urls.append(build_entry(
+            f"project.html?id={project.slug}",
+            project.updated_at or now,
+            'monthly',
+            '0.7',
+        ))
+
+    return render(
+        request,
+        'portfolio/sitemap.xml',
+        {'urls': urls},
+        content_type='application/xml',
+    )

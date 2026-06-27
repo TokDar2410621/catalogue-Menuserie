@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/sitemap.xml",
+      "destination": "https://carefree-heart-production-ec3a.up.railway.app/sitemap.xml"
+    }
+  ]
+}

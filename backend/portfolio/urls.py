@@ -19,6 +19,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('api/upload/', views.upload_image, name='upload_image'),
 
+    # SEO: dynamic sitemap (proxied to /sitemap.xml on the frontend domain)
+    path('sitemap.xml', views.sitemap_view, name='sitemap'),
+
     # Authentication
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),

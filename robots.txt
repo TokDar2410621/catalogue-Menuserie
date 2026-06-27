@@ -1,5 +1,5 @@
 # Robots.txt pour DKBOIS - Menuiserie au Cameroun
-# Site: https://www.fdkbois.com
+# Site: https://fdkbois.com
 
 User-agent: *
 Allow: /
@@ -10,7 +10,7 @@ Disallow: /backend/
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://www.fdkbois.com/sitemap.xml
+Sitemap: https://fdkbois.com/sitemap.xml
 
 # Regles specifiques moteurs de recherche
 User-agent: Googlebot
